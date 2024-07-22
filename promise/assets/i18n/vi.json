@@ -1,0 +1,64 @@
+{
+  "application.title": "Promise app",
+  "title": "This is the main page",
+  "description": "Check the todo item below to open the menu above to check more pages.",
+
+  "menu.todo": "Todo List (Personal)",
+  "menu.feature": "Feature Tour",
+  "menu.settings": "Thiết lập",
+  "menu.memories": "Kỉ niệm",
+  "menu.promises": "Lời hứa",
+  "menu.login": "Đăng nhập",
+
+  "feature_page.title": "This is the Tour page 🚩",
+  "feature_page.description": "As you can see, this is just a sample page. You can go back by pressing the button below.",
+
+  "settings_page.title": "This is the Settings page ⚙️",
+  "settings_page.description": "As you can say, this is just a sample page. You can go back by pressing the button below.",
+
+
+  "login.page_title": "Đăng nhập",
+  "login.login_progress": "Đang đăng nhập...",
+
+  "login.label_username": "Username",
+  "login.label_password": "Password",
+  "goBack_button": "Go back",
+
+
+  "next": "Next",
+  "submit": "Submit",
+  "remove": "Remove",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "save": "Save",
+  "retry": "Retry",
+  "send": "Send",
+  "start": "Start",
+  "reset": "Reset",
+
+  "logout": "Logout",
+
+  "no_network": "You're offline",
+  "timeout": "Sorry, the network request timed out. Try again.",
+  "unauthorized": "Error: Unauthorized user",
+  "default_error": "Ops. Something went wrong.",
+  "session_expired": "Error: Session expired",
+  "error_title": "Lỗi",
+
+  "update_alert_title": "App update required",
+  "update_alert_message_ios": "Please update the app to the latest version",
+  "update_alert_message_android": "Please update the app to the latest version",
+  "update_cta": "Update app",
+
+  "memory_list_title": "Kỷ niệm",
+  "memory_list_create_new": "Tạo kỉ niệm",
+  "memory_list_no_memories_message": "You have no memories. Yay! Do nothing!",
+  "memory_list_error_loading_memories": "Error loading memories.",
+  "list_error_general": "Ops! An error has occurred.",
+  
+  "theme": "Theme",
+  "dark_theme": "Chế độ tối",
+  "settings": "Thiết lập",
+  "memories": "Memories",
+  "language": "Ngôn ngữ"
+}
