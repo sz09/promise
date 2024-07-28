@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/di/service_locator.dart';
@@ -24,6 +25,9 @@ Future<void> setupUserScope(String userId) async {
     (Memory).toPlural(),
     (Promise).toPlural(),
   });
+
+  Hive.registerAdapter(LocalDatabase<Memory>());
+  Hive.registerAdapter(LocalDatabase<Promise>());
   final MemoryLocalRepository memoryLocalRepository = MemoryLocalRepository(userId: userId, localDatabase: localDatabaseWrapper.getLocalDatabase<Memory>());
   final MemoryRemoteRepository memoryRemoteRepository = serviceLocator.get<MemoryRemoteRepository>();
   final MemoryService memoryService = MemoryService(remoteRepository: memoryRemoteRepository, localRepository: memoryLocalRepository);

@@ -8,8 +8,7 @@ import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/user/user_manager.dart';
 
 class PromiseListPage extends StatelessWidget {
-  late PromiseListBloc _bloc;
-  PromiseListPage({super.key});
+  const PromiseListPage({super.key});
   @override
   Widget build(BuildContext context) {
      return BlocProvider<PromiseListBloc>(

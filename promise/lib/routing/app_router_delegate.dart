@@ -50,7 +50,6 @@ class AppRouterDelegate extends RouterDelegate
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: '/',
       transitionDelegate: NoAnimationTransitionDelegate(),
       key: navigatorKey,
       pages: _getPages(),
@@ -72,7 +71,7 @@ class AppRouterDelegate extends RouterDelegate
       ];
     }
 
-    if (_navState is HomeNavState) {
+    if (_navState is ApplicationState) {
       return [
         MaterialPage(
           key: const ValueKey('HomeRouterPage'),
@@ -113,7 +112,7 @@ class AppRouterDelegate extends RouterDelegate
   }
 
   void setHomeNavState() {
-    _navState = const AppNavState.home();
+    _navState = const AppNavState.application();
     notifyListeners();
   }
 }

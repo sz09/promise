@@ -19,15 +19,15 @@ class PromisesLoadInProgress extends PromiseListState {}
 /// The memories are successfully loaded
 class PromisesLoadSuccess extends PromiseListState {
   final List<Promise> memories;
-  final promiseCount;
+  final int _promiseCount;
 
-  PromisesLoadSuccess(this.memories) : promiseCount = memories.length;
+  PromisesLoadSuccess(this.memories) : _promiseCount = memories.length;
   //  memoriesGrouped.values.fold<int>(
   //       0, (previousValue, element) => previousValue + element.length);
 
   @override
   String toString() {
-    return 'PromisesLoadSuccess{memoriesCount: $promiseCount}';
+    return 'PromisesLoadSuccess{memoriesCount: $_promiseCount}';
   }
 }
 

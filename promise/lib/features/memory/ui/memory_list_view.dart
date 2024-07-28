@@ -158,7 +158,8 @@ class MemoryListView extends StatelessWidget {
                 memory: memory,
                 onClick: (memory) => context
                     .read<HomeRouterDelegate>()
-                    .setMemoryDetailNavState(memory),
+                    // .setMemoryDetailNavState(memory),
+                    ,
                 onStatusChange: (memory, isDone) => {}
                 // memoryListBloc
                 //     .add(isDone ? EventCompleted(memory) :  EventReopened(memory)),

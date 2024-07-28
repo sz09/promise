@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promise/app_1.dart';
 import 'package:promise/data/data_not_found_exception.dart';
 import 'package:promise/features/timeline/bloc/timeline_bloc.dart';
 import 'package:promise/features/timeline/widget/timeline.dart';

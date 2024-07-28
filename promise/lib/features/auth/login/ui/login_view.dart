@@ -9,8 +9,8 @@ import 'package:promise/widgets/pm_textform_field.dart';
 
 class LoginView extends StatelessWidget {
   final bool sessionExpiredRedirect;
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController(text: "phatph");
+  final TextEditingController _passwordController = TextEditingController(text: "Sz19@2107");
   final paddingBox = const SizedBox(height: 10);
   LoginView({super.key, this.sessionExpiredRedirect = false});
 
@@ -35,11 +35,13 @@ class LoginView extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           switch(state) {
             case LoginSuccess _:
               isLoginInProgress = false;
-              Navigator.of(context).popUntil(ModalRoute.withName('/'));
+              var navigator = Navigator.of(context);
+              if(isLoginInProgress) navigator.pop();
+              navigator.pushNamed('/');
               break;
             case LoginFailure _ :
               if(isLoginInProgress){
@@ -49,7 +51,7 @@ class LoginView extends StatelessWidget {
               break;
             case LoginInProgress _ :
               isLoginInProgress = true;
-              showLoaderDialog(context, message: context.translate("login.login_progress"));
+              showCustomDialog(context, message: context.translate("login.login_progress"));
               break;
           }
         },

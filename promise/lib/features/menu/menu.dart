@@ -102,7 +102,7 @@ Container _getMenuItem({
               color: Colors.white,
             )),
         onTap: () {
-          var applicationLayout = applicationKey.currentWidget as ApplicationLayout;
+          var applicationLayout = homeNavigatorKey.currentWidget as ApplicationLayout;
           applicationLayout.navigateTo(route, context.translate(titleKey));
         },
       ),

@@ -11,7 +11,7 @@ abstract class BasePublicLocalRepository<T extends BaseModel> extends BasePublic
   late String tableName;
   late bool useLocalDatabase;
   final LocalDatabase<T>? localDatabase;
-  BasePublicLocalRepository({this.useLocalDatabase = false, this.localDatabase = null}) {
+  BasePublicLocalRepository({this.useLocalDatabase = false, this.localDatabase}) {
     tableName = (T).toPlural();
     if(useLocalDatabase && localDatabase == null){
       throw InvalidOperationException('useLocalDatabase require localDatabase');

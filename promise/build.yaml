@@ -11,3 +11,31 @@
 #       reflectable:
 #         generate_for:
 #           - no/files
+# targets:
+  # $default:
+  #   sources:
+  #     include:
+  #       - lib/models/**
+  #     exclude: 
+  #       - lib/models/user/**
+  #   builders:
+  #     reflectable:
+  #       generate_for:
+  #         - lib/main.dart
+  #       options:
+  #         formatted: true
+
+  #         targets:
+targets:
+  $default:
+    sources:
+      exclude: 
+        - lib/models/user/**
+        - lib/notifications/**
+        - lib/notifications/..config/**
+    builders:
+      reflectable:
+        generate_for:
+          - lib/main.dart
+        options:
+          formatted: true

@@ -1,6 +1,6 @@
 import 'package:promise/util/enum_util.dart';
 
-enum Flavor { MOCK, DEV, STAGING, PRODUCTION }
+enum Flavor { MOCK, Dev, STAGING, PRODUCTION }
 
 /// App specific flavor values.
 class FlavorValues {
@@ -28,7 +28,7 @@ abstract class FlavorConfig {
 
   static bool isMock() => _flavor! == Flavor.MOCK;
 
-  static bool isDev() => _flavor! == Flavor.DEV;
+  static bool isDev() => _flavor! == Flavor.Dev;
 
   static bool isStaging() => _flavor! == Flavor.STAGING;
 

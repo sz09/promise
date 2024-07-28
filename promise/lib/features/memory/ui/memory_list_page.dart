@@ -8,7 +8,7 @@ import 'package:promise/services/memory/memory.service.dart';
 import 'package:promise/user/user_manager.dart';
 
 class MemoryListPage extends StatelessWidget {
-  MemoryListPage({super.key});
+  const MemoryListPage({super.key});
 
   @override
   Widget build(BuildContext context) {

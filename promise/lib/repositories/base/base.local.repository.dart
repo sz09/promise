@@ -18,7 +18,15 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   Future<T> createAsync(dynamic t) async {
     var box = await localDatabase.getBoxAsync();
     box.add(t);
+    await box.flush();
     return t;
+  }
+
+  Future<Iterable<T>> createManyAsync(Iterable<T> ts) async {
+    var box = await localDatabase.getBoxAsync();
+    box.addAll(ts);
+    await box.flush();
+    return ts;
   }
 
   @override

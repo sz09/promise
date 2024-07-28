@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,6 +18,7 @@ import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/app_lifecycle_observer.dart';
 import 'package:promise/util/loader.dart';
+import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/debug_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +26,6 @@ import 'package:provider/provider.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final authNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>();
-final applicationKey = GlobalKey<_ApplicationLayoutState>();
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -66,7 +67,6 @@ class _AppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    final applicationLayout = ApplicationLayout();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeChangeNotifier>(
@@ -104,11 +104,11 @@ class _AppState extends State<MyApp> {
               locale: localeObject.locale,
               home: Stack(
                 children: [
-                  applicationLayout,
-                  // Router(
-                  //   routerDelegate: _appRouterDelegate,
-                  //   backButtonDispatcher: RootBackButtonDispatcher(),
-                  // ),
+                  // applicationLayout,
+                  Router(
+                    routerDelegate: _appRouterDelegate,
+                    backButtonDispatcher: RootBackButtonDispatcher(),
+                  ),
                   const OverlayView(),
                 ],
               ),
@@ -147,12 +147,12 @@ class ApplicationLayout extends StatefulWidget {
     if(pageRoute == null){
       return;
     }
-    applicationKey.currentState!.title = title;
-    applicationKey.currentState!._homeLayout.jumpToPage(pageRoute) 
-    || 
-    applicationKey.currentState!._meLayout.jumpToPage(pageRoute);
+    // homeNavigatorKey.currentState!.title = title;
+    // homeNavigatorKey.currentState!._homeLayout.jumpToPage(pageRoute) 
+    // || 
+    // homeNavigatorKey.currentState!._meLayout.jumpToPage(pageRoute);
   }
-  ApplicationLayout(): super(key: applicationKey);
+  const ApplicationLayout({super.key});
   
   @override
   State<StatefulWidget> createState() => _ApplicationLayoutState();
@@ -161,7 +161,6 @@ class ApplicationLayout extends StatefulWidget {
 }
 
 class _ApplicationLayoutState extends State<ApplicationLayout> {
-  late String title = 'haha';
   late int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
@@ -191,7 +190,7 @@ class _ApplicationLayoutState extends State<ApplicationLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(context.translate('application.title')),
       ),
       drawer: const Drawer(
         child: DrawerMenu()
@@ -226,35 +225,81 @@ class _ApplicationLayoutState extends State<ApplicationLayout> {
     );
   }
 }
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Home Screen')
-    );
+
+
+
+class ApplicationLayout1 extends Page {
+  navigateTo(String? pageRoute, String title){
+    if(pageRoute == null){
+      return;
+    }
+    // homeNavigatorKey.currentState!.title = title;
+    // homeNavigatorKey.currentState!._homeLayout.jumpToPage(pageRoute) 
+    // || 
+    // homeNavigatorKey.currentState!._meLayout.jumpToPage(pageRoute);
   }
-}
+  ApplicationLayout1({super.key});
+  final PageController _pageController = PageController();
+  final _meLayout = MeLayout();
+  final _homeLayout = HomeLayout();
 
-class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+  late int _selectedIndex = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('About Screen'),
-    );
+    // Method to handle BottomNavigationBar item taps
+  void _onItemTapped(int index) {
+    _selectedIndex = index;
+    // Use PageController to jump to the selected page
+    _pageController.jumpToPage(index);
+    switch(index) {
+      case 0:
+        // _promiseListPage.loadData();
+        break;
+      case 1:
+        // _memoryListPage.loadData();
+        break;
+
+      default: 
+        break;
+    }
   }
-}
-
-class NotFoundScreen extends StatelessWidget {
-  const NotFoundScreen({super.key});
-
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('404 - Page Not Found'),
+  Route createRoute(BuildContext context) {
+    return CupertinoPageRoute(
+      settings: this,
+      builder: (BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: Text(context.translate('application.title')),
+      ),
+      drawer: const Drawer(
+        child: DrawerMenu()
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          _homeLayout,
+          _meLayout
+        ],
+        // Update the selected index when the page is changed by swiping
+        onPageChanged: (index) {
+          _selectedIndex = index;
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'My',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped
+      ),
+    ),
     );
-  }
+  } 
 }
