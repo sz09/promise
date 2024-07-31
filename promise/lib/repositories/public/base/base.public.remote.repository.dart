@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:promise/..const/const.dart';
+import 'package:promise/const/const.dart';
 import 'package:promise/networks/dio/dio.client.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/public/base/base.public.repository.dart';

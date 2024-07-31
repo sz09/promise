@@ -51,3 +51,10 @@ const _epochTicks = 621355968000000000;
 extension TicksOnDateTime on DateTime {
   int get ticksSinceEpoch => microsecondsSinceEpoch * 10 + _epochTicks;
 }
+
+class DateTimeConst {
+  static const _numDays = 100000000;
+  
+  static DateTime get min => DateTime.fromMicrosecondsSinceEpoch(0).subtract(const Duration(days: _numDays));
+  static DateTime get max => DateTime.fromMicrosecondsSinceEpoch(0).add(const Duration(days: _numDays));
+}

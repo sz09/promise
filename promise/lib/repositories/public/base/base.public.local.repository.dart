@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:promise/..const/const.dart';
+import 'package:promise/const/const.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/public/base/base.public.repository.dart';

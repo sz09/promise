@@ -5,10 +5,11 @@ import 'package:promise/di/service_locator.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/repositories/memories/memory.local.repository.dart';
 import 'package:promise/repositories/memories/memory.remote.repository.dart';
-import 'package:promise/repositories/promises/memory.remote.repository.dart';
+import 'package:promise/repositories/promises/promise.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.local.repository.dart';
 import 'package:promise/services/memory/memory.service.dart';
 import 'package:promise/services/promise/promise.service.dart';
+import 'package:promise/services/synchronization/synchronization.service.dart';
 import 'package:promise/util/string_util.dart';
 
 /// User scoped components that are created when the user logs in
@@ -26,8 +27,8 @@ Future<void> setupUserScope(String userId) async {
     (Promise).toPlural(),
   });
 
-  Hive.registerAdapter(LocalDatabase<Memory>());
-  Hive.registerAdapter(LocalDatabase<Promise>());
+  Hive.registerAdapter(MemoryAdapter());
+  Hive.registerAdapter(PromiseAdapter());
   final MemoryLocalRepository memoryLocalRepository = MemoryLocalRepository(userId: userId, localDatabase: localDatabaseWrapper.getLocalDatabase<Memory>());
   final MemoryRemoteRepository memoryRemoteRepository = serviceLocator.get<MemoryRemoteRepository>();
   final MemoryService memoryService = MemoryService(remoteRepository: memoryRemoteRepository, localRepository: memoryLocalRepository);
@@ -36,11 +37,18 @@ Future<void> setupUserScope(String userId) async {
   final PromiseRemoteRepository promiseRemoteRepository = serviceLocator.get<PromiseRemoteRepository>();
   final PromiseService promiseService = PromiseService(remoteRepository: promiseRemoteRepository, localRepository: promiseLocalRepository);
 
+  final SynchronizationService synchronizationService = SynchronizationService(
+    repositories: {
+      memoryRemoteRepository: memoryLocalRepository,
+      promiseRemoteRepository: promiseLocalRepository
+    }
+  );
   serviceLocator
     ..registerSingleton<MemoryService>(memoryService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton<PromiseService>(promiseService,
-        dispose: (instance) => instance.teardown());
+        dispose: (instance) => instance.teardown())
+    ..registerSingleton(synchronizationService);
 }
 
 /// Use [teardownUserScope] to dispose the user scoped components if

@@ -1,4 +1,4 @@
-import 'package:promise/..config/flavor_config.dart';
+import 'package:promise/config/flavor_config.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/platform_comm/platform_comm.dart';

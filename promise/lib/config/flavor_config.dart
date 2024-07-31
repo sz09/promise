@@ -1,5 +1,6 @@
 import 'package:promise/util/enum_util.dart';
 
+// ignore: constant_identifier_names
 enum Flavor { MOCK, Dev, STAGING, PRODUCTION }
 
 /// App specific flavor values.

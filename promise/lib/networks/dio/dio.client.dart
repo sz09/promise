@@ -25,7 +25,7 @@ abstract class DioClient {
 
   Future<Response<T>> get<T>(String path, Object? data) {
     return _dio.get<T>(path, data: data);
-  }
+  } 
 
   Future<Response<T>> delete<T>(String path, Object? data) {
     return _dio.delete<T>(path, data: data);

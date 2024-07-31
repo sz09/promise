@@ -1,4 +1,4 @@
-import 'package:promise/..config/flavor_config.dart';
+import 'package:promise/config/flavor_config.dart';
 import 'package:promise/util/log/abstract_logger.dart';
 
 enum LogLevel { debug, warning, error }

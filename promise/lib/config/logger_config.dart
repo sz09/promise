@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:promise/..config/firebase_config.dart';
+import 'package:promise/config/firebase_config.dart';
 import 'package:promise/util/log/console_logger.dart';
 import 'package:promise/util/log/file_logger.dart';
 import 'package:promise/util/log/filtered_logger.dart';

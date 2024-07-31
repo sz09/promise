@@ -32,7 +32,7 @@ targets:
       exclude: 
         - lib/models/user/**
         - lib/notifications/**
-        - lib/notifications/..config/**
+        - lib/notifications/config/**
     builders:
       reflectable:
         generate_for:

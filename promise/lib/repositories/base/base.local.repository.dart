@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:promise/..const/const.dart';
+import 'package:promise/const/const.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/base/base.repository.dart';
@@ -17,6 +17,7 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   @override
   Future<T> createAsync(dynamic t) async {
     var box = await localDatabase.getBoxAsync();
+    t.userId = this.userId;
     box.add(t);
     await box.flush();
     return t;
@@ -24,6 +25,7 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
 
   Future<Iterable<T>> createManyAsync(Iterable<T> ts) async {
     var box = await localDatabase.getBoxAsync();
+    for (var element in ts) { element.userId = this.userId; }
     box.addAll(ts);
     await box.flush();
     return ts;

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:promise/..config/app.update.dart';
+import 'package:promise/config/app.update.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/widgets/alert_dialog.dart';
 import 'package:flutter/cupertino.dart';

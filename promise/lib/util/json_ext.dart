@@ -10,3 +10,10 @@ T? jsonTryGet<T>(Map<String, dynamic> json, String key,
   return null;
 }
 
+
+extension JsonExtensions on Map<String, dynamic> {
+  T? tryGet<T>(String key,
+    {T Function(String)? func}) {
+      return jsonTryGet<T>(this, key, func: func);
+    }
+}

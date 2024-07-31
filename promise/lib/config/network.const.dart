@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 const int TIMEOUT = 25;
 const int CONNECT_TIMEOUT = 25;
 const String constScheme = "https";

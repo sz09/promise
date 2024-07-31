@@ -1,7 +1,7 @@
 // import 'dart:async';
 // import 'package:dio/dio.dart' show Response;
 // import 'package:http/http.dart' hide Response;
-// import 'package:promise/..config/network.const.dart';
+// import 'package:promise/config/network.const.dart';
 // import 'package:promise/log/log.dart';
 // import 'package:promise/models/user/credentials.dart';
 // import 'package:promise/models/user/refresh_token.dart';

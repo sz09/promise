@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
-import 'package:promise/..config/network.const.dart';
+import 'package:promise/config/network.const.dart';
 import 'package:promise/networks/dio/dio.api.client.dart';
 import 'package:promise/networks/dio/dio.client.dart';
 import 'package:promise/networks/dio/dio.identity.client.dart';

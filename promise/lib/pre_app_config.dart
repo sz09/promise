@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:promise/..config/firebase_config.dart';
-import 'package:promise/..config/logger_config.dart';
+import 'package:promise/config/firebase_config.dart';
+import 'package:promise/config/logger_config.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/settings/preferences_helper.dart';
 import 'package:promise/user/user_manager.dart';

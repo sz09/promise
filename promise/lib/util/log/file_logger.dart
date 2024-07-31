@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'dart:io';
 
-import 'package:promise/..config/flavor_config.dart';
+import 'package:promise/config/flavor_config.dart';
 import 'package:promise/util/log/abstract_logger.dart';
 import 'package:promise/util/developer_util.dart';
 import 'package:path_provider/path_provider.dart';

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:promise/..const/const.dart';
+import 'package:promise/const/const.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/networks/exception/exception.dart';
 import 'package:promise/repositories/base/base.local.repository.dart';
@@ -30,7 +30,9 @@ abstract class BaseService<T extends BaseAuditModel> {
                .then((tLocal) => 
                  this.remoteRepository.fetchAsync(page, pageSize)
                      .then((tRemote) async {
-                      await this.localRepository.createManyAsync(tRemote.data);
+                      if(tRemote.data.isNotEmpty){
+                        await this.localRepository.createManyAsync(tRemote.data);
+                      }
                       return tRemote;
                      })
                      .onError((error, _) => throw RemoteDbConnectionException.create(T, exception: error))

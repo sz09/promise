@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:promise/..config/firebase_config.dart';
+import 'package:promise/config/firebase_config.dart';
 import 'package:promise/features/auth/user_api_service.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/notifications/data/data_notification_consumer.dart';

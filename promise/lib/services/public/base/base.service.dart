@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:promise/..const/const.dart';
+import 'package:promise/const/const.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/networks/exception/exception.dart';
 import 'package:promise/repositories/public/base/base.public.local.repository.dart';
