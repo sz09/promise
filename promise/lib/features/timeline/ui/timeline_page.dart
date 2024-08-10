@@ -9,10 +9,10 @@ import 'package:promise/user/user_manager.dart';
 
 class TimelinePage extends StatelessWidget {
   const TimelinePage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
-     return BlocProvider<TimelineBloc>(
+    return BlocProvider<TimelineBloc>(
         create: (BuildContext context) => TimelineBloc(
             serviceLocator.get<StoryService>(),
             serviceLocator.get<UserManager>())
@@ -24,18 +24,16 @@ class TimelinePage extends StatelessWidget {
 
 
 
-class TimelinePage1 extends Page {
+class TimelinePage1 extends StatelessWidget {
+  
   @override
-  Route createRoute(BuildContext context) {
-    return CupertinoPageRoute(
-      settings: this,
-      builder: (BuildContext context) => BlocProvider<TimelineBloc>(
+  Widget build(BuildContext context) {
+    return BlocProvider<TimelineBloc>(
         create: (BuildContext context) => TimelineBloc(
             serviceLocator.get<StoryService>(),
             serviceLocator.get<UserManager>())
           ..add(LoadTimelines()),
         child: const TimelineView()
-     )
-    );
+     );
   }
 }

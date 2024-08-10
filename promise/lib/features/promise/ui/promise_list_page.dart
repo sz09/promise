@@ -11,12 +11,12 @@ class PromiseListPage extends StatelessWidget {
   const PromiseListPage({super.key});
   @override
   Widget build(BuildContext context) {
-     return BlocProvider<PromiseListBloc>(
-        create: (BuildContext context) => PromiseListBloc(
-            serviceLocator.get<PromiseService>(),
-            serviceLocator.get<UserManager>())
-            ..add(LoadPromises()),
-        child: const PromiseListView()
-     );
+   return BlocProvider<PromiseListBloc>(
+    create: (BuildContext context) => PromiseListBloc(
+        serviceLocator.get<PromiseService>(),
+        serviceLocator.get<UserManager>())
+        ..add(LoadPromises()),
+    child: const PromiseListView()
+  );
   }
 }

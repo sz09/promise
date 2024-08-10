@@ -1,8 +1,17 @@
 // ignore_for_file: unused_import
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/app_1.dart';
+import 'package:promise/application_layout.dart';
+import 'package:promise/features/home/router/home_router_delegate.dart';
+import 'package:promise/features/memory/bloc/memory_list_state.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
+import 'package:promise/features/promise/bloc/promise_list_state.dart';
+import 'package:promise/routers/router.config.dart';
+import 'package:promise/routing/app_nav_state.dart';
 import 'package:promise/util/localize.ext.dart';
 
 import '../../app_localization.dart';
@@ -17,7 +26,9 @@ const todoTileKey = Key("todo_tile");
 const tourTileKey = Key("tour_tile");
 const settingsTileKey = Key("settings_tile");
 
-const dynamicMenuItemListKey = Key('dynamic_menu_item_list');
+const _iconColor = Colors.white;
+const _textColor = Colors.white;
+const _borderColor = Colors.white;
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
@@ -57,31 +68,80 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
           ]),
-      body: Column(
-        children: [
-          Expanded(
-            child: 
-            Container(
-              color: Colors.black,
-              child: ListView(key: todoTileKey, padding: const EdgeInsets.only(top: 32), 
-              children: [
-                _getMenuItem(context: context, key: const Key('home_title'),  icon: Icons.login, route: '/', titleKey: 'menu.home'),
-                _getMenuItem(context: context, key: const Key('login_title'),  icon: Icons.login, route: '/login', titleKey: 'menu.login'),
-                _getMenuItem(context: context, key: const Key('promise_title'), icon: Icons.settings, route: '/promises', titleKey: 'menu.promises'),
-                _getMenuItem(context: context, key: const Key('memory_title'), icon: Icons.settings, route: '/memories', titleKey: 'menu.memories'),
-                _getMenuItem(context: context, key: const Key('setting_title'), icon: Icons.settings, route: '/settings', titleKey: 'menu.settings'),
-            ])),
-          ),
-        ],
-      ),
+      body: Container(
+        color: Colors.black, 
+        child: Column(
+          children: _getMenuItems(context)
+      )),
     );
   }
 }
 
+List<Widget> _getMenuItems(BuildContext context) {
+  var items = [
+    _getMenuItem(context: context, 
+          key: const Key('home_title'), 
+          icon: Icons.home, 
+          state: () {
+            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
+            // var appState =  const ApplicationState();
+            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
+            //   Navigator.of(context).pushNamed(promisesRoute);
+            // }    
+            
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed('/');        
+          }, 
+          titleKey: 'menu.home'),
+    _getMenuItem(context: context, 
+          key: const Key('promise_title'), 
+          icon: Icons.settings, 
+          state: () {
+            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
+            // var appState =  PromiseListShowState();
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(promisesRoute);
+            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
+            //   Navigator.of(context).pop();
+            //   homeRouterDelegate.setApplicationState(appState: appState); 
+            // }
+          },
+          titleKey: 'menu.promises'),
+    _getMenuItem(context: context, 
+          key: const Key('memory_title'), 
+          icon: Icons.settings, 
+          state: (){
+            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
+            // var appState =  MemoryListShowState();
+            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
+            //   Navigator.of(context).pop();
+            //   homeRouterDelegate.setApplicationState(appState: appState); 
+            // }
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(memoriesRoute);
+          }, 
+          titleKey: 'menu.memories'),
+    Expanded(child: Container()),
+    _getMenuItem(context: context, 
+          key: const Key('setting_title'), 
+          icon: Icons.settings, 
+          state: () => context.read<HomeRouterDelegate>().setIsSettingsShownState(true),
+          titleKey: 'menu.settings'),
+  ];
+
+  if(userManager.isLoggedInUserSync()){
+    items.add(_getAuthMenuItem(context: context, 
+    key: const Key('logout_title'),  
+    icon: Icons.logout, 
+    route: logoutRoute, titleKey: 'menu.logout'));
+  }
+  return items;
+}
+
 Container _getMenuItem({
   required BuildContext context, 
-  required Key key,  
-  required String route, 
+  required Key key,
+  required void Function()? state,
   required String titleKey,
   required IconData? icon
 
@@ -93,17 +153,53 @@ Container _getMenuItem({
         key: key,
         leading: Icon(
           icon,
-          color: Colors.white,
+          color: _iconColor,
           size: 40,
         ),
         title: Text(context.translate(titleKey),
             style: const TextStyle(
               fontSize: 25,
-              color: Colors.white,
+              color: _textColor,
             )),
-        onTap: () {
-          var applicationLayout = homeNavigatorKey.currentWidget as ApplicationLayout;
-          applicationLayout.navigateTo(route, context.translate(titleKey));
+        onTap: () async {
+          if(state != null) {
+            state();
+          }
+        },
+      ),
+    );
+}
+
+Container _getAuthMenuItem({
+  required BuildContext context, 
+  required Key key,  
+  required String route, 
+  required String titleKey,
+  required IconData? icon
+
+}) {
+    return Container(
+      padding: const EdgeInsets.only(top: 15, bottom: 15),
+      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: _borderColor))),
+      child: ListTile(
+        key: key,
+        leading: Icon(
+          icon,
+          color: _iconColor,
+          size: 40,
+        ),
+        title: Text(context.translate(titleKey),
+            style: const TextStyle(
+              fontSize: 25,
+              color: _textColor,
+            )),
+        onTap: () async {
+          switch(route){
+            case logoutRoute: 
+              await userManager.logout();
+            case loginRoute: 
+              homeNavigatorKey.currentState?.pushNamed(route);
+          }
         },
       ),
     );

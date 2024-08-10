@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,15 +8,13 @@ import 'package:promise/app_localization.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/menu/menu.dart';
 import 'package:promise/features/settings/preferences_helper.dart';
-import 'package:promise/layout/home.layout.dart';
-import 'package:promise/layout/me.layout.dart';
+import 'package:promise/overlay_view.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
 import 'package:promise/resources/theme/theme_change_notifier.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/app_lifecycle_observer.dart';
-import 'package:promise/util/loader.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/debug_overlay.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +23,7 @@ import 'package:provider/provider.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final authNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>();
-
+final userManager = serviceLocator.get<UserManager>();
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -45,7 +42,7 @@ class _AppState extends State<MyApp> {
       rootNavigatorKey,
       authNavigatorKey,
       homeNavigatorKey,
-      serviceLocator.get<UserManager>(),
+      userManager,
     );
     _localizationNotifier = LocalizationNotifier(
         serviceLocator.get<PreferencesHelper>().languagePreferred);
@@ -125,24 +122,7 @@ class _AppState extends State<MyApp> {
   }
 }
 
-class OverlayView extends StatelessWidget {
-  const OverlayView({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      // <--- IMP , using ValueListenableBuilder for showing/removing overlay
-      valueListenable: Loader.appLoader.loaderShowingNotifier,
-      builder: (context, value, child) {
-        return Container();
-      },
-    );
-  }
-}
-
-class ApplicationLayout extends StatefulWidget {
+class ApplicationLayout222 extends StatefulWidget {
   navigateTo(String? pageRoute, String title){
     if(pageRoute == null){
       return;
@@ -152,7 +132,7 @@ class ApplicationLayout extends StatefulWidget {
     // || 
     // homeNavigatorKey.currentState!._meLayout.jumpToPage(pageRoute);
   }
-  const ApplicationLayout({super.key});
+  const ApplicationLayout222({super.key});
   
   @override
   State<StatefulWidget> createState() => _ApplicationLayoutState();
@@ -160,12 +140,9 @@ class ApplicationLayout extends StatefulWidget {
   
 }
 
-class _ApplicationLayoutState extends State<ApplicationLayout> {
+class _ApplicationLayoutState extends State<ApplicationLayout222> {
   late int _selectedIndex = 0;
   final PageController _pageController = PageController();
-
-  final _meLayout = MeLayout();
-  final _homeLayout = HomeLayout();
 
     // Method to handle BottomNavigationBar item taps
   void _onItemTapped(int index) {
@@ -174,17 +151,6 @@ class _ApplicationLayoutState extends State<ApplicationLayout> {
     });
     // Use PageController to jump to the selected page
     _pageController.jumpToPage(index);
-    switch(index) {
-      case 0:
-        // _promiseListPage.loadData();
-        break;
-      case 1:
-        // _memoryListPage.loadData();
-        break;
-
-      default: 
-        break;
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -198,8 +164,6 @@ class _ApplicationLayoutState extends State<ApplicationLayout> {
       body: PageView(
         controller: _pageController,
         children: [
-          _homeLayout,
-          _meLayout
         ],
         // Update the selected index when the page is changed by swiping
         onPageChanged: (index) {
@@ -224,82 +188,4 @@ class _ApplicationLayoutState extends State<ApplicationLayout> {
       ),
     );
   }
-}
-
-
-
-
-class ApplicationLayout1 extends Page {
-  navigateTo(String? pageRoute, String title){
-    if(pageRoute == null){
-      return;
-    }
-    // homeNavigatorKey.currentState!.title = title;
-    // homeNavigatorKey.currentState!._homeLayout.jumpToPage(pageRoute) 
-    // || 
-    // homeNavigatorKey.currentState!._meLayout.jumpToPage(pageRoute);
-  }
-  ApplicationLayout1({super.key});
-  final PageController _pageController = PageController();
-  final _meLayout = MeLayout();
-  final _homeLayout = HomeLayout();
-
-  late int _selectedIndex = 0;
-
-    // Method to handle BottomNavigationBar item taps
-  void _onItemTapped(int index) {
-    _selectedIndex = index;
-    // Use PageController to jump to the selected page
-    _pageController.jumpToPage(index);
-    switch(index) {
-      case 0:
-        // _promiseListPage.loadData();
-        break;
-      case 1:
-        // _memoryListPage.loadData();
-        break;
-
-      default: 
-        break;
-    }
-  }
-  @override
-  Route createRoute(BuildContext context) {
-    return CupertinoPageRoute(
-      settings: this,
-      builder: (BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text(context.translate('application.title')),
-      ),
-      drawer: const Drawer(
-        child: DrawerMenu()
-      ),
-      body: PageView(
-        controller: _pageController,
-        children: [
-          _homeLayout,
-          _meLayout
-        ],
-        // Update the selected index when the page is changed by swiping
-        onPageChanged: (index) {
-          _selectedIndex = index;
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: 'My',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped
-      ),
-    ),
-    );
-  } 
 }

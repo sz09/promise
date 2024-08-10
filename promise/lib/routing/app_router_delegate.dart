@@ -112,7 +112,7 @@ class AppRouterDelegate extends RouterDelegate
   }
 
   void setHomeNavState() {
-    _navState = const AppNavState.application();
+    _navState = const AppNavState.home();
     notifyListeners();
   }
 }

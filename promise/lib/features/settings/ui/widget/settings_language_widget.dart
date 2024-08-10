@@ -28,7 +28,7 @@ class _SettingsLanguageWidgetState extends State<SettingsLanguageWidget>
   @override
   void didChangeLocales(List<Locale>? locales) {
     setUpSelectedLanguage(
-        context, WidgetsBinding.instance.window.locales.first.languageCode);
+        context, WidgetsBinding.instance.platformDispatcher.locales.first.languageCode);
   }
 
   @override

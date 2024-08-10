@@ -98,7 +98,7 @@ class PromiseListView extends StatelessWidget {
   Widget _emptyListWidget(BuildContext context) {
     return Center(
         child: Text(
-          context.translate("promise_list_no_memories_message")
+          context.translate("promise_list_no_promises_message")
         )
       );
   }

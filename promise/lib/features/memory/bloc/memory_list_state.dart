@@ -1,9 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:promise/models/memory/memory.dart';
+import 'package:promise/routing/app_nav_state.dart';
 
 @immutable
-abstract class MemoryListState extends Equatable {
+abstract class MemoryListState extends ApplicationState {
   @override
   List<Object> get props => [];
 
@@ -12,6 +12,10 @@ abstract class MemoryListState extends Equatable {
     return runtimeType.toString();
   }
 }
+
+/// The memory list is being loaded
+class MemoryListShowState extends MemoryListState {}
+
 
 /// The memory list is being loaded
 class MemoriesLoadInProgress extends MemoryListState {}

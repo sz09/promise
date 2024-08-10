@@ -7,7 +7,7 @@ abstract class AppNavState extends Equatable {
 
   const factory AppNavState.auth() = AuthNavState;
 
-  const factory AppNavState.application() = ApplicationState;
+  const factory AppNavState.home() = ApplicationState;
 
   const factory AppNavState.forceUpdate() = ForceUpdateNavState;
 

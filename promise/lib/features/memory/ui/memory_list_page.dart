@@ -9,15 +9,15 @@ import 'package:promise/user/user_manager.dart';
 
 class MemoryListPage extends StatelessWidget {
   const MemoryListPage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
-     return BlocProvider<MemoryListBloc>(
-        create: (BuildContext context) => MemoryListBloc(
-        serviceLocator.get<MemoryService>(),
-        serviceLocator.get<UserManager>())
-        ..add(LoadMemories()),
-        child: const MemoryListView()
-     );
+   return BlocProvider<MemoryListBloc>(
+      create: (BuildContext context) => MemoryListBloc(
+      serviceLocator.get<MemoryService>(),
+      serviceLocator.get<UserManager>())
+      ..add(LoadMemories()),
+      child: const MemoryListView()
+    );
   }
 }

@@ -85,6 +85,7 @@ class UserManager with UpdatesStream<UserCredentials> {
 
   /// Gets the user or null if there is no logged in user.
   UserCredentials? getLoggedInUserSync() => _currentUser;
+  bool isLoggedInUserSync() => _currentUser.isLoggedIn();
 
   /// Gets the user or null if there is no logged in user.
   Future<UserCredentials?> getLoggedInUser() => _userStore.get();

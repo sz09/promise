@@ -26,10 +26,9 @@ class DioAPIClient extends DioClient{
     int apiVersion){
     BaseOptions options = BaseOptions(
       baseUrl: FlavorConfig.values.baseUrlApi,
+      contentType: headerContentTypeJson.value,
       connectTimeout: const Duration(seconds: CONNECT_TIMEOUT),
-
       receiveTimeout: const Duration(seconds: TIMEOUT),
-
       headers: {
         'Cache-Control': 'no-cache',
         headerContentTypeJson.key: headerContentTypeJson.value

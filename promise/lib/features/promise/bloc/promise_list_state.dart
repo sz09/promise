@@ -1,9 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:promise/models/promise/promise.dart';
+import 'package:promise/routing/app_nav_state.dart';
 
 @immutable
-abstract class PromiseListState extends Equatable {
+abstract class PromiseListState extends ApplicationState {
   @override
   List<Object> get props => [];
 
@@ -12,6 +12,8 @@ abstract class PromiseListState extends Equatable {
     return runtimeType.toString();
   }
 }
+
+class PromiseListShowState extends PromiseListState { }
 
 /// The promise list is being loaded
 class PromisesLoadInProgress extends PromiseListState {}
