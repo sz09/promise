@@ -41,9 +41,9 @@ class HomeRouterDelegate extends RouterDelegate
         key: navigatorKey,
         onGenerateRoute: ROUTER_HANDLER,
         pages: [
-          if(appNavState is MemoryListShowState) ApplicationLayout(child: const MemoryListPage())
-          else if(appNavState is PromiseListShowState) ApplicationLayout(child: const PromiseListPage())
-          else if(appNavState is ApplicationState || appNavState is TimelineState) ApplicationLayout(child: const TimelinePage()),
+          if(appNavState is MemoryListShowState) ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage())
+          else if(appNavState is PromiseListShowState) ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage())
+          else if(appNavState is ApplicationState || appNavState is TimelineState) ApplicationLayout(widgetKey: 'timeline.title', child: const TimelinePage()),
 
           if (isSettingsShownState) const SettingsPage()
         ],

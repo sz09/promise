@@ -27,10 +27,6 @@ class PromiseListView extends StatelessWidget {
     }, builder: (context, state) {
       // return widget here based on BlocA's state, this should be a pure fn
       return Scaffold(
-        appBar: AppBar(
-          title: Text(context.translate('promise.title')),
-          automaticallyImplyLeading: false,
-        ),
         body: _getBodyForState(context, state),
         // drawer: createNavigationBar(context),
         floatingActionButton: FloatingActionButton(
@@ -137,13 +133,13 @@ class PromiseListView extends StatelessWidget {
             color: Theme.of(context).brightness == Brightness.dark
                 ? ColorPalette.primaryDisabledD
                 : ColorPalette.backgroundGray,
-            child: const Align(
+            child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
                 child: Text(
-                  "Event",
-                  style: TextStyle(
+                 context.translate('promise.title'),
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -196,7 +192,7 @@ class _PromiseListItem extends StatelessWidget {
         //     value: promise.status == EventStatus.done,
         //     onChanged: (newState) => onStatusChange(promise, newState!)),
         trailing: const Icon(Icons.reorder),
-        title: Text(promise.description),
+        title: Text(promise.content),
         onTap: () => onClick(promise),
       ),
     );

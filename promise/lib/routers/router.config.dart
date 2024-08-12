@@ -33,17 +33,17 @@ final ROUTER_HANDLER = (settings) {
         return MaterialPageRoute(builder: (context) => const LoginPage());
      
       case '/':
-        return MaterialPageRoute(builder: (context) => ApplicationLayout(child: const TimelinePage()));
+        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'timeline.title', child: const TimelinePage()));
       case promisesRoute:
-        return MaterialPageRoute(builder: (context) => ApplicationLayout(child: const PromiseListPage()));
+        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage()));
       case memoriesRoute:
-        return MaterialPageRoute(builder: (context) => ApplicationLayout(child: const MemoryListPage()));
+        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage()));
       // case '/settings':
       //   titleKey = "menu.settings";
       //   page = const SettingsPage();
       //   break;
       default:
         // page = const NotFoundScreen();
-        return MaterialPageRoute(builder: (context) => const ApplicationLayout222());
+        return MaterialPageRoute(builder: (context) => ApplicationLayout222());
     }    
   };

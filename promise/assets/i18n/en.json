@@ -21,7 +21,6 @@
   "login.label_password": "Password",
   "goBack_button": "Go back",
 
-
   "next": "Next",
   "submit": "Submit",
   "remove": "Remove",
@@ -55,14 +54,16 @@
   "memory_list_error_loading_memories": "Error loading memories.",
   
 
-  "promise_list_title": "Memories",
+  "promise_list_title": "Promises",
   "promise_list_create_new": "Create new promise",
   "promise_list_no_promises_message": "You have no promises. Yay! Do nothing!",
   "promise_list_error_loading_promises": "Error loading promises.",
-
-  "timeline.title": "Timeline 111",
+  "promise.create.with": "With",
+  
+  "timeline.title": "Timeline",
 
   "promise.title": "Promise",
+  "memory.title": "Memories",
 
   "theme": "Theme",
   "dark_theme": "Dark theme",

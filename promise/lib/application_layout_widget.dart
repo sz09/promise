@@ -11,9 +11,9 @@ var menu = const Drawer(
 
 final applicationLayoutKey = ApplicationKey();
 class ApplicationLayout extends StatelessWidget {
-  late Widget child;
-
-  ApplicationLayout({required this.child}): super(key: applicationLayoutKey);
+  final Widget child;
+  final String widgetKey;
+  ApplicationLayout({required this.child, required this.widgetKey}): super(key: applicationLayoutKey);
   final PageController _pageController = PageController();
   late int _selectedIndex = 0;
 
@@ -28,7 +28,7 @@ class ApplicationLayout extends StatelessWidget {
   Widget build(BuildContext context) {
    return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate('application.title')),
+        title: Text(context.translate(widgetKey)),
       ),
       drawer: menu,
       body: PageView(

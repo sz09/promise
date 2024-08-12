@@ -3,6 +3,7 @@
 
 import 'dart:core';
 import 'package:hive/hive.dart' as prefix3;
+import 'package:json_annotation/src/json_serializable.dart' as prefix4;
 import 'package:promise/models/memory/memory.dart' as prefix1;
 import 'package:promise/models/promise/promise.dart' as prefix2;
 import 'package:promise/util/reflectable.hive.dart' as prefix0;
@@ -12,12 +13,10 @@ import 'package:promise/util/reflectable.hive.dart' as prefix0;
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
 // ignore_for_file: unnecessary_const
+// ignore_for_file: unused_import
 
-// ignore:unused_import
 import 'package:reflectable/mirrors.dart' as m;
-// ignore:unused_import
 import 'package:reflectable/src/reflectable_builder_based.dart' as r;
-// ignore:unused_import
 import 'package:reflectable/reflectable.dart' as r show Reflectable;
 
 final _data = <r.Reflectable, r.ReflectorData>{
@@ -87,10 +86,14 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => ({id, description, toWho = null}) => b
-                  ? prefix2.Promise(
-                      toWho: toWho, description: description, id: id)
-                  : null,
+              r'': (bool b) =>
+                  ({id, content, to = null, dueDate = null}) => b
+                      ? prefix2.Promise(
+                          dueDate: dueDate,
+                          to: to,
+                          content: content,
+                          id: id)
+                      : null,
               r'fromJson': (bool b) =>
                   (json) => b ? prefix2.Promise.fromJson(json) : null
             },
@@ -99,6 +102,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             const <int>[-1],
             const <Object>[
               const prefix3.HiveType(typeId: 0),
+              const prefix4.JsonSerializable(),
               prefix0.hiveTypeReflector
             ],
             {
@@ -123,6 +127,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'createdAt=': 1,
               r'updatedAt': 0,
               r'updatedAt=': 1,
+              r'toJson': 0,
               r'fromJsonMethod': 0,
               r'description': 0,
               r'description=': 1,
@@ -156,6 +161,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'updatedAt': (dynamic instance) => instance.updatedAt,
         r'fromJsonMethod': (dynamic instance) => instance.fromJsonMethod,
         r'description': (dynamic instance) => instance.description,
+        r'toJson': (dynamic instance) => instance.toJson,
         r'dueDate': (dynamic instance) => instance.dueDate,
         r'toWho': (dynamic instance) => instance.toWho
       },
@@ -181,12 +187,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #description, #toWho]
+          const [#id, #description, #toWho, #dueDate]
         ]
       ])
 };
 
-// ignore: prefer_const_declarations
 final _memberSymbolMap = null;
 
 void initializeReflectable() {

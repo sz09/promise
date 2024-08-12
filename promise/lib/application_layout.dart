@@ -13,8 +13,8 @@ var menu = const Drawer(
 final applicationLayoutKey = ApplicationKey();
 class ApplicationLayout extends Page {
   late Widget child;
-
-  ApplicationLayout({required this.child}): super(key: applicationLayoutKey);
+  final String widgetKey;
+  ApplicationLayout({required this.widgetKey,required this.child}): super(key: applicationLayoutKey);
   final PageController _pageController = PageController();
   late int _selectedIndex = 0;
 
@@ -30,7 +30,7 @@ class ApplicationLayout extends Page {
       settings: this,
       builder: (BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text(context.translate('application.title')),
+        title: Text(context.translate(widgetKey)),
       ),
       drawer: menu,
       body: PageView(

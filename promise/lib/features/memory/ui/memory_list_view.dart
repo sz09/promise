@@ -29,10 +29,6 @@ class MemoryListView extends StatelessWidget {
     }, builder: (context, state) {
       // return widget here based on BlocA's state, this should be a pure fn
       return Scaffold(
-        appBar: AppBar(
-          title: Text(context.translate('memory_list_title')),
-          automaticallyImplyLeading: false,
-        ),
         body: _getBodyForState(context, state),
         drawer: createNavigationBar(context),
         floatingActionButton: FloatingActionButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/post_app_config.dart';
 import 'package:promise/const/locale.const.dart';
@@ -54,7 +55,7 @@ class _AppState extends State<MyApp> {
     postAppConfig();
     if (!FlavorConfig.isProduction()) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        debugOverlay(context);
+        // debugOverlay(context);
       });
     }
   }
@@ -99,7 +100,8 @@ class _AppState extends State<MyApp> {
               supportedLocales: SUPPORT_LOCALES,
               routes: APPLICATION_ROUTES,
               locale: localeObject.locale,
-              home: Stack(
+              initialRoute: '/',
+              home:  Stack(
                 children: [
                   // applicationLayout,
                   Router(
@@ -107,7 +109,7 @@ class _AppState extends State<MyApp> {
                     backButtonDispatcher: RootBackButtonDispatcher(),
                   ),
                   const OverlayView(),
-                ],
+                ]
               ),
             );
           }
@@ -123,16 +125,9 @@ class _AppState extends State<MyApp> {
 }
 
 class ApplicationLayout222 extends StatefulWidget {
-  navigateTo(String? pageRoute, String title){
-    if(pageRoute == null){
-      return;
-    }
-    // homeNavigatorKey.currentState!.title = title;
-    // homeNavigatorKey.currentState!._homeLayout.jumpToPage(pageRoute) 
-    // || 
-    // homeNavigatorKey.currentState!._meLayout.jumpToPage(pageRoute);
-  }
-  const ApplicationLayout222({super.key});
+  
+  late Widget? child;
+  ApplicationLayout222({super.key, this.child});
   
   @override
   State<StatefulWidget> createState() => _ApplicationLayoutState();

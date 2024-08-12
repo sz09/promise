@@ -10,10 +10,10 @@ abstract class BaseModel extends Reflectable{
 
 abstract class BaseAuditModel extends BaseModel {
   @HiveField(3)
-  late DateTime createdAt;
+  late DateTime createdAt = DateTime.now();
 
   @HiveField(4)
-  late DateTime? updatedAt;
+  late DateTime? updatedAt = DateTime.now();
   BaseAuditModel Function(Map<String, dynamic>) fromJsonMethod();
 }
 

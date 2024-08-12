@@ -24,10 +24,6 @@ class TimelineView extends StatelessWidget {
     }, builder: (context, state) {
       // return widget here based on BlocA's state, this should be a pure fn
       return Scaffold(
-        appBar: AppBar(
-          title: Text(context.translate('timeline.title')),
-          automaticallyImplyLeading: false,
-        ),
         body: _getBodyForState(context, state),
         // drawer: createNavigationBar(context),
         floatingActionButton: FloatingActionButton(
@@ -184,7 +180,7 @@ class _TimelineItem extends StatelessWidget {
       color: themeData.cardColor,
       child: ListTile(
         trailing: const Icon(Icons.reorder),
-        title: Text(promise.description),
+        title: Text(promise.content),
         onTap: () => onClick(promise),
       ),
     );

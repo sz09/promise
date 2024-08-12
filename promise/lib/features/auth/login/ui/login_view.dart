@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/features/auth/login/bloc/login_cubit.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
-import 'package:promise/util/loader_util.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/widgets/loading_overlay.dart';
 import 'package:promise/widgets/pm_textform_field.dart';
 
 class LoginView extends StatelessWidget {
@@ -13,10 +13,9 @@ class LoginView extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController(text: "Sz19@2107");
   final paddingBox = const SizedBox(height: 10);
   LoginView({super.key, this.sessionExpiredRedirect = false});
-
   @override
   Widget build(BuildContext context) {
-    late bool isLoginInProgress = false;
+    final loadingOverlay = LoadingOverlay.of(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -38,20 +37,15 @@ class LoginView extends StatelessWidget {
         listener: (context, state) async {
           switch(state) {
             case LoginSuccess _:
-              isLoginInProgress = false;
               var navigator = Navigator.of(context);
-              if(isLoginInProgress) navigator.pop();
+              loadingOverlay.hide();
               navigator.pushNamed('/');
               break;
             case LoginFailure _ :
-              if(isLoginInProgress){
-                Navigator.of(context, rootNavigator: true).pop();
-              }
-              isLoginInProgress = false;
+              loadingOverlay.hide();
               break;
             case LoginInProgress _ :
-              isLoginInProgress = true;
-              showCustomDialog(context, message: context.translate("login.login_progress"));
+              loadingOverlay.show();
               break;
           }
         },
