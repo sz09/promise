@@ -86,14 +86,10 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) =>
-                  ({id, content, to = null, dueDate = null}) => b
-                      ? prefix2.Promise(
-                          dueDate: dueDate,
-                          to: to,
-                          content: content,
-                          id: id)
-                      : null,
+              r'': (bool b) => ({id, content, to = null, dueDate = null}) => b
+                  ? prefix2.Promise(
+                      dueDate: dueDate, to: to, content: content, id: id)
+                  : null,
               r'fromJson': (bool b) =>
                   (json) => b ? prefix2.Promise.fromJson(json) : null
             },
@@ -129,12 +125,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'updatedAt=': 1,
               r'toJson': 0,
               r'fromJsonMethod': 0,
-              r'description': 0,
-              r'description=': 1,
+              r'content': 0,
+              r'content=': 1,
               r'dueDate': 0,
               r'dueDate=': 1,
-              r'toWho': 0,
-              r'toWho=': 1
+              r'to': 0,
+              r'to=': 1
             })
       ],
       null,
@@ -162,8 +158,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'fromJsonMethod': (dynamic instance) => instance.fromJsonMethod,
         r'description': (dynamic instance) => instance.description,
         r'toJson': (dynamic instance) => instance.toJson,
+        r'content': (dynamic instance) => instance.content,
         r'dueDate': (dynamic instance) => instance.dueDate,
-        r'toWho': (dynamic instance) => instance.toWho
+        r'to': (dynamic instance) => instance.to
       },
       {
         r'id=': (dynamic instance, value) => instance.id = value,
@@ -172,8 +169,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'updatedAt=': (dynamic instance, value) => instance.updatedAt = value,
         r'description=': (dynamic instance, value) =>
             instance.description = value,
+        r'content=': (dynamic instance, value) => instance.content = value,
         r'dueDate=': (dynamic instance, value) => instance.dueDate = value,
-        r'toWho=': (dynamic instance, value) => instance.toWho = value
+        r'to=': (dynamic instance, value) => instance.to = value
       },
       null,
       [
@@ -187,7 +185,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #description, #toWho, #dueDate]
+          const [#id, #content, #to, #dueDate]
         ]
       ])
 };

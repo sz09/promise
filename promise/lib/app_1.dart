@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/post_app_config.dart';
 import 'package:promise/const/locale.const.dart';
@@ -17,7 +16,6 @@ import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/app_lifecycle_observer.dart';
 import 'package:promise/util/localize.ext.dart';
-import 'package:promise/widgets/debug_overlay.dart';
 import 'package:provider/provider.dart';
 
 
@@ -158,7 +156,7 @@ class _ApplicationLayoutState extends State<ApplicationLayout222> {
       ),
       body: PageView(
         controller: _pageController,
-        children: [
+        children: const [
         ],
         // Update the selected index when the page is changed by swiping
         onPageChanged: (index) {

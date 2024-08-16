@@ -10,11 +10,10 @@ var menu = const Drawer(
   child: DrawerMenu()
 );
 
-final applicationLayoutKey = ApplicationKey();
 class ApplicationLayout extends Page {
   late Widget child;
   final String widgetKey;
-  ApplicationLayout({required this.widgetKey,required this.child}): super(key: applicationLayoutKey);
+  ApplicationLayout({required this.widgetKey,required this.child}): super(key: ApplicationKey());
   final PageController _pageController = PageController();
   late int _selectedIndex = 0;
 

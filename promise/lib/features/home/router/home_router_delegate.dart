@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:promise/application_layout.dart';
-import 'package:promise/features/memory/bloc/memory_list_state.dart';
+import 'package:promise/features/auth/login/ui/login_page.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
-import 'package:promise/features/promise/bloc/promise_list_state.dart';
 import 'package:promise/features/promise/ui/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
-import 'package:promise/features/timeline/bloc/timeline_bloc.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_nav_state.dart';
@@ -22,6 +20,9 @@ class HomeRouterDelegate extends RouterDelegate
 
   bool setIsSettingsShownState(bool isShown) {
     isSettingsShownState = isShown;
+    // if(isShown){
+    //     pages.add(promiseListPage);
+    // }
     notifyListeners();
     return false;
   }
@@ -32,26 +33,63 @@ class HomeRouterDelegate extends RouterDelegate
 
   void setApplicationState({required ApplicationState appState}) {
     appNavState = appState;
+    // switch(appState) {
+    //   case MemoryListState _: 
+    //     pages.add(memoryListPage);
+    //   case PromiseListState _: 
+    //     pages.add(promiseListPage);
+    // }
     notifyListeners();
   }
 
+  final memoryListPage = ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage());
+  final promiseListPage = ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage());
+  final timelinePage = ApplicationLayout(widgetKey: 'timeline.title', child: const TimelinePage());
+  final settingPage = const SettingsPage();
   @override
   Widget build(BuildContext context) {
+  final List<Page<void>> pages = <Page<void>>[
+    timelinePage,
+    memoryListPage,
+    promiseListPage
+  ];
     return Navigator(
-        key: navigatorKey,
-        onGenerateRoute: ROUTER_HANDLER,
-        pages: [
-          if(appNavState is MemoryListShowState) ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage())
-          else if(appNavState is PromiseListShowState) ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage())
-          else if(appNavState is ApplicationState || appNavState is TimelineState) ApplicationLayout(widgetKey: 'timeline.title', child: const TimelinePage()),
+      key: navigatorKey,
+      onGenerateRoute: (settings) {
+        switch (settings.name) { 
+          case loginRoute:
+            return MaterialPageRoute(builder: (context) => const LoginPage());
+          case '/':
+            return MaterialPageRoute(builder: (context) => pages[0]) ;
+            break;
+          case promisesRoute:
+            pages.add(promiseListPage);
+            notifyListeners();
+            break;
+          case memoriesRoute:
+            pages.add(promiseListPage);
+            notifyListeners();
+            break;
+          case settingsRoute:
+            pages.add(settingPage);
+            notifyListeners();
+            break;
+          default:
+            // page = const NotFoundScreen();
+            throw Exception('not support');
+        }
+      },
+      pages: pages,
+      onUnknownRoute: (settings) {
 
-          if (isSettingsShownState) const SettingsPage()
-        ],
-        onPopPage: (route, result) {
-          if(isSettingsShownState) isSettingsShownState = false;
-          var x = route.didPop(result);
-          return x;
-        });
+      },
+
+      onDidRemovePage:(page){
+        if(isSettingsShownState){
+          pages.add(settingPage);
+        }
+        pages.remove(page);
+      });
   }
 
   @override

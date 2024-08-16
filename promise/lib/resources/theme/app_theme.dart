@@ -11,7 +11,7 @@ ThemeData themeLight() => ThemeData(
     brightness: Brightness.light,
     primaryColor: ColorPalette.primaryL,
     //TODO: xxx
-    //accentColor: ColorPalette.accentL,
+    // accentColor: ColorPalette.accentL,
     scaffoldBackgroundColor: ColorPalette.backgroundGray,
     cardColor: ColorPalette.white,
     elevatedButtonTheme: ElevatedButtonThemeData(
