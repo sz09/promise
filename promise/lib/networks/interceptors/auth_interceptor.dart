@@ -9,8 +9,8 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(this._authenticator);
   
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    _authenticator.interceptRequest(options);
-    handler.next(options);
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    final newOptions = await _authenticator.interceptRequest(options);
+    handler.next(newOptions);
   }
 }

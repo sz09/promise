@@ -35,8 +35,8 @@ class DioUnauthorizeClient extends DioClient {
     final dio = Dio(options);
     dio.interceptors.addAll(
       [  
-        JsonResponseConverter(),
         VersionInterceptor(packageInfo),
+        JsonResponseConverter(),
         HttpLoggerInterceptor(),
         ErrorInterceptor(
           UnauthorizedUserHandler(userStore),

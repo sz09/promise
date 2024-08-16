@@ -40,11 +40,11 @@ class DioAPIClient extends DioClient{
     final dio  = Dio(options);
     dio.interceptors.addAll(
       [
+        AuthInterceptor(authenticatorHelper),
         APIVersionInterceptor(apiVersion: apiVersion),
         // JsonResponseConverter(),
         VersionInterceptor(packageInfo),
         LanguageInterceptor(localeStore),
-        AuthInterceptor(authenticatorHelper),
         HttpLoggerInterceptor(),
         ErrorInterceptor(
           UnauthorizedUserHandler(userStore),
