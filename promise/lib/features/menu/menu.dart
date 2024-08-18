@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promise/app_1.dart';
+import 'package:promise/app.dart';
 import 'package:promise/application_layout.dart';
 import 'package:promise/features/home/router/home_router_delegate.dart';
 import 'package:promise/features/memory/bloc/memory_list_state.dart';
@@ -83,12 +83,6 @@ List<Widget> _getMenuItems(BuildContext context) {
           key: const Key('home_title'), 
           icon: Icons.home, 
           state: () {
-            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
-            // var appState =  const ApplicationState();
-            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
-            //   Navigator.of(context).pushNamed(promisesRoute);
-            // }    
-            
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed('/');        
           }, 
@@ -97,26 +91,14 @@ List<Widget> _getMenuItems(BuildContext context) {
           key: const Key('promise_title'), 
           icon: Icons.settings, 
           state: () {
-            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
-            // var appState =  PromiseListShowState();
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed(promisesRoute);
-            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
-            //   Navigator.of(context).pop();
-            //   homeRouterDelegate.setApplicationState(appState: appState); 
-            // }
           },
           titleKey: 'menu.promises'),
     _getMenuItem(context: context, 
           key: const Key('memory_title'), 
           icon: Icons.settings, 
           state: (){
-            // final homeRouterDelegate = context.read<HomeRouterDelegate>();
-            // var appState =  MemoryListShowState();
-            // if(homeRouterDelegate.canSetApplicationState(appState: appState)){
-            //   Navigator.of(context).pop();
-            //   homeRouterDelegate.setApplicationState(appState: appState); 
-            // }
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed(memoriesRoute);
           }, 
@@ -125,7 +107,10 @@ List<Widget> _getMenuItems(BuildContext context) {
     _getMenuItem(context: context, 
           key: const Key('setting_title'), 
           icon: Icons.settings, 
-          state: () => context.read<HomeRouterDelegate>().setIsSettingsShownState(true),
+          state: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(settingsRoute);
+          },
           titleKey: 'menu.settings'),
   ];
 

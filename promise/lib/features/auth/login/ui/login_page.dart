@@ -6,8 +6,8 @@ import 'package:promise/features/auth/login/ui/login_view.dart';
 import 'package:promise/features/page.deletegate.dart';
 import 'package:promise/user/user_manager.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginWidget extends StatelessWidget {
+  const LoginWidget({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class LoginPage extends StatelessWidget {
 }
 
 
-class LoginPage1 extends Page {
-  const LoginPage1({super.key});
+class LoginPage extends Page {
+  const LoginPage({super.key});
   
   @override
   Route createRoute(BuildContext context) {

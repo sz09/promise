@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:promise/app.dart';
 import 'package:promise/features/auth/login/bloc/login_cubit.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
 import 'package:promise/util/localize.ext.dart';
-import 'package:promise/widgets/loading_overlay.dart';
 import 'package:promise/widgets/pm_textform_field.dart';
 
 class LoginView extends StatelessWidget {
@@ -15,7 +15,6 @@ class LoginView extends StatelessWidget {
   LoginView({super.key, this.sessionExpiredRedirect = false});
   @override
   Widget build(BuildContext context) {
-    final loadingOverlay = LoadingOverlay.of(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -37,15 +36,11 @@ class LoginView extends StatelessWidget {
         listener: (context, state) async {
           switch(state) {
             case LoginSuccess _:
-              var navigator = Navigator.of(context);
-              loadingOverlay.hide();
-              navigator.pushNamed('/');
+              await Navigator.of(rootNavigatorKey.currentContext!).pushNamed('/');
               break;
             case LoginFailure _ :
-              loadingOverlay.hide();
               break;
             case LoginInProgress _ :
-              loadingOverlay.show();
               break;
           }
         },

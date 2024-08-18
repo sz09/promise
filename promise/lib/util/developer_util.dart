@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/util/log/file_logger.dart';
 import 'package:promise/user/user_manager.dart';
-import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 
 /// Opens an email window with the [FileLogger]'s logs attached.

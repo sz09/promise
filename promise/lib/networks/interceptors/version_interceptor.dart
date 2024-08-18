@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:promise/util/http_util.dart';
 import 'package:promise/util/network_utils.dart';
 

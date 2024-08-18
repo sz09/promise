@@ -35,7 +35,7 @@ class AuthRouterDelegate extends RouterDelegate
     return Navigator(
         key: navigatorKey,
         pages: [
-          const LoginPage1(),
+          const LoginPage(),
           if (_authNavState is SignupUsernameNavState) UsernamePage(),
           if (_authNavState is SignupPasswordNavState) ...[
             UsernamePage(),

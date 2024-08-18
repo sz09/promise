@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
-import 'package:promise/app_1.dart';
+import 'package:promise/app.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/pre_app_config.dart';
@@ -12,6 +12,8 @@ import 'package:promise/util/log/bloc_events_logger.dart';
 import 'package:azure_app_config/azure_app_config.dart';
 import 'package:promise/util/string_util.dart';
 import 'main.reflectable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final authNavigatorKey = GlobalKey<NavigatorState>();
@@ -19,6 +21,7 @@ final homeNavigatorKey = GlobalKey<NavigatorState>();
 
 final localDatabaseWrapper = LocalDatabaseWrapper();
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   final service = AzureAppConfig(connectionString: azureAppConfigConnectionStringDev);
   var configs = (await service.findKeyValuesBy(key: "Mobile/*", label: Flavor.Dev.name));
   var result = { for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value };
@@ -28,6 +31,8 @@ void main() async {
   );
   initializeReflectable();
 
+  
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await preAppConfig();
   Bloc.observer = BlocEvensLogger();
   // runApp(const ProviderScope(child: App()));
@@ -40,4 +45,5 @@ void main() async {
   Hive.registerAdapter(MemoryAdapter());
   Hive.registerAdapter(PromiseAdapter());
   runApp(const MyApp());
+  FlutterNativeSplash.remove();
 }

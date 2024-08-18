@@ -22,3 +22,20 @@ class SettingsPage extends Page {
     );
   }
 }
+
+
+class SettingsWidget extends StatelessWidget {
+  const SettingsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title: Text(context.translate('settings')),
+      ),
+      body: const Center(
+        child: SettingsView(),
+      )
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
 /// Network connectivity utils.
@@ -11,17 +12,17 @@ class NetworkUtils {
 
   NetworkUtils(this._connectivity);
 
-  Stream<ConnectivityResult> get connectionUpdates =>
+  Stream<List<ConnectivityResult>> get connectionUpdates =>
       _connectivity.onConnectivityChanged;
 
-  Future<ConnectivityResult> getConnectivityResult() =>
+  Future<List<ConnectivityResult>> getConnectivityResult() =>
       _connectivity.checkConnectivity();
 
   /// There is no guarantee that the user has network connection
   /// it only returns true if the device is connected with wi-fi or mobile data
   Future<bool> isConnected() async {
     var result = await _connectivity.checkConnectivity();
-    return result != ConnectivityResult.none;
+    return result.isNotEmpty;
   }
 }
 

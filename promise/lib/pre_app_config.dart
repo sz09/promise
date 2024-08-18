@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:promise/config/firebase_config.dart';
 import 'package:promise/config/logger_config.dart';
 import 'package:promise/di/service_locator.dart';
@@ -9,7 +8,6 @@ import 'package:promise/user/user_manager.dart';
 ///
 /// To minimize the app loading time keep this setup fast and simple.
 Future<void> preAppConfig() async {
-  WidgetsFlutterBinding.ensureInitialized();
   await configureFirebase();
   initLogger();
   await setupGlobalDependencies();

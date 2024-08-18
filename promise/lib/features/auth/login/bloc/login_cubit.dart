@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:promise/app.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/user/user_manager.dart';
 
@@ -13,11 +14,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> onUserLogin(String username, String password) async {
     Log.d('LoginCubit - User login: username $username');
-    emit(LoginInProgress());
-
     try {
-      await userManager.login(username, password);
-      emit(LoginSuccess());
+      await loadingOverlay.during(userManager.login(username, password));
+      
     } catch (exp) {
       emit(LoginFailure(error: exp));
     }

@@ -16,7 +16,9 @@ class LoadingOverlay {
       context: _context,
       barrierDismissible: false,
       builder: (builderContext) => PopScope(
-        onPopInvoked: (x) async => shouldPop,
+        onPopInvokedWithResult: (x, y) async{
+
+        },
         child: _FullScreenLoader(),
       ),
     );

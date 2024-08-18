@@ -1,8 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:promise/di/public.resource.di.dart';
 import 'package:promise/features/auth/user_api_service.dart';
 import 'package:promise/models/user/user_credentials.dart';
 import 'package:promise/networks/http_api_service_provider.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:promise/config/firebase_config.dart';
 import 'package:promise/config/flavor_config.dart';
@@ -22,7 +23,6 @@ import 'package:promise/user/user_event_hook.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/app_lifecycle_observer.dart';
 import 'package:get_it/get_it.dart';
-import 'package:package_info/package_info.dart';
 import 'package:promise/util/network_utils.dart';
 import 'package:single_item_secure_storage/single_item_secure_storage.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';

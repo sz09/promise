@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:promise/features/menu/menu.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/util/log/log.dart';
 
 class ApplicationKey extends LocalKey {
 }
@@ -9,11 +10,12 @@ var menu = const Drawer(
   child: DrawerMenu()
 );
 
-final applicationLayoutKey = ApplicationKey();
 class ApplicationLayout extends StatelessWidget {
   final Widget child;
   final String widgetKey;
-  ApplicationLayout({required this.child, required this.widgetKey}): super(key: applicationLayoutKey);
+  ApplicationLayout({required this.child, required this.widgetKey}): super(key: ApplicationKey()) {
+    Log.d(widgetKey + key.hashCode.toString());
+  }
   final PageController _pageController = PageController();
   late int _selectedIndex = 0;
 

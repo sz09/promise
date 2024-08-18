@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/networks/dio/dio.client.dart';
