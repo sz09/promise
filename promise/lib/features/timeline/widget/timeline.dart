@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:promise/models/story/story.model.dart';
 
 class TimelineItem {
   final String title;
   final String description;
   final DateTime time;
+  final User user;
 
   const TimelineItem({
+    required this.user,
     required this.title,
     required this.description,
     required this.time,
@@ -29,17 +32,17 @@ class TimelineItemWidget extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 10.0,
+                width: 20.0,
                 height: 10.0,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blue,
+                  color: Color.fromARGB(255, 22, 139, 222),
                 ),
               ),
               Container(
                 width: 2.0,
                 height: 50.0,
-                color: Colors.blue,
+                color: const Color.fromARGB(255, 246, 33, 0),
               ),
             ],
           ),
@@ -47,13 +50,22 @@ class TimelineItemWidget extends StatelessWidget {
            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  item.title,
+                Row(children: [
+                    Text(
+                  item.user.username,
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                  Text(
+                    item.title,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.normal
+                    ),
+                  )
+                ]),
                 const SizedBox(height: 5.0),
                 Text(item.description),
                 const SizedBox(height: 5.0),
