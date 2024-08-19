@@ -9,7 +9,9 @@
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
   errors:
+    constant_identifier_names: ignore
     empty_constructor_bodies: ignore
+    library_private_types_in_public_api: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

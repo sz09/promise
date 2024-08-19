@@ -3,7 +3,6 @@ import 'package:promise/features/auth/login/ui/login_page.dart';
 import 'package:promise/features/auth/router/auth_nav_state.dart';
 import 'package:promise/features/auth/signup/ui/password/password_page.dart';
 import 'package:promise/features/auth/signup/ui/username/username_page.dart';
-import 'package:promise/util/log/log.dart';
 
 class AuthRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -31,21 +30,22 @@ class AuthRouterDelegate extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
-    Log.d('AuthRouterDelegate build ${context.widget}');
-    return Navigator(
-        key: navigatorKey,
-        pages: [
+    final pages = [
           const LoginPage(),
           if (_authNavState is SignupUsernameNavState) UsernamePage(),
           if (_authNavState is SignupPasswordNavState) ...[
             UsernamePage(),
             PasswordPage()
           ],
-        ],
-        onPopPage: (route, result) {
+        ];
+    return Navigator(
+        key: navigatorKey,
+        pages: pages,
+        onDidRemovePage: (page){
           _authNavState = _authNavState.prevState ?? const AuthNavState.login();
-          return route.didPop(result);
-        });
+          pages.remove(page);
+        }
+    );
   }
 
   @override

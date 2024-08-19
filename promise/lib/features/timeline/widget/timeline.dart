@@ -44,8 +44,7 @@ class TimelineItemWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(width: 20.0),
-          Expanded(
-            child: Column(
+           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -63,8 +62,7 @@ class TimelineItemWidget extends StatelessWidget {
                   style: const TextStyle(color: Colors.grey),
                 ),
               ],
-            ),
-          ),
+           )
         ],
       ),
     );

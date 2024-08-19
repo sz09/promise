@@ -22,9 +22,16 @@ final authNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>();
 final userManager = serviceLocator.get<UserManager>();
 
+late LoadingOverlay _loadingOverlay;
+
+set loadingOverlay(LoadingOverlay loadingOverlay) {
+  _loadingOverlay = loadingOverlay;
+}
+
 LoadingOverlay get loadingOverlay {
-  return LoadingOverlay.of(rootNavigatorKey.currentContext!);
-} 
+  return _loadingOverlay;
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

@@ -21,19 +21,3 @@ class TimelinePage extends StatelessWidget {
      );
   }
 }
-
-
-
-class TimelinePage1 extends StatelessWidget {
-  
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<TimelineBloc>(
-        create: (BuildContext context) => TimelineBloc(
-            serviceLocator.get<StoryService>(),
-            serviceLocator.get<UserManager>())
-          ..add(LoadTimelines()),
-        child: const TimelineView()
-     );
-  }
-}

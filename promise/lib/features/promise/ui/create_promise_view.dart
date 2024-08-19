@@ -39,12 +39,12 @@ class _CreatePromiseViewState extends State<CreatePromiseView> {
         body: BlocConsumer<CreatePromiseCubit, CreatePromiseState>(
             listener: (listenerContext, state) {
           if (state is CreatePromiseSuccess) {
-            Navigator.of(context).pop();
+
+          }
+          if (state is CreatePromiseInProgress) {
+            
           }
         }, builder: (context, state) {
-          if (state is CreatePromiseInProgress) {
-            return const Center(child: CircularProgressIndicator());
-          }
           return Padding(
               padding: EdgeInsets.all(egdeSize),
               child: Scaffold(

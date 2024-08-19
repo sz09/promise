@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:promise/app.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
@@ -14,7 +15,7 @@ class CreatePromiseCubit extends Cubit<CreatePromiseState> {
     Log.d('CreatePromiseBloc - Create Promise');
     emit(CreatePromiseInProgress());
     try {
-      await _promiseService.createAsync(promise);
+      await loadingOverlay.during(_promiseService.createAsync(promise));
       emit(CreatePromiseSuccess());
     } catch (exp) {
       emit(CreatePromiseFailure(error: exp));

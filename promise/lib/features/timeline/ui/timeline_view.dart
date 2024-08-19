@@ -26,14 +26,14 @@ class TimelineView extends StatelessWidget {
       return Scaffold(
         body: _getBodyForState(context, state),
         // drawer: createNavigationBar(context),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // _openCreatePromise(context);
-          },
-          tooltip: context.translate('timeline_list_create_new'),
-          child: const Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     // _openCreatePromise(context);
+        //   },
+        //   tooltip: context.translate('timeline_list_create_new'),
+        //   child: const Icon(Icons.add),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       );
     });
   }
