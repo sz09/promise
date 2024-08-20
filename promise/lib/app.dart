@@ -9,11 +9,13 @@ import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/settings/preferences_helper.dart';
 import 'package:promise/overlay_view.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
+import 'package:promise/resources/theme/app_theme.dart';
 import 'package:promise/resources/theme/theme_change_notifier.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/app_lifecycle_observer.dart';
+import 'package:promise/widgets/debug_overlay.dart';
 import 'package:promise/widgets/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -75,8 +77,7 @@ class _AppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeChangeNotifier>(
-          create: (context) =>
-              serviceLocator.get<PreferencesHelper>().themePreferred,
+          create: (context) => serviceLocator.get<PreferencesHelper>().themePreferred,
         ),
         ChangeNotifierProvider<LocalizationNotifier>(
           create: (context) => _localizationNotifier,
@@ -88,7 +89,10 @@ class _AppState extends State<MyApp> {
       child: Consumer2<LocalizationNotifier, ThemeChangeNotifier>(
           builder: (context, localeObject, themeObject, _) {
             return MaterialApp(
-              title: 'Flutter Router Example',
+              theme: themeLight(),
+              darkTheme: themeDark(),
+              themeMode: themeObject.getThemeMode,
+              title: 'Promise app',
               localizationsDelegates: const [
                 AppLocalization.delegate,
                 GlobalMaterialLocalizations.delegate,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:promise/const/text.dart';
+import 'package:promise/util/layout_util.dart';
 
 class SettingsHeader extends StatelessWidget {
   final String header;
@@ -12,10 +14,8 @@ class SettingsHeader extends StatelessWidget {
       child: Text(
         header,
         style: TextStyle(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).primaryColorLight
-                : Theme.of(context).primaryColorDark,
-            fontSize: 16,
+            color: context.containerLayoutColor,
+            fontSize: textFontSize,
             fontStyle: FontStyle.italic),
       ),
     );

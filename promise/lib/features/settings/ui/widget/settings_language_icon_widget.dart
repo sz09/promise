@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:promise/const/text.dart';
+import 'package:promise/util/layout_util.dart';
 
 class SettingsLanguageIcon extends StatelessWidget {
   final String languageCode;
@@ -15,9 +17,7 @@ class SettingsLanguageIcon extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
               width: 1.5,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black),
+              color: context.containerLayoutColor),
           borderRadius: const BorderRadius.all(
             Radius.circular(50),
           ),
@@ -25,7 +25,7 @@ class SettingsLanguageIcon extends StatelessWidget {
         child: Center(
           child: Text(
             languageCode,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: textFontSize),
           ),
         ),
       ),

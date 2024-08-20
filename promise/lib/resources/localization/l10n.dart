@@ -4,13 +4,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 const EN = Locale('en');
-const MK = Locale('mk');
+const VN = Locale('vi', "VN");
 
 class L10n {
   static Locale getLocale(String code) {
     switch (code) {
-      case 'mk':
-        return MK;
+      case 'vi':
+        return VN;
       case 'en':
       default:
         return EN;

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:promise/application_layout.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/models/story/story.model.dart';
+import 'package:promise/util/layout_util.dart';
+import 'package:promise/util/localize.ext.dart';
 
 class TimelineItem {
   final String title;
   final String description;
   final DateTime time;
   final User user;
+  final String to;
 
   const TimelineItem({
+    required this.to,
     required this.user,
     required this.title,
     required this.description,
@@ -17,65 +23,63 @@ class TimelineItem {
 
 class TimelineItemWidget extends StatelessWidget {
   final TimelineItem item;
+  final int index;
 
-  const TimelineItemWidget({
-    super.key,
-    required this.item
-  });
+  const TimelineItemWidget(
+      {super.key, required this.item, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Row(
-        children: [
-          Column(
-            children: [
-              Container(
-                width: 20.0,
-                height: 10.0,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(255, 22, 139, 222),
-                ),
-              ),
-              Container(
-                width: 2.0,
-                height: 50.0,
-                color: const Color.fromARGB(255, 246, 33, 0),
-              ),
-            ],
-          ),
-          const SizedBox(width: 20.0),
-           Column(
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        decoration: BoxDecoration(
+          color: context.containerLayoutColor,
+          borderRadius: BorderRadius.circular(5),
+          shape: BoxShape.rectangle,
+          boxShadow: [
+            BoxShadow(color: context.containerLayoutColor, spreadRadius: 3)
+          ],
+        ),
+        
+        child: Row(
+          children: [
+            const SizedBox(width: 20.0),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                    Text(
-                  item.user.username,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    "${item.user.username}: ",
+                    style: const TextStyle(
+                      fontSize: textFontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                  
+                  Text(
+                    "${context.translate("timeline.with")} ${item.to} ",
+                    style: const TextStyle(
+                        fontSize: textFontSize, fontWeight: FontWeight.normal),
+                  ),
                   Text(
                     item.title,
                     style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.normal
-                    ),
+                        fontSize: textFontSize, fontWeight: FontWeight.normal),
                   )
                 ]),
                 const SizedBox(height: 5.0),
-                Text(item.description),
-                const SizedBox(height: 5.0),
                 Text(
                   "${item.time.year}-${item.time.month}-${item.time.day} ${item.time.hour}:${item.time.minute}",
-                  style: const TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic),
                 ),
+                const SizedBox(height: 5.0),
+                Text(item.description),
               ],
-           )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

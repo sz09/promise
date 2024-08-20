@@ -61,10 +61,16 @@
   "promise_list_create_new": "Create new promise",
   "promise_list_no_promises_message": "You have no promises. Yay! Do nothing!",
   "promise_list_error_loading_promises": "Error loading promises.",
+  
+  "timeline.title": "Dòng thời gian",
+  "timeline.with": "với",
 
   "theme": "Theme",
   "dark_theme": "Chế độ tối",
   "settings": "Thiết lập",
   "memories": "Memories",
-  "language": "Ngôn ngữ"
+  "language": "Ngôn ngữ",
+  "language.vietnamese": "Tiếng Việt",
+  "language.english": "Tiếng Anh"
+
 }

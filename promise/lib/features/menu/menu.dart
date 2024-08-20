@@ -1,22 +1,12 @@
-// ignore_for_file: unused_import
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/app.dart';
-import 'package:promise/application_layout.dart';
-import 'package:promise/features/home/router/home_router_delegate.dart';
-import 'package:promise/features/memory/bloc/memory_list_state.dart';
-import 'package:promise/features/memory/ui/memory_list_page.dart';
-import 'package:promise/features/promise/bloc/promise_list_state.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/routers/router.config.dart';
-import 'package:promise/routing/app_nav_state.dart';
+import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
-import '../../app_localization.dart';
-import '../../pages.dart';
-import '../../dynamic_menu.dart';
 import '../../settings.dart';
 
 const drawerMenuKey = Key("drawer_menu");
@@ -25,10 +15,6 @@ const closeMenuKey = Key("close_key_icon");
 const todoTileKey = Key("todo_tile");
 const tourTileKey = Key("tour_tile");
 const settingsTileKey = Key("settings_tile");
-
-const _iconColor = Colors.white;
-const _textColor = Colors.white;
-const _borderColor = Colors.white;
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
@@ -51,7 +37,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
     return Scaffold(
       key: drawerMenuKey,
       appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: context.containerLayoutColor,
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset("assets/images/promise_logo.png", fit: BoxFit.fitHeight, height: 30),
@@ -62,14 +48,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.menu_open,
-                color: Colors.white,
+                color: context.iconColor,
               ),
             ),
           ]),
       body: Container(
-        color: Colors.black, 
+        color: context.containerLayoutColor, 
         child: Column(
           children: _getMenuItems(context)
       )),
@@ -138,13 +124,13 @@ Container _getMenuItem({
         key: key,
         leading: Icon(
           icon,
-          color: _iconColor,
+          color: context.iconColor,
           size: 40,
         ),
         title: Text(context.translate(titleKey),
-            style: const TextStyle(
-              fontSize: 25,
-              color: _textColor,
+            style: TextStyle(
+              fontSize: 22,
+              color: context.textColor,
             )),
         onTap: () async {
           if(state != null) {
@@ -165,18 +151,18 @@ Container _getAuthMenuItem({
 }) {
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15),
-      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: _borderColor))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: context.borderColor))),
       child: ListTile(
         key: key,
         leading: Icon(
           icon,
-          color: _iconColor,
+          color: context.iconColor,
           size: 40,
         ),
         title: Text(context.translate(titleKey),
-            style: const TextStyle(
-              fontSize: 25,
-              color: _textColor,
+            style: TextStyle(
+              fontSize: 22,
+              color: context.textColor,
             )),
         onTap: () async {
           switch(route){

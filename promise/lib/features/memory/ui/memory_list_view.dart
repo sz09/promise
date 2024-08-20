@@ -7,6 +7,7 @@ import 'package:promise/data/data_not_found_exception.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/home/router/home_router_delegate.dart';
 import 'package:promise/features/memory/bloc/memory_list_bloc.dart';
+import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/resources/colors/color_palette.dart';
@@ -77,9 +78,7 @@ class MemoryListView extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? ColorPalette.primaryLightD
-              : ColorPalette.white,
+          color: context.containerLayoutColor,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[getItem(memories, context)],
@@ -130,9 +129,7 @@ class MemoryListView extends StatelessWidget {
         header: SizedBox(
           height: 50,
           child: Container(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? ColorPalette.primaryDisabledD
-                : ColorPalette.backgroundGray,
+            color: context.containerLayoutColor,
             child: const Align(
               alignment: Alignment.centerLeft,
               child: Padding(

@@ -16,6 +16,7 @@ class User {
 class Story extends BaseModel {
   Story({
     required String id, 
+    required this.to,
     required this.user,
     required this.title,
     required this.content,
@@ -23,6 +24,7 @@ class Story extends BaseModel {
     }) {
     this.id = id;
   }
+  final String to;
   final String content;
   final String title;
   final DateTime time;
@@ -31,6 +33,7 @@ class Story extends BaseModel {
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
       id: jsonTryGet<String>(json, 'id') ?? '',
+      to: jsonTryGet<String>(json, 'to') ?? '@her',
       user: User.fromJson(jsonTryGet<Map<String, dynamic>>(json, 'user')!),
       title: jsonTryGet<String>(json, 'title') ?? '',
       time: jsonTryGet<DateTime>(json, 'time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),

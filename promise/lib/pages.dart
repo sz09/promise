@@ -1,3 +1,4 @@
+import 'package:promise/const/text.dart';
 import 'package:promise/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -5,43 +6,6 @@ import 'package:promise/util/localize.ext.dart';
 const tourPageKey = Key("tour_page");
 const settingsPageKey = Key("settings_page");
 const dynamicMenuPageKey = Key("dynamic_menu_page");
-
-class TourPage extends StatelessWidget {
-  const TourPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: tourPageKey,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              context.translate("feature_page.title"),
-              style: const TextStyle(fontSize: 30),
-              textAlign: TextAlign.center,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                context.translate("feature_page.description"),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15, color: Colors.black87),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Go back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -56,7 +20,7 @@ class SettingsPage extends StatelessWidget {
           children: [
             Text(
               context.translate("settings_page.title"),
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: textFontSize),
               textAlign: TextAlign.center,
             ),
             Padding(
@@ -64,7 +28,7 @@ class SettingsPage extends StatelessWidget {
               child: Text(
                 context.translate("settings_page.description"),
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15, color: Colors.black87),
+                style: const TextStyle(fontSize: textFontSize, color: Colors.black87),
               ),
             ),
             ElevatedButton(
@@ -95,7 +59,7 @@ class DynamicMenuPage extends StatelessWidget {
           children: [
             Text(
               menuItem.title,
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: textFontSize),
               textAlign: TextAlign.center,
             ),
             Padding(

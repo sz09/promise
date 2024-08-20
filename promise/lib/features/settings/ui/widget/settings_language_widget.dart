@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/resources/localization/l10n.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
+import 'package:promise/util/layout_util.dart';
+import 'package:promise/util/localize.ext.dart';
 import 'package:provider/provider.dart';
 
 import 'settings_language_icon_widget.dart';
@@ -26,9 +29,8 @@ class _SettingsLanguageWidgetState extends State<SettingsLanguageWidget>
   }
 
   @override
-  void didChangeLocales(List<Locale>? locales) {
-    setUpSelectedLanguage(
-        context, WidgetsBinding.instance.platformDispatcher.locales.first.languageCode);
+  void didChangeLocales(List<Locale>? locales) async {
+    await setUpSelectedLanguage(context, WidgetsBinding.instance.platformDispatcher.locales.first.languageCode);
   }
 
   @override
@@ -49,16 +51,14 @@ class _SettingsLanguageWidgetState extends State<SettingsLanguageWidget>
               child: Row(
                 children: [
                   SettingsLanguageIcon(languageCode: EN.languageCode),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'English',
-                      style: TextStyle(fontSize: 20),
+                      context.translate('language.english'),
+                      style: const TextStyle(fontSize: textFontSize),
                     ),
                   ),
                   Radio<String>(
-                    activeColor: Theme.of(context).brightness == Brightness.dark
-                        ? Theme.of(context).colorScheme.secondary
-                        : Theme.of(context).primaryColorDark,
+                    activeColor: context.textColor,
                     value: EN.languageCode,
                     groupValue: selectedLanguage,
                     onChanged: (value) =>
@@ -72,22 +72,20 @@ class _SettingsLanguageWidgetState extends State<SettingsLanguageWidget>
         Padding(
           padding: const EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
           child: InkWell(
-            onTap: () => setUpSelectedLanguage(context, MK.languageCode),
+            onTap: () => setUpSelectedLanguage(context, VN.languageCode),
             child: IgnorePointer(
               child: Row(
                 children: [
-                  SettingsLanguageIcon(languageCode: MK.languageCode),
-                  const Expanded(
+                  SettingsLanguageIcon(languageCode: VN.languageCode),
+                  Expanded(
                     child: Text(
-                      'Macedonian',
-                      style: TextStyle(fontSize: 20),
+                      context.translate('language.vietnamese'),
+                      style: const TextStyle(fontSize: textFontSize),
                     ),
                   ),
                   Radio<String>(
-                    activeColor: Theme.of(context).brightness == Brightness.dark
-                        ? Theme.of(context).colorScheme.secondary
-                        : Theme.of(context).primaryColorDark,
-                    value: MK.languageCode,
+                    activeColor: context.textColor,
+                    value: VN.languageCode,
                     groupValue: selectedLanguage,
                     onChanged: (value) =>
                         setState(() => selectedLanguage = value!),
@@ -101,18 +99,15 @@ class _SettingsLanguageWidgetState extends State<SettingsLanguageWidget>
     );
   }
 
-  void setUpSelectedLanguage(
-      BuildContext context, String? currentLanguage) async {
+  Future setUpSelectedLanguage(BuildContext context, String? currentLanguage) async {
     currentLanguage ??= EN.languageCode;
 
-    if (selectedLanguage != currentLanguage) {
-      setState(() {
-        selectedLanguage = currentLanguage!;
-      });
+    setState(() {
+      selectedLanguage = currentLanguage!;
+    });
 
-      final localizationNotifier =
-          Provider.of<LocalizationNotifier>(context, listen: false);
-      await localizationNotifier.setLocale(currentLanguage);
-    }
+    final localizationNotifier =
+        Provider.of<LocalizationNotifier>(context, listen: false);
+    await localizationNotifier.setLocale(currentLanguage);
   }
 }

@@ -79,8 +79,7 @@ class HomeRouterDelegate extends RouterDelegate
           }
         },
         pages: pages,
-        onUnknownRoute: (settings) {
-        },
+        onUnknownRoute: (settings) {},
         onDidRemovePage: (page) {
           if(page.canPop) pages.remove(page);
         });

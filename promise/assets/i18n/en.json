@@ -61,7 +61,7 @@
   "promise.create.with": "With",
   
   "timeline.title": "Timeline",
-
+  "timeline.with": "with",
   "promise.title": "Promise",
   "memory.title": "Memories",
 
@@ -70,5 +70,7 @@
   "settings": "Settings",
   "memories": "Memories",
   "promises": "Promises",
-  "language": "Language"
+  "language": "Language",
+  "language.vietnamese": "Vietnamese",
+  "language.english": "English"
 }

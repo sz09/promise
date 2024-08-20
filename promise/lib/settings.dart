@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:promise/const/text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const jsonFilePath = 'assets/menu_items.json';
@@ -88,7 +89,7 @@ class MenuItemInfo {
       }
 
       if (emojiText != null) {
-        return Text(emojiText.toString(), style: TextStyle(color: colour, fontSize: 30));
+        return Text(emojiText.toString(), style: TextStyle(color: colour, fontSize: textFontSize));
       }
 
       if(imageUrl != null) {

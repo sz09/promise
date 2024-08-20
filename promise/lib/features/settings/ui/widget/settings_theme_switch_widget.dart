@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/resources/theme/theme_change_notifier.dart';
+import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:provider/provider.dart';
 
@@ -16,11 +18,10 @@ class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
   @override
   Widget build(BuildContext context) {
     updateTheme(context);
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
       child: InkWell(
-        onTap: () => toggleBrightness(context, !isDarkTheme),
+        onTap: () async => await toggleBrightness(context, !isDarkTheme),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -34,13 +35,13 @@ class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
             Expanded(
               child: Text(
                 context.translate('dark_theme'),
-                style: const TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: textFontSize),
               ),
             ),
             Switch.adaptive(
-              activeColor: Theme.of(context).colorScheme.secondary,
+              activeColor: context.textColor,
               value: isDarkTheme,
-              onChanged: (val) => toggleBrightness(context, val),
+              onChanged: (val) async => await toggleBrightness(context, val),
             ),
           ],
         ),
@@ -49,21 +50,18 @@ class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
   }
 
   void updateTheme(BuildContext context) {
-    final bool currentBrightness =
-        Theme.of(context).brightness == Brightness.dark;
-    if (currentBrightness != isDarkTheme) {
-      setState(() {
-        isDarkTheme = currentBrightness;
-      });
-    }
+    final bool darkTheme = Provider.of<ThemeChangeNotifier>(context, listen: false).isDarkTheme;
+    setState(() {
+      isDarkTheme = darkTheme;
+    });
   }
 
-  toggleBrightness(BuildContext context, bool val) async {
+  Future toggleBrightness(BuildContext context, bool val) async {
     setState(() {
       isDarkTheme = val;
     });
-    final themeNotifier =
-        Provider.of<ThemeChangeNotifier>(context, listen: false);
+    
+    final themeNotifier = Provider.of<ThemeChangeNotifier>(context, listen: false);
     await themeNotifier.toggleTheme();
   }
 }

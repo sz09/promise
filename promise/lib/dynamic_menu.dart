@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/pages.dart';
 import 'package:flutter/material.dart';
 
@@ -171,7 +172,7 @@ class _MenuItemState extends State<MenuItem> {
             },
             title: Text(widget.info.title,
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: textFontSize,
                   color: widget.info.textColor,
                 ))),
       );
@@ -189,7 +190,7 @@ class _MenuItemState extends State<MenuItem> {
           tilePadding: EdgeInsets.only(left: widget.leftPadding, top: 6, bottom: 6),
           title: Text(widget.info.title,
               style: TextStyle(
-                fontSize: 25,
+                fontSize: textFontSize,
                 color: widget.info.textColor,
               )),
           trailing: Icon(

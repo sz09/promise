@@ -19,9 +19,7 @@ class SettingsView extends StatelessWidget {
         const SettingsThemeSwitch(),
         Container(color: Colors.grey, height: 1),
         SettingsHeader(header: context.translate('language')),
-        SettingsLanguageWidget(
-            selectedLanguage:
-                serviceLocator.get<PreferencesHelper>().languagePreferred)
+        SettingsLanguageWidget( selectedLanguage: serviceLocator.get<PreferencesHelper>().languagePreferred)
       ],
     );
   }

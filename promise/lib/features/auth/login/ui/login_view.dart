@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/app.dart';
+import 'package:promise/const/text.dart';
 import 'package:promise/features/auth/login/bloc/login_cubit.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/resources/localization/localization_notifier.dart';
@@ -55,7 +56,7 @@ class LoginView extends StatelessWidget {
                       context.translate('application.title'),
                       style: const TextStyle(
                         color: Colors.blueAccent,
-                        fontSize: 24,
+                        fontSize: textFontSize,
                       ),
                     ),
                     Text(context.translate('login.page_title')),

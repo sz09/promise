@@ -29,7 +29,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
       final pageResult = await _storyService.fetchAsync();
       int x = 0;
       var timelineItems = pageResult.data.map((d) => 
-        TimelineItem(title: 'title ${x++}', user: d.user, description: d.content, time: DateTime.now())
+        TimelineItem(to: d.to, title: 'title ${x++}', user: d.user, description: d.content, time: DateTime.now())
       ).toList();
       emit(TimelineLoadSuccess(timelineItems));
     } catch (exp) {
