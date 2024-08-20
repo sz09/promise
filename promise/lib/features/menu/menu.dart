@@ -88,6 +88,15 @@ List<Widget> _getMenuItems(BuildContext context) {
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed(memoriesRoute);
           }, 
+          titleKey: 'menu.friends'),
+
+    _getMenuItem(context: context, 
+          key: const Key('friend_title'), 
+          icon: Icons.settings, 
+          state: (){
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(friendsRoute);
+          }, 
           titleKey: 'menu.memories'),
     Expanded(child: Container()),
     _getMenuItem(context: context, 

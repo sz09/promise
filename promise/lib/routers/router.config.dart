@@ -14,6 +14,7 @@ const String loginRoute = "/login";
 const String logoutRoute = "/logout";
 const String promisesRoute = "/promises";
 const String memoriesRoute = "/memories";
+const String friendsRoute = "/friends";
 const String settingsRoute = "/settings";
 
 final APPLICATION_ROUTES = 
@@ -39,6 +40,9 @@ final ROUTER_HANDLER = (settings) {
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage()));
       case memoriesRoute:
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage()));
+      case friendsRoute:
+        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'friend.title', child: const MemoryListPage()));
+      
       default:
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'memory.notfound', child: const NotfoundWidget()));
     }    
