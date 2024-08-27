@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:promise/application_layout.dart';
 import 'package:promise/const/text.dart';
 import 'package:promise/models/story/story.model.dart';
 import 'package:promise/util/layout_util.dart';

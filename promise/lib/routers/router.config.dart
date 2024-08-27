@@ -6,6 +6,7 @@ import 'package:promise/application_layout_widget.dart';
 import 'package:promise/features/auth/login/ui/login_page.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/notfound/notfound_widget.dart';
+import 'package:promise/features/people/ui/people_page.dart';
 import 'package:promise/features/promise/ui/promise_list_page.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
 
@@ -14,7 +15,7 @@ const String loginRoute = "/login";
 const String logoutRoute = "/logout";
 const String promisesRoute = "/promises";
 const String memoriesRoute = "/memories";
-const String friendsRoute = "/friends";
+const String peopleRoute = "/people";
 const String settingsRoute = "/settings";
 
 final APPLICATION_ROUTES = 
@@ -40,8 +41,8 @@ final ROUTER_HANDLER = (settings) {
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'promise.title', child: const PromiseListPage()));
       case memoriesRoute:
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage()));
-      case friendsRoute:
-        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'friend.title', child: const MemoryListPage()));
+      case peopleRoute:
+        return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'people.title', child: const PeoplePage()));
       
       default:
         return MaterialPageRoute(builder: (context) => ApplicationLayout(widgetKey: 'memory.notfound', child: const NotfoundWidget()));

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promise/app.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:promise/const/text.dart';
 import 'package:promise/features/auth/login/bloc/login_cubit.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
-import 'package:promise/resources/localization/localization_notifier.dart';
+import 'package:promise/resources/localization/app_localization.dart';
+import 'package:promise/routers/router.config.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/pm_textform_field.dart';
 
@@ -37,7 +39,8 @@ class LoginView extends StatelessWidget {
         listener: (context, state) async {
           switch(state) {
             case LoginSuccess _:
-              await Navigator.of(rootNavigatorKey.currentContext!).pushNamed('/');
+             await Get.toNamed(homeRoute);
+              // await Navigator.of(rootNavigatorKey.currentContext!).pushNamed('/');
               break;
             case LoginFailure _ :
               break;
@@ -103,8 +106,7 @@ class LoginView extends StatelessWidget {
     context.read<AuthRouterDelegate>().setSignupUsernameNavState();
   }
 
-  onSelected(BuildContext context, String item) async {
-    final localizationNotifier = context.read<LocalizationNotifier>();
-    await localizationNotifier.setLocale(item);
+  onSelected(BuildContext context, String item) {
+    LocalizationService.changeLocale(item);
   }
 }

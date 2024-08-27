@@ -6,8 +6,8 @@ import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/features/timeline/widget/timeline.widget.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/log/log.dart';
-import 'package:promise/models/promise/promise.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/widgets/loading_overlay.dart';
 
 class TimelineView extends StatelessWidget {
   const TimelineView({super.key});
@@ -31,7 +31,7 @@ class TimelineView extends StatelessWidget {
 
   Widget _getBodyForState(BuildContext context, TimelineState state) {
     if (state is TimelineLoadInProgress) {
-      return _loadingWidget();
+      return loadingWidget();
     } else if (state is TimelineLoadSuccess) {
       final List<TimelineItem> timelineItems = state.timelineItems;
       if (timelineItems.isEmpty) {
@@ -71,10 +71,6 @@ class TimelineView extends StatelessWidget {
           ),
         ),
     );
-  }
-
-  Widget _loadingWidget() {
-    return const Center(child: CircularProgressIndicator());
   }
 
   Widget _emptyListWidget(BuildContext context) {

@@ -11,6 +11,7 @@ import 'package:promise/models/promise/promise.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/widgets/loading_overlay.dart';
 
 class PromiseListView extends StatelessWidget {
   const PromiseListView({super.key});
@@ -43,7 +44,7 @@ class PromiseListView extends StatelessWidget {
 
   Widget _getBodyForState(BuildContext context, PromiseListState state) {
     if (state is PromisesLoadInProgress) {
-      return _loadingWidget();
+      return loadingWidget();
     } else if (state is PromisesLoadSuccess) {
       final List<Promise> memories = state.memories;
       if (memories.isEmpty) {
@@ -83,10 +84,6 @@ class PromiseListView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _loadingWidget() {
-    return const Center(child: CircularProgressIndicator());
   }
 
   Widget _emptyListWidget(BuildContext context) {

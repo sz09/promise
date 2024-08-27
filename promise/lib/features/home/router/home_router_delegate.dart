@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:promise/application_layout.dart';
 import 'package:promise/application_layout_widget.dart';
 import 'package:promise/features/auth/login/ui/login_page.dart';
+import 'package:promise/features/people/ui/people_page.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/promise/ui/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
@@ -11,6 +11,7 @@ import 'package:promise/routing/app_nav_state.dart';
 
 class HomeRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
+  @override
   final GlobalKey<NavigatorState> navigatorKey;
 
   HomeRouterDelegate(this.navigatorKey,
@@ -42,12 +43,6 @@ class HomeRouterDelegate extends RouterDelegate
     // }
     notifyListeners();
   }
-  final pages =  [
-    const SettingsPage(),
-    ApplicationLayoutPage(widgetKey: 'memory.title', child: const MemoryListPage()),
-    ApplicationLayoutPage(widgetKey: 'promise.title', child: const PromiseListPage()),
-    ApplicationLayoutPage(widgetKey: 'timeline.title', child: const TimelinePage()),
-  ];
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -71,6 +66,11 @@ class HomeRouterDelegate extends RouterDelegate
                   builder: (context) => ApplicationLayout(
                       widgetKey: 'memory.title',
                       child: const MemoryListPage()));
+            case peopleRoute:
+              return MaterialPageRoute(
+                  builder: (context) => ApplicationLayout(
+                      widgetKey: 'people.title',
+                      child: const PeoplePage()));
             case settingsRoute:
               return MaterialPageRoute(
                   builder: (context) => const SettingsWidget());
@@ -78,10 +78,7 @@ class HomeRouterDelegate extends RouterDelegate
               throw Exception('not support');
           }
         },
-        pages: pages,
-        onUnknownRoute: (settings) {},
         onDidRemovePage: (page) {
-          if(page.canPop) pages.remove(page);
         });
   }
 

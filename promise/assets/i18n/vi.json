@@ -7,7 +7,7 @@
   "menu.settings": "Thiết lập",
   "menu.memories": "Kỉ niệm",
   "menu.promises": "Lời hứa",
-  "menu.friends": "Bạn bè",
+  "menu.people": "Người",
   "menu.login": "Đăng nhập",
   "menu.logout": "Đăng xuất",
 
@@ -63,8 +63,10 @@
   "promise_list_no_promises_message": "You have no promises. Yay! Do nothing!",
   "promise_list_error_loading_promises": "Error loading promises.",
   
+  "person_list_no_memories_message": "You have no people. Yay! Do nothing!",
+  
   "timeline.title": "Dòng thời gian",
-  "friend.title": "Bạn bè",
+  "friend.people": "Người",
   "timeline.with": "với",
 
   "theme": "Theme",

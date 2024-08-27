@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:promise/app.dart';
-import 'package:promise/const/text.dart';
+import 'package:get/route_manager.dart';
+import 'package:promise/main.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -69,42 +69,44 @@ List<Widget> _getMenuItems(BuildContext context) {
           key: const Key('home_title'), 
           icon: Icons.home, 
           state: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed('/');        
+            context.navigateTo(homeRoute);
+            // Get.back();
+            // Get.to(() => ApplicationLayout(widgetKey: 'timeline.title', child: const TimelinePage()), routeName: homeRoute);
           }, 
           titleKey: 'menu.home'),
     _getMenuItem(context: context, 
           key: const Key('promise_title'), 
           icon: Icons.settings, 
           state: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(promisesRoute);
+            context.navigateTo(promisesRoute);
+            // Get.back();
+            // Get.to(() => ApplicationLayout(widgetKey: 'promise.title', child: const MemoryListPage()), routeName: promisesRoute);
           },
           titleKey: 'menu.promises'),
     _getMenuItem(context: context, 
           key: const Key('memory_title'), 
           icon: Icons.settings, 
           state: (){
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(memoriesRoute);
-          }, 
-          titleKey: 'menu.friends'),
-
-    _getMenuItem(context: context, 
-          key: const Key('friend_title'), 
-          icon: Icons.settings, 
-          state: (){
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(friendsRoute);
+            context.navigateTo(memoriesRoute);
+            // Get.back();
+            // Get.to(() => ApplicationLayout(widgetKey: 'memory.title', child: const MemoryListPage()), routeName: memoriesRoute);
           }, 
           titleKey: 'menu.memories'),
+    _getMenuItem(context: context, 
+          key: const Key('people_title'), 
+          icon: Icons.people, 
+          state: (){
+            context.navigateTo(peopleRoute);
+            // Get.back();
+            // Get.to(() => ApplicationLayout(widgetKey: 'people.title', child: const PeoplePage()), routeName: peopleRoute);
+          }, 
+          titleKey: 'menu.people'),
     Expanded(child: Container()),
     _getMenuItem(context: context, 
           key: const Key('setting_title'), 
           icon: Icons.settings, 
           state: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(settingsRoute);
+            context.navigateTo(settingsRoute);
           },
           titleKey: 'menu.settings'),
   ];
@@ -183,4 +185,13 @@ Container _getAuthMenuItem({
         },
       ),
     );
+}
+
+extension CustomNavigation on BuildContext {
+  navigateTo(String routeName){
+    Get.back();
+    Get.toNamed(routeName);
+    // Navigator.of(this).pop();
+    // Navigator.of(this).pushNamed(routeName);
+  }
 }

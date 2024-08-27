@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:promise/app_localization.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 extension Translate on BuildContext {
   String translate(String key) {
     try{
-      return AppLocalization.of(this).getTranslatedValue(key).toString();
+      return key.tr;
     } catch(r){
       return key;
     }

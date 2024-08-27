@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:promise/const/text.dart';
-import 'package:promise/resources/theme/theme_change_notifier.dart';
+import 'package:promise/pre_app_config.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
-import 'package:provider/provider.dart';
 
 class SettingsThemeSwitch extends StatefulWidget {
   const SettingsThemeSwitch({super.key});
@@ -13,11 +14,11 @@ class SettingsThemeSwitch extends StatefulWidget {
 }
 
 class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
-  bool isDarkTheme = false;
+  bool isDarkTheme = Get.isDarkMode;
+  final storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
-    updateTheme(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
       child: InkWell(
@@ -49,19 +50,12 @@ class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
     );
   }
 
-  void updateTheme(BuildContext context) {
-    final bool darkTheme = Provider.of<ThemeChangeNotifier>(context, listen: false).isDarkTheme;
-    setState(() {
-      isDarkTheme = darkTheme;
-    });
-  }
-
   Future toggleBrightness(BuildContext context, bool val) async {
     setState(() {
       isDarkTheme = val;
     });
-    
-    final themeNotifier = Provider.of<ThemeChangeNotifier>(context, listen: false);
-    await themeNotifier.toggleTheme();
+
+    Get.changeTheme(Get.isDarkMode? ThemeData.light(): ThemeData.dark());
+    await storage.write(themeModeKey, val);
   }
 }

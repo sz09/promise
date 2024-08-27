@@ -1,11 +1,12 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:promise/models/base/base.model.dart';
+import 'package:promise/models/hive_type_model.const.dart';
 import 'package:promise/util/json_ext.dart';
 import 'package:promise/util/reflectable.hive.dart';
 part 'promise.g.dart'; 
 
-@HiveType(typeId: 0)
+@HiveType(typeId: PromiseHiveType)
 @JsonSerializable()
 @hiveTypeReflector
 class Promise extends BaseAuditModel {

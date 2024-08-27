@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:promise/models/memory/memory.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/routing/app_nav_state.dart';
 
 @immutable
-abstract class MemoryListState extends ApplicationState {
+abstract class PeopleState extends ApplicationState {
   @override
   List<Object> get props => [];
 
@@ -14,32 +15,32 @@ abstract class MemoryListState extends ApplicationState {
 }
 
 /// The memory list is being loaded
-class MemoryListShowState extends MemoryListState {}
+class PeopleShowState extends PeopleState {}
 
 
 /// The memory list is being loaded
-class MemoriesLoadInProgress extends MemoryListState {}
+class PeopleLoadInProgress extends PeopleState {}
 
-/// The memories are successfully loaded
-class MemoriesLoadSuccess extends MemoryListState {
-  final List<Memory> memories;
-  final memoryCount;
+/// The people are successfully loaded
+class PeopleLoadSuccess extends PeopleState {
+  final List<Person> people;
+  final int personCount;
 
-  MemoriesLoadSuccess(this.memories) : memoryCount = memories.length;
-  //  memoriesGrouped.values.fold<int>(
+  PeopleLoadSuccess(this.people) : personCount = people.length;
+  //  peopleGrouped.values.fold<int>(
   //       0, (previousValue, element) => previousValue + element.length);
 
   @override
   String toString() {
-    return 'MemoriesLoadSuccess{memoriesCount: $memoryCount}';
+    return 'PeopleLoadSuccess{peopleCount: $personCount}';
   }
 }
 
-/// There was an error when loading the memories
-class MemoriesLoadFailure extends MemoryListState {
+/// There was an error when loading the people
+class PeopleLoadFailure extends PeopleState {
   final dynamic error;
 
-  MemoriesLoadFailure({this.error});
+  PeopleLoadFailure({this.error});
 
   @override
   String toString() {
@@ -48,8 +49,8 @@ class MemoriesLoadFailure extends MemoryListState {
 }
 
 /// A memory operation failed
-class EventOpFailure extends MemoryListState {
-  final MemoryListState prevState;
+class EventOpFailure extends PeopleState {
+  final PeopleState prevState;
   final Memory memory;
   final dynamic error;
 

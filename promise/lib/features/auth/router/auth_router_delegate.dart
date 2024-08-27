@@ -6,6 +6,7 @@ import 'package:promise/features/auth/signup/ui/username/username_page.dart';
 
 class AuthRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
+  @override
   final GlobalKey<NavigatorState> navigatorKey;
 
   AuthNavState _authNavState;

@@ -1,10 +1,25 @@
 // ignore_for_file: use_build_context_synchronously
+// ignore_for_file: avoid_init_to_null
 
-import 'dart:io';
+import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:synchronized/synchronized.dart';
+
+LoadingOverlay? _loadingOverlay = null;
+
+set loadingOverlay(LoadingOverlay loadingOverlay) {
+  _loadingOverlay = loadingOverlay;
+}
+
+LoadingOverlay get loadingOverlay {
+  if(_loadingOverlay == null){
+    loadingOverlay = LoadingOverlay._create(Get.context!);
+  }
+  return _loadingOverlay!;
+}
 
 class LoadingOverlay {
   BuildContext _context;
@@ -41,7 +56,7 @@ class LoadingOverlay {
 
   Future<T> during<T>(Future<T> future) async {
     await show();
-    return future.whenComplete(() async => await hide());
+    return await future.whenComplete(() async => await hide());
   }
 
   LoadingOverlay._create(this._context);
@@ -75,3 +90,8 @@ class _FullScreenLoader extends StatelessWidget {
     );
   }
 }
+
+
+  Widget loadingWidget() {
+    return const Center(child: CircularProgressIndicator());
+  }

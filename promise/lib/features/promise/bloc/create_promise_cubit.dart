@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:promise/app.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
+import 'package:promise/widgets/loading_overlay.dart';
 
 import 'create_promise_state.dart';
 

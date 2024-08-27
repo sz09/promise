@@ -18,6 +18,7 @@ import 'package:promise/notifications/fcm/fcm_notifications_listener.dart';
 import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/platform_comm/platform_comm.dart';
 import 'package:promise/repositories/memories/memory.remote.repository.dart';
+import 'package:promise/repositories/people/people.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.remote.repository.dart';
 import 'package:promise/user/user_event_hook.dart';
 import 'package:promise/user/user_manager.dart';
@@ -138,6 +139,7 @@ Future<void> setupGlobalDependencies() async {
     ..registerSingleton<UserAuthApiService>(userAuthApi)
     ..registerSingleton<MemoryRemoteRepository>(MemoryRemoteRepository(client: apiClient))
     ..registerSingleton<PromiseRemoteRepository>(PromiseRemoteRepository(client: apiClient))
+    ..registerSingleton<PersonRemoteRepository>(PersonRemoteRepository(client: apiClient))
     ..registerSingleton<UserManager>(userManager)
     ..registerSingleton<AppLifecycleObserver>(appLifecycleObserver)
     ..registerSingleton<PlatformComm>(platformComm)

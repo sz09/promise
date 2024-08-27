@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:promise/app.dart';
 import 'package:promise/features/auth/router/auth_router.dart';
 import 'package:promise/features/force_update/ui/force_update_page.dart';
 import 'package:promise/features/home/router/home_router.dart';
@@ -10,7 +9,6 @@ import 'package:promise/util/log/log.dart';
 import 'package:promise/models/user/user_credentials.dart';
 import 'package:promise/routing/no_animation_transition_delegate.dart';
 import 'package:promise/user/user_manager.dart';
-import 'package:promise/widgets/loading_overlay.dart';
 
 import 'app_nav_state.dart';
 
@@ -51,7 +49,6 @@ class AppRouterDelegate extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
-    loadingOverlay = LoadingOverlay.of(context);
     return Navigator(
       transitionDelegate: NoAnimationTransitionDelegate(),
       key: navigatorKey,

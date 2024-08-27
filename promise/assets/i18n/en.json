@@ -7,7 +7,7 @@
   "menu.settings": "Settings",
   "menu.memories": "Memories",
   "menu.promises": "Promises",
-  "menu.friends": "Friends",
+  "menu.people": "People",
   "menu.login": "Login",
   "menu.logout": "Logout",
 
@@ -61,11 +61,12 @@
   "promise_list_error_loading_promises": "Error loading promises.",
   "promise.create.with": "With",
   
+  "person_list_no_memories_message": "You have no people. Yay! Do nothing!",
   "timeline.title": "Timeline",
   "timeline.with": "with",
   "promise.title": "Promise",
   "memory.title": "Memories",
-  "friend.title": "Friends",
+  "people.title": "People",
 
   "theme": "Theme",
   "dark_theme": "Dark theme",

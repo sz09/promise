@@ -1,5 +1,5 @@
 import 'package:humanizer/humanizer.dart';
-import 'package:promise/resources/localization/l10n.dart';
+import 'package:promise/resources/localization/app_localization.dart';
 
 extension Prettify on String {
   /// Shortens a long string by taking the start n chars (5 is default)

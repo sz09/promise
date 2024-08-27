@@ -1,12 +1,16 @@
 import 'package:promise/main.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/repositories/memories/memory.local.repository.dart';
 import 'package:promise/repositories/memories/memory.remote.repository.dart';
+import 'package:promise/repositories/people/people.local.repository.dart';
+import 'package:promise/repositories/people/people.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.local.repository.dart';
 import 'package:promise/services/memory/memory.service.dart';
+import 'package:promise/services/person/person.service.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/services/synchronization/synchronization.service.dart';
 
@@ -28,16 +32,23 @@ Future<void> setupUserScope(String userId) async {
   final PromiseRemoteRepository promiseRemoteRepository = serviceLocator.get<PromiseRemoteRepository>();
   final PromiseService promiseService = PromiseService(remoteRepository: promiseRemoteRepository, localRepository: promiseLocalRepository);
 
+  final PersonLocalRepository personLocalRepository = PersonLocalRepository(userId: userId, localDatabase: localDatabaseWrapper.getLocalDatabase<Person>());
+  final PersonRemoteRepository personRemoteRepository = serviceLocator.get<PersonRemoteRepository>();
+  final PersonService personService = PersonService(remoteRepository: personRemoteRepository, localRepository: personLocalRepository);
+
   final SynchronizationService synchronizationService = SynchronizationService(
     repositories: {
       memoryRemoteRepository: memoryLocalRepository,
-      promiseRemoteRepository: promiseLocalRepository
+      promiseRemoteRepository: promiseLocalRepository,
+      personRemoteRepository: personLocalRepository
     }
   );
   serviceLocator
     ..registerSingleton<MemoryService>(memoryService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton<PromiseService>(promiseService,
+        dispose: (instance) => instance.teardown())
+    ..registerSingleton<PersonService>(personService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton(synchronizationService);
 }
