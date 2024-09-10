@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/models/memory/memory.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/networks/getx_api.state.dart';
 import 'package:promise/util/log/log.dart';
@@ -33,3 +34,4 @@ abstract class PageController<T> extends GetxController {
 class MemoryController extends PageController<Memory> {}
 class PromiseController extends PageController<Promise> {}
 class TimelineController extends PageController<TimelineItem> {}
+class PeopleController extends PageController<Person> {}
