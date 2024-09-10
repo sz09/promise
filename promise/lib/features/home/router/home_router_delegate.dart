@@ -3,7 +3,7 @@ import 'package:promise/application_layout_widget.dart';
 import 'package:promise/features/auth/login/ui/login_page.dart';
 import 'package:promise/features/people/ui/people_page.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
-import 'package:promise/features/promise/ui/promise_list_page.dart';
+import 'package:promise/features/promise/ui/list/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
 import 'package:promise/routers/router.config.dart';

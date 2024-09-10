@@ -8,7 +8,7 @@ import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/people/ui/people_page.dart';
-import 'package:promise/features/promise/ui/promise_list_page.dart';
+import 'package:promise/features/promise/ui/list/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
 import 'package:promise/overlay_view.dart';

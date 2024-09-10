@@ -7,7 +7,7 @@ import 'package:promise/features/auth/login/ui/login_page.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/notfound/notfound_widget.dart';
 import 'package:promise/features/people/ui/people_page.dart';
-import 'package:promise/features/promise/ui/promise_list_page.dart';
+import 'package:promise/features/promise/ui/list/promise_list_page.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
 
 const String homeRoute = "/";

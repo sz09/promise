@@ -48,9 +48,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(
-                Icons.menu_open
-              ),
+              icon: const Icon(Icons.menu_open),
             ),
           ]),
       body: Column(children: _getMenuItems(context)),
@@ -162,7 +160,8 @@ Container _getAuthMenuItem(
         color: context.iconColor,
         size: 40,
       ),
-      title: Text(context.translate(titleKey), style: const TextStyle(fontSize: 22)),
+      title: Text(context.translate(titleKey),
+          style: const TextStyle(fontSize: 22)),
       onTap: () async {
         switch (route) {
           case logoutRoute:
@@ -177,7 +176,11 @@ Container _getAuthMenuItem(
 
 extension CustomNavigation on BuildContext {
   navigateTo(String routeName) {
-    Navigator.pop(this);
-    Get.toNamed(routeName);
+    //TODO: Duplicate key tree will got exception, build a tree or return old instance
+    var navigator = Navigator.of(this);
+    navigator.pop();
+    if (Get.routing.current != routeName) {
+      Get.toNamed(routeName);
+    }
   }
 }
