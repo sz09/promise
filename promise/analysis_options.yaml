@@ -14,6 +14,7 @@ analyzer:
     empty_constructor_bodies: ignore
     library_private_types_in_public_api: ignore
     must_be_immutable: ignore
+    prefer_const_declarations: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

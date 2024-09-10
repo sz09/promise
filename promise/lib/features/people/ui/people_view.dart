@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/const/text.dart';
 import 'package:promise/data/data_not_found_exception.dart';
 import 'package:promise/features/home/router/home_router_delegate.dart';
@@ -14,16 +13,7 @@ class PeopleView extends StatelessWidget {
   const PeopleView({super.key});
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PeopleBloc, PeopleState>(
-        listener: (context, state) {
-      // do stuff here based on PeopleCubit's state
-      if (state is EventOpFailure) {
-        //todo display an error dialog here on top of the presented UI
-        Log.e('EventOpFailure: ${state.error}');
-      }
-    }, builder: (context, state) {
-      // return widget here based on BlocA's state, this should be a pure fn
-      return Scaffold(
+   return Scaffold(
         body: _getBodyForState(context, state),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -34,19 +24,12 @@ class PeopleView extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       );
-    });
   }
 }
 
   Widget _getBodyForState(BuildContext context, PeopleState state) {
     if (state is PeopleLoadSuccess) {
       final List<Person> people = state.people;
-      // people.add(Person(id: "id", nickname: '@her'));
-      // people.add(Person(id: "id1", nickname: '@me'));
-      // people.add(Person(id: "id2", nickname: '@mom'));
-      // people.add(Person(id: "id3", nickname: '@dad'));
-      // people.add(Person(id: "id4", nickname: '@grandpa'));
-
       var batchPeople = batch(people, 2);
       if (batchPeople.isEmpty) {
         return _emptyListWidget(context);

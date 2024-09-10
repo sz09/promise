@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/features/auth/signup/bloc/signup_cubit.dart';

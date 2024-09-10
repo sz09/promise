@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:promise/features/auth/user_api_service.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/user/register_user/register_user.dart';

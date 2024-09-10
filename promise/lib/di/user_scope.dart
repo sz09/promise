@@ -1,8 +1,8 @@
-import 'package:promise/main.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/models/memory/memory.dart';
+import 'package:promise/pre_app_config.dart';
 import 'package:promise/repositories/memories/memory.local.repository.dart';
 import 'package:promise/repositories/memories/memory.remote.repository.dart';
 import 'package:promise/repositories/people/people.local.repository.dart';
@@ -12,11 +12,15 @@ import 'package:promise/repositories/promises/promise.local.repository.dart';
 import 'package:promise/services/memory/memory.service.dart';
 import 'package:promise/services/person/person.service.dart';
 import 'package:promise/services/promise/promise.service.dart';
+import 'package:promise/services/synchronization/sync.dart';
 import 'package:promise/services/synchronization/synchronization.service.dart';
+import 'package:promise/util/log/log.dart';
 
 /// User scoped components that are created when the user logs in
 /// and destroyed on logout.
 const String userScopeName = 'userScope';
+
+late Future<void> _syncFuture;
 
 /// Use [setupUserScope] to setup components that need to be alive as
 /// long as there is a logged in user. Provide a dispose method when
@@ -51,10 +55,19 @@ Future<void> setupUserScope(String userId) async {
     ..registerSingleton<PersonService>(personService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton(synchronizationService);
+
+  
+
+ _syncFuture = syncDataToLocalAsync();
+ _syncFuture.whenComplete(() {
+  Log.d('Synced data to local');
+ });
 }
 
 /// Use [teardownUserScope] to dispose the user scoped components if
 /// you haven't provided a dispose method when registering.
 Future<void> teardownUserScope() async {
+  Log.w('Ignore synchronyzation data');
+  _syncFuture.ignore();
   //todo teardown user scope components registered without dispose method here
 }

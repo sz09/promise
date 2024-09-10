@@ -4,6 +4,7 @@ import 'package:promise/networks/dio/dio.client.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/base/base.repository.dart';
 import 'package:promise/util/response.ext.dart';
+import 'package:promise/util/sync_result.dart';
 
  abstract class BaseRemoteRepository<T extends BaseAuditModel> extends BaseRepository {
   abstract String path;
@@ -22,11 +23,15 @@ import 'package:promise/util/response.ext.dart';
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
     final pageResult = PageResult<T>.set([], 0);
    PageResult<T> factoryMethod(Response<dynamic> response){
-      pageResult.response = response.data;
-      pageResult.resolveItem = itemFactoryMethod;
-      pageResult.create();
-      return pageResult;
+    if(response.data['data'] is List && (response.data['data'] as List).isEmpty){
+      return PageResult.defaultValue();
     }
+
+    pageResult.response = response.data;
+    pageResult.resolveItem = itemFactoryMethod;
+    pageResult.create();
+    return pageResult;
+  }
     var fetchData = await client.fetch<T>(path, {
       'page': page,
       'pageSize': pageSize
@@ -35,15 +40,19 @@ import 'package:promise/util/response.ext.dart';
     return fetchData.data!;
   }
 
-  Future<PageResult<T>> fetchFromVersionAsync({required int version, int pageSize = PAGE_SIZE }) async {
-    final pageResult = PageResult<T>.set([], 0);
-   PageResult<T> factoryMethod(Response<dynamic> response){
-      pageResult.response = response.data;
-      pageResult.resolveItem = itemFactoryMethod;
-      pageResult.create();
-      return pageResult;
+  Future<SyncResult<T>> fetchFromVersionAsync({required int version, int pageSize = FECTH_VERSION_PAGE_SIZE }) async {
+    final syncResult = SyncResult<T>.set([], 0);
+    SyncResult<T> factoryMethod(Response<dynamic> response){
+    if(response.data['data'] is List && (response.data['data'] as List).isEmpty){
+      return SyncResult.defaultValue();
     }
-    var fetchData = await client.fetch<T>('$path/from-version', {
+    syncResult.response = response.data;
+    syncResult.resolveItem = itemFactoryMethod;
+    syncResult.create();
+    return syncResult;
+  }
+
+    var fetchData = await client.fetchSync<T>('$path/from-version', {
       'version': version,
       'pageSize': pageSize
     },  factoryMethod);

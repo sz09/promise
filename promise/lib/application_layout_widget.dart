@@ -12,7 +12,7 @@ var menu = const Drawer(
 class ApplicationLayout extends StatelessWidget {
   final Widget child;
   final String widgetKey;
-  ApplicationLayout({required this.child, required this.widgetKey}): super(key: ApplicationKey());
+  ApplicationLayout({super.key, required this.child, required this.widgetKey});
   final PageController _pageController = PageController();
   late int _selectedIndex = 0;
 

@@ -45,6 +45,30 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
 
     return PageResult<T>.set(values, count);
   }
+
+  Future doSyncToLocalAsync(List<T> data) async {
+    for (var element in data) { element.userId = this.userId; }
+
+    var box = await localDatabase.getBoxAsync();
+    var ids = data.map((d) => d.id);();
+    query(T d) => d.userId == userId && ids.contains(d.id);
+    var saveData = box.values
+                      .where(query)
+                      .toList();
+    for(var x in saveData) {
+      box.put(x.id, x);
+    }
+    
+    var addedDatas = data.where((d) => !saveData.map((s) => s.id).contains(d.id));
+    
+    Map<String, T> dataToSave = {};
+    for(var data in addedDatas) {
+      dataToSave[data.id] = data;
+    }
+
+    await box.putAll(dataToSave);
+    await box.flush();
+  }
   @override
   Future teardown() async {
     

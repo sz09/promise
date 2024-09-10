@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:promise/util/response.ext.dart';
+import 'package:promise/util/sync_result.dart';
 
 abstract class DioClient {
   late Dio _dio;
@@ -20,9 +21,15 @@ abstract class DioClient {
   Future<Response<PageResult<T>>> fetch<T>(String path, Object? data, 
       dynamic factoryMethod) async {
     var response = await _dio.get(path, data: data);
-    return _convertPageResult(response: response, factoryMethod: factoryMethod);
+    return _convertResult(response: response, factoryMethod: factoryMethod);
   }
 
+
+  Future<Response<SyncResult<T>>> fetchSync<T>(String path, Object? data, 
+      dynamic factoryMethod) async {
+    var response = await _dio.get(path, data: data);
+    return _convertResult(response: response, factoryMethod: factoryMethod);
+  }
   Future<Response<T>> get<T>(String path, Object? data) {
     return _dio.get<T>(path, data: data);
   } 
@@ -45,7 +52,7 @@ abstract class DioClient {
   }
 
 
-  Response<TPage> _convertPageResult<TPage, TItem>(
+  Response<TResponse> _convertResult<TResponse, TItem>(
       { 
         required Response<dynamic> response, 
         required dynamic factoryMethod

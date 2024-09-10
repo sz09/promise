@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:promise/features/home/router/home_router_delegate.dart';
-import 'package:promise/features/memory/controller.dart';
-import 'package:promise/features/memory/bloc/create_memory_cubit.dart';
+import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/memory/ui/create_memory_view.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/memory/memory.dart';
@@ -14,6 +12,7 @@ import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/widgets/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 final _controller = Get.find<MemoryController>(tag: applicationTag);
 class MemoryListPage extends StatelessWidget {
@@ -21,7 +20,8 @@ class MemoryListPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    Get.put<MemoryController>(MemoryController(), tag: applicationTag); 
+    Get.put<MemoryController>(MemoryController(), tag: applicationTag);
+    _controller.loadData(serviceLocator.get<MemoryService>().fetchAsync);
     return const MemoryListView();
   }
 }
@@ -31,9 +31,6 @@ class MemoryListView extends StatelessWidget {
   const MemoryListView({super.key});
   @override
   Widget build(BuildContext context) {
-    Future.wait([
-      _controller.loadData(serviceLocator.get<MemoryService>().fetchAsync),
-    ]);
     return Scaffold(
       body: Obx(() => _getBodyForState(context)),
       floatingActionButton: FloatingActionButton(
@@ -48,10 +45,10 @@ class MemoryListView extends StatelessWidget {
   }
 
   Widget _getBodyForState(BuildContext context) {
-    if (_controller.isLoading.isTrue) {
+    if (_controller.loadingState.value.isInprogress) {
       return loadingWidget();
     } else 
-    if (_controller.isLoading.isFalse) {
+    if (!_controller.loadingState.value.isInprogress) {
       final List<Memory> memories = _controller.items;
       if (memories.isEmpty) {
         return _emptyListWidget(context);
@@ -68,11 +65,8 @@ class MemoryListView extends StatelessWidget {
         );
       }
     } 
-    // else if (state is EventOpFailure) {
-    //   return _getBodyForState(context, state.prevState);
-    // } 
-    else if (_controller.isError.value) {
-      return _errorWidget(_controller.errorKey.value, context);
+    else if (_controller.loadingState.value.isError) {
+      return _errorWidget(_controller.loadingState.value.errorKey, context);
     } 
     else {
       Log.e(UnimplementedError('EventListState not consumed'));
@@ -101,12 +95,6 @@ class MemoryListView extends StatelessWidget {
   }
 
   Widget _errorWidget(String errorKey, BuildContext context) {
-    // String message;
-    // if (state is MemoriesLoadFailure && state.error is DataNotFoundException) {
-    //   message = context.translate("memory_list_error_loading_memories");
-    // } else {
-    //   message = context.translate("list_error_general");
-    // }
     return Center(child: Text(context.translate(errorKey)));
   }
 
@@ -114,11 +102,7 @@ class MemoryListView extends StatelessWidget {
     showCupertinoModalBottomSheet(
         context: context,
         builder: (context) {
-          return BlocProvider<CreateMemoryCubit>(
-            create: (BuildContext context) =>
-                CreateMemoryCubit(serviceLocator.get<MemoryService>()),
-            child: const CreateMemoryView(),
-          );
+          return const CreateMemoryView();
         });
   }
 

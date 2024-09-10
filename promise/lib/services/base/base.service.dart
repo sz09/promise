@@ -27,16 +27,7 @@ abstract class BaseService<T extends BaseAuditModel> {
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]){
     final result = this.localRepository.fetchAsync(page, pageSize)
                .onError((error, _) => throw LocalDbConnectionException.create(T, exception: error))
-               .then((tLocal) => 
-                 this.remoteRepository.fetchAsync(page, pageSize)
-                     .then((tRemote) async {
-                      if(tRemote.data.isNotEmpty){
-                        await this.localRepository.createManyAsync(tRemote.data);
-                      }
-                      return tRemote;
-                     })
-                     .onError((error, _) => throw RemoteDbConnectionException.create(T, exception: error))
-               );
+               .then((tLocal) => tLocal);
 
     return result;
   }

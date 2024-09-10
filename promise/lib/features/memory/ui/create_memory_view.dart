@@ -1,8 +1,5 @@
-import 'package:promise/features/memory/bloc/create_memory_cubit.dart';
-import 'package:promise/features/memory/bloc/create_memory_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promise/models/memory/memory.dart';
+import 'package:promise/widgets/disable_button.dart';
 
 class CreateMemoryView extends StatefulWidget {
   const CreateMemoryView({super.key});
@@ -19,28 +16,7 @@ class _CreateMemoryViewState extends State<CreateMemoryView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create Memory'),
-          centerTitle: true,
-          leading: Container(),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
-            ),
-          ],
-        ),
-        body: BlocConsumer<CreateMemoryCubit, CreateMemoryState>(
-            listener: (listenerContext, state) {
-          if (state is CreateMemorySuccess) {
-            Navigator.of(context).pop();
-          }
-        }, builder: (context, state) {
-          if (state is CreateMemoryInProgress) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Padding(
+      child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
               key: _formKey,
@@ -57,23 +33,21 @@ class _CreateMemoryViewState extends State<CreateMemoryView> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton(
-                    child: const Text('Create'),
-                    onPressed: () => _onCreatePressed(context),
-                  ),
+                  DisablableButton(
+                    text: 'Create',
+                    enableFunc: () => true,
+                    mainContext: context,
+                    action: _onCreatePressed(context),
+                  )
                 ],
               ),
             ),
-          );
-        }),
-      ),
-    );
+          ));
   }
 
   _onCreatePressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      BlocProvider.of<CreateMemoryCubit>(context).onCreateMemory(
-          Memory(id: 'id', description: _memoryDescriptionController.text));
+     
     }
   }
 }

@@ -19,7 +19,7 @@ class TimelineLoadInProgress extends TimelineState {}
 /// The timelineItems are successfully loaded
 class TimelineLoadSuccess extends TimelineState {
   final List<TimelineItem> timelineItems;
-  final timelineItemCount;
+  final int timelineItemCount;
 
   TimelineLoadSuccess(this.timelineItems) : timelineItemCount = timelineItems.length;
   //  timelineItemsGrouped.values.fold<int>(

@@ -38,7 +38,7 @@ Future<void> showAlert(
         );
       } else {
         return PopScope(
-          onPopInvoked: (invokedResponse) async => invokedResponse,
+          canPop: true,
           child: AlertDialog(
             title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             content: Text(message ?? ''),
