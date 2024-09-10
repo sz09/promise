@@ -1,4 +1,5 @@
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:promise/application_layout_widget.dart';
@@ -13,6 +14,7 @@ import 'package:promise/features/timeline/ui/timeline_page.dart';
 import 'package:promise/overlay_view.dart';
 import 'package:promise/pre_app_config.dart';
 import 'package:promise/resources/localization/app_localization.dart';
+import 'package:promise/resources/theme/app_theme.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
@@ -28,6 +30,12 @@ final userManager = serviceLocator.get<UserManager>();
 const String applicationTag = "application";
 
 void main() async {
+   FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) {
+      
+    }
+  };
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await registerDatabase();
@@ -66,7 +74,9 @@ void main() async {
     ]),
     locale: LocalizationService.locale,
     fallbackLocale: LocalizationService.fallbackLocale,
-    theme: Get.theme,
+    themeMode: ThemeMode.light,
+    theme: themeLight(),
+    darkTheme: themeDark(),
     translations: LocalizationService(),
     initialRoute: homeRoute,
     // routes: {

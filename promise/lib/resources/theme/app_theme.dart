@@ -8,19 +8,19 @@ extension on ThemeData {
 }
 
 ThemeData themeLight() => ThemeData(
-    brightness: Brightness.light,
+  brightness: Brightness.light,
     primaryColor: ColorPalette.primaryL,
     scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
     cardColor: ColorPalette.white,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: TextButton.styleFrom(
-        // primary: ColorPalette.black,
+        foregroundColor: ColorPalette.black,
         backgroundColor: ColorPalette.accentL,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-          //primary: ColorPalette.accentL,
+          foregroundColor: ColorPalette.accentL,
           ),
     ),
     textTheme: const TextTheme(
@@ -31,20 +31,22 @@ ThemeData themeLight() => ThemeData(
     )).setCommonThemeElements();
 
 ThemeData themeDark() => ThemeData(
-    brightness: Brightness.dark,
+  brightness: Brightness.dark,
     primaryColor: ColorPalette.primaryD,
-    //accentColor: ColorPalette.accentD,
-    scaffoldBackgroundColor: const Color.fromARGB(0, 0, 0, 0),
+    // colorScheme: ColorScheme.fromSwatch().copyWith(
+    //   secondary: ColorPalette.accentD
+    // ),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
     cardColor: ColorPalette.primaryDisabledD,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: TextButton.styleFrom(
-        // primary: ColorPalette.black,
+        foregroundColor: ColorPalette.black,
         backgroundColor: ColorPalette.accentD,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-          //primary: ColorPalette.accentD,
+          foregroundColor: ColorPalette.accentD,
           ),
     ),
     textTheme: const TextTheme(

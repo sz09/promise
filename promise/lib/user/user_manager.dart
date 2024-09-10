@@ -103,11 +103,10 @@ class UserManager with UpdatesStream<UserCredentials> {
 
     if (await isLoggedIn()) {
       final userCredentials = await _userStore.get().asNonNullable();
-      if(userCredentials.user.username == username){
+      if (userCredentials.user.username == username) {
         Log.w('UserManager - Abort login: Already logged in!');
         return userCredentials;
-      }
-      else {
+      } else {
         _userStore.delete();
       }
     }

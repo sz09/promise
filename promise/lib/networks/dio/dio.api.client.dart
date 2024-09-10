@@ -20,7 +20,6 @@ class DioAPIClient extends DioClient{
 
   DioAPIClient(
     PackageInfo? packageInfo,
-    Storage<String> localeStore,
     Storage<UserCredentials> userStore,
     AuthenticatorHelperJwt authenticatorHelper,
     int apiVersion){
@@ -44,7 +43,7 @@ class DioAPIClient extends DioClient{
         APIVersionInterceptor(apiVersion: apiVersion),
         // JsonResponseConverter(),
         VersionInterceptor(packageInfo),
-        LanguageInterceptor(localeStore),
+        LanguageInterceptor(),
         HttpLoggerInterceptor(),
         ErrorInterceptor(
           UnauthorizedUserHandler(userStore),

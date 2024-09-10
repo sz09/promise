@@ -12,7 +12,6 @@ import 'package:promise/networks/user_auth_api_service.dart';
 import 'package:promise/networks/authenticator/dio_authenticator_helper_jwt.dart';
 import 'package:promise/user/unauthorized_user_handler.dart';
 import 'package:single_item_storage/storage.dart';
-import 'package:single_item_storage/stub_storage.dart';
 
 /// Utility class for creating and configuring the API services.
 class HttpApiServiceProvider {
@@ -24,15 +23,14 @@ class HttpApiServiceProvider {
     required String baseUrl,
     required Storage<UserCredentials> userStore,
     http.Client? httpClient,
-    Storage<String> localeStore = const StubStorage<String>(),
     PackageInfo? packageInfo,
     UnauthorizedUserHandler? unauthorizedUserHandler,
     ForceUpdateHandler? forceUpdateHandler,
   }) {
     unauthorizedUserHandler ??= UnauthorizedUserHandler(userStore);
     forceUpdateHandler ??= ForceUpdateHandler();
-    DioClient unauthorizedClient = DioUnauthorizeClient(packageInfo, localeStore, userStore);
-    DioClient identityServerClient = DioIdentityServerClient(packageInfo, localeStore, userStore);
+    DioClient unauthorizedClient = DioUnauthorizeClient(packageInfo, userStore);
+    DioClient identityServerClient = DioIdentityServerClient(packageInfo, userStore);
     AuthenticatorHelperJwt authenticatorHelper = AuthenticatorHelperJwt(
       UserAuthApiService(
         client: identityServerClient
@@ -40,7 +38,7 @@ class HttpApiServiceProvider {
       userStore,
     );
 
-    DioClient defaultClient = DioAPIClient(packageInfo, localeStore, userStore, authenticatorHelper, API_VERSION);
+    DioClient defaultClient = DioAPIClient(packageInfo, userStore, authenticatorHelper, API_VERSION);
 
     return HttpApiServiceProvider.withClients(defaultClient, unauthorizedClient,
         identityServerClient, authenticatorHelper);

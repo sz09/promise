@@ -5,6 +5,7 @@ import 'package:promise/const/text.dart';
 import 'package:promise/pre_app_config.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/util/log/log.dart';
 
 class SettingsThemeSwitch extends StatefulWidget {
   const SettingsThemeSwitch({super.key});
@@ -55,7 +56,8 @@ class _SettingsThemeSwitchState extends State<SettingsThemeSwitch> {
       isDarkTheme = val;
     });
 
-    Get.changeTheme(Get.isDarkMode? ThemeData.light(): ThemeData.dark());
+    Get.changeTheme(val ? ThemeData.dark() : ThemeData.light());
     await storage.write(themeModeKey, val);
+    Log.d('theme ${Get.isDarkMode}');
   }
 }

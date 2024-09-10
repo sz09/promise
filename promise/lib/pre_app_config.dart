@@ -17,6 +17,11 @@ import 'package:promise/util/string_util.dart';
 
 const String themeModeKey = "isDarkMode";
 const String languageCode = "languageCode";
+GetStorage get getStorage {
+  return _getStorage!;
+}
+
+GetStorage? _getStorage;
 /// Configuration that needs to be done before the Flutter app starts goes here.
 ///
 /// To minimize the app loading time keep this setup fast and simple.
@@ -29,7 +34,7 @@ Future<void> preAppConfig() async {
   await serviceLocator.get<PreferencesHelper>().init();
   
   await GetStorage.init();
-  var getStorage = GetStorage();
+  _getStorage = GetStorage();
   var isDarkTheme = getStorage.read<bool>(themeModeKey) ?? false;
   Get.changeTheme(isDarkTheme ? ThemeData.dark(): ThemeData.light());
   var language = getStorage.read<String>(languageCode) ?? EN.languageCode;

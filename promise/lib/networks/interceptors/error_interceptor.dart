@@ -23,6 +23,7 @@ class ErrorInterceptor extends Interceptor {
     if (response.statusCode == 401) {
       _unauthorizedUserHandler.onUnauthorizedUserEvent();
       // TODO: extract reasonPhrase
+      // TODO: Flow response got problem
       throw UnauthorizedUserException("response.base.reasonPhrase");
     }
     handler.next(response);

@@ -17,7 +17,6 @@ class DioUnauthorizeClient extends DioClient {
 
   DioUnauthorizeClient(
     PackageInfo? packageInfo,
-    Storage<String> localeStore,
     Storage<UserCredentials> userStore){
     BaseOptions options = BaseOptions(
       baseUrl: FlavorConfig.values.baseUrlApi,

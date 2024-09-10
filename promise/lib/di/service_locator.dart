@@ -49,7 +49,7 @@ Future<void> setupGlobalDependencies() async {
   // Data
   final ObservedStorage<UserCredentials> userStorage =
       ObservedStorage<UserCredentials>(CachedStorage(SecureStorage(
-    itemKey: 'model.user.user-credentials',
+    itemKey: 'user.user-credentials',
     fromMap: (map) => UserCredentials.fromJson(map),
     toMap: (user) => user.toJson(),
     iosOptions: const IOSOptions(accessibility: KeychainAccessibility.first_unlock),

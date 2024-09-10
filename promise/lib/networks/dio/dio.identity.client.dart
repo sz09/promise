@@ -16,7 +16,6 @@ class DioIdentityServerClient extends DioClient {
 
   DioIdentityServerClient(
     PackageInfo? packageInfo,
-    Storage<String> localeStore,
     Storage<UserCredentials> userStore){
     BaseOptions options = BaseOptions(
       baseUrl: FlavorConfig.values.baseUrlApi,
