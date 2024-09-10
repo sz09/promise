@@ -20,7 +20,7 @@ class PeoplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<TimelineController>(TimelineController(), tag: applicationTag);
+    Get.put<PeopleController>(PeopleController(), tag: applicationTag);
     _controller.loadData(serviceLocator.get<PersonService>().fetchAsync);
    return  const PeopleView();
   }

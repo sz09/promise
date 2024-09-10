@@ -20,6 +20,8 @@ class TimelinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put<TimelineController>(TimelineController(), tag: applicationTag);
     Future.microtask(() async {
+      _controller.loadingState.value.isInprogress = true;
+      _controller.loadingState.refresh();
       var storyService = serviceLocator.get<StoryService>();
       var res = await storyService.fetchAsync();
       var x = 0;
@@ -31,9 +33,10 @@ class TimelinePage extends StatelessWidget {
               description: d.content,
               time: DateTime.now()))
           .toList();
+      _controller.reset();
       _controller.setData(data);
     });
-    return TimelineView();
+    return const TimelineView();
   }
 }
 

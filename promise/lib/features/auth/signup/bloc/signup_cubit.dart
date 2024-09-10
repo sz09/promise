@@ -1,3 +1,4 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promise/features/auth/user_api_service.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/user/register_user/register_user.dart';

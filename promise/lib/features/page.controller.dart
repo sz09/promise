@@ -15,16 +15,21 @@ abstract class PageController<T> extends GetxController {
   var loadingState = LoadingState().obs;
   RxList<T> items = <T>[].obs;
   Future loadData(Future<PageResult<T>> Function() func) async{
+    loadingState.value.isInprogress = true;
+    loadingState.refresh();
     Log.d("GetX begin loadData for ${T.toPlural()} take");
     final stopwatch = Stopwatch();
     stopwatch.start();
     var data = await loadingOverlay.during(func());
+    reset();
     setData(data.data);
     update();
     Log.d("GetX loadData for ${T.toPlural()} take ${stopwatch.elapsedMilliseconds}ms");
   }
-
-  setData(List<T> data) {
+  void reset(){
+    items.clear();
+  }
+  void setData(List<T> data) {
     loadingState.value.isInprogress = false;
     items.addAll(data);
     loadingState.refresh();

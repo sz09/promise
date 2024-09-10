@@ -66,8 +66,12 @@
   "person_list_no_memories_message": "You have no people. Yay! Do nothing!",
   
   "timeline.title": "Dòng thời gian",
-  "friend.people": "Người",
+  "friend.people": "Kết nối",
   "timeline.with": "với",
+
+  "promise.title": "Lời hứa",
+  "memory.title": "Kỷ niệm",
+  "people.title": "Kết nối",
 
   "theme": "Theme",
   "dark_theme": "Chế độ tối",

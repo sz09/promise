@@ -84,6 +84,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   async: any
   get_storage: ^2.1.1
+  flutter_bloc: ^8.1.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
