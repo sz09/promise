@@ -1,8 +1,10 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:get/get.dart';
+import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:promise/main.dart';
+import 'package:promise/services/person/person.service.dart';
 import 'package:promise/widgets/disable_button.dart';
 
 final _controller = Get.find<CreatePromiseController>(tag: applicationTag);
@@ -28,8 +30,8 @@ class _CreatePromiseView extends StatelessWidget {
   final double egdeSize = 8;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
+    _controller.loadPeople(serviceLocator.get<PersonService>().fetchAsync);
+    return Obx(() => Padding(
           padding: EdgeInsets.all(egdeSize),
           child: Scaffold(
               body: SingleChildScrollView(
@@ -59,10 +61,14 @@ class _CreatePromiseView extends StatelessWidget {
                         checkBoxProperty: CheckBoxProperty(
                             fillColor:
                                 WidgetStateProperty.all<Color>(Colors.red)),
-                        dropDownList: const [
-                          DropDownValueModel(name: '@me', value: 1),
-                          DropDownValueModel(name: '@her', value: 2)
-                        ],
+                        dropDownList:
+                            _controller.loadingPeopleState.value.isInprogress
+                                ? []
+                                : [
+                                    for (var item in _controller.people)
+                                      DropDownValueModel(
+                                          name: item.nickname, value: item.id)
+                                  ],
                         onChanged: (val) {},
                       ),
                       const SizedBox(height: 10)
@@ -70,14 +76,14 @@ class _CreatePromiseView extends StatelessWidget {
                   ),
                 ),
               ),
-              floatingActionButton: Obx(() => DisablableButton(
+              floatingActionButton: DisablableButton(
                   text: "Create",
                   mainContext: context,
                   action: _onCreatePromise,
                   enableFunc: () {
                     return _controller.loadingState.value.isInprogress;
-                  })))),
-    );
+                  })),
+        ));
   }
 
   _onCreatePromise() {

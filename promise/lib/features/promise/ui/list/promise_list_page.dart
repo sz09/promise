@@ -96,7 +96,7 @@ class PromiseListView extends StatelessWidget {
   }
 
   void _openCreatePromise(BuildContext context) {
-    showCupertinoModalBottomSheet(
+    showDialog(
         context: context,
         builder: (context) {
           return const CreatePromiseView();

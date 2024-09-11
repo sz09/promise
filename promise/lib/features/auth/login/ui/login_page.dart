@@ -50,13 +50,13 @@ class LoginView extends StatelessWidget {
             PopupMenuButton<String>(
                 onSelected: (item) => onSelected(context, item),
                 itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'en',
-                        child: Text('English'),
+                        child: Text(context.translate('language.english')),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 'vi',
-                        child: Text('Tiếng Việt'),
+                        child: Text(context.translate('language.vietnamese')),
                       ),
                     ])
           ],

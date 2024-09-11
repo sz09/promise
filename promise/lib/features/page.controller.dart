@@ -11,6 +11,7 @@ import 'package:promise/widgets/loading_overlay.dart';
 
 class LoadingState extends NetworkState {
 }
+
 abstract class PageController<T> extends GetxController {
   var loadingState = LoadingState().obs;
   RxList<T> items = <T>[].obs;
