@@ -179,6 +179,7 @@ extension CustomNavigation on BuildContext {
     //TODO: Duplicate key tree will got exception, build a tree or return old instance
     var navigator = Navigator.of(this);
     navigator.pop();
+    var x = Get.routeTree.routes.firstWhere((d) => d.name == routeName);
     if (Get.routing.current != routeName) {
       Get.toNamed(routeName);
     }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,10 +50,8 @@ void main() async {
     FlavorValues(baseUrlApi: result['BaseUrlApi']!),
   );
   initializeReflectable();
-  await Future.wait([
-    LocalizationService.loadLanguage(languageCode: "en"),
-    LocalizationService.loadLanguage(languageCode: "vi")
-  ]);
+  
+  await Future.wait(LocalizationService.langCodes.map((code) => LocalizationService.loadLanguage(languageCode: code)));
   await preAppConfig();
   
   final AppRouterDelegate appRouterDelegate = AppRouterDelegate(
@@ -79,20 +76,7 @@ void main() async {
     darkTheme: themeDark(),
     translations: LocalizationService(),
     initialRoute: homeRoute,
-    // routes: {
-    //   homeRoute: (b) =>  ApplicationLayout(
-    //         widgetKey: 'timeline.title', 
-    //         child: const TimelinePage()),
-    //   promisesRoute: (b) =>  ApplicationLayout(
-    //         widgetKey: 'promise.title', 
-    //         child: const PromiseListPage()),
-    //   memoriesRoute: (b) => ApplicationLayout(
-    //         widgetKey: 'memory.title', 
-    //         child: const MemoryListPage()),
-    //   peopleRoute: (b) => ApplicationLayout(
-    //         widgetKey: 'people.title', 
-    //         child: const PeoplePage())
-    // },
+    defaultTransition: Transition.size,
     getPages: [
       GetPage(
           name: homeRoute,

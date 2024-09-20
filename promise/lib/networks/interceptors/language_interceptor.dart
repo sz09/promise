@@ -8,8 +8,8 @@ import 'package:promise/util/network_utils.dart';
 class LanguageInterceptor extends Interceptor {
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-     final String? locale = await getStorage.read<String>(languageCode);
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+     final String? locale = getStorage.read<String>(languageCode);
     if (locale != null) {
       applyHeader(options, HttpHeaders.acceptLanguageHeader, locale);
     } 

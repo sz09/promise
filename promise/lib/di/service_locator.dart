@@ -89,7 +89,7 @@ Future<void> setupGlobalDependencies() async {
     localNotificationsManager,
     PlatformComm.generalAppChannel(), //maybe not use general
   );
-
+  
   //// FCM
   final fcmNotificationsListener = FcmNotificationsListener(
     dataNotificationConsumer: dataNotificationConsumer,

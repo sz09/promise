@@ -10,6 +10,7 @@ import 'package:promise/models/memory/memory.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/models/system-versions/system-version.model.dart';
+import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/user/user_manager.dart';
@@ -29,7 +30,7 @@ Future<void> preAppConfig() async {
   await configureFirebase();
   initLogger();
   await setupGlobalDependencies();
-  // await serviceLocator.get<LocalNotificationsManager>().init(); //todo uncomment for local notifications
+  await serviceLocator.get<LocalNotificationsManager>().init(); //todo uncomment for local notifications
   await serviceLocator.get<UserManager>().init();
   await serviceLocator.get<PreferencesHelper>().init();
   
