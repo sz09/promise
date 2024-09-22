@@ -129,7 +129,7 @@ Future<void> setupGlobalDependencies() async {
   final String buildVersion =
       'Build version ${packageInfo.version} (${packageInfo.buildNumber})';
   serviceLocator
-    // ..registerSingleton<LocalNotificationsManager>(localNotificationsManager)
+    ..registerSingleton<LocalNotificationsManager>(localNotificationsManager)
     ..registerDIForPublicResources(apiClient)
     ..registerSingleton<DataNotificationConsumer>(dataNotificationConsumer)
     ..registerSingleton<FcmNotificationsListener>(fcmNotificationsListener)

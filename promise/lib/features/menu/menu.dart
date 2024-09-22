@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:promise/main.dart';
 import 'package:promise/routers/router.config.dart';
+import 'package:promise/settings.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
-import '../../settings.dart';
 
 const drawerMenuKey = Key("drawer_menu");
 const closeMenuKey = Key("close_key_icon");
@@ -163,12 +163,7 @@ Container _getAuthMenuItem(
       title: Text(context.translate(titleKey),
           style: const TextStyle(fontSize: 22)),
       onTap: () async {
-        switch (route) {
-          case logoutRoute:
-            await userManager.logout();
-          case loginRoute:
-            homeNavigatorKey.currentState?.pushNamed(route);
-        }
+        await userManager.logout();
       },
     ),
   );
@@ -176,10 +171,8 @@ Container _getAuthMenuItem(
 
 extension CustomNavigation on BuildContext {
   navigateTo(String routeName) {
-    //TODO: Duplicate key tree will got exception, build a tree or return old instance
     var navigator = Navigator.of(this);
     navigator.pop();
-    var x = Get.routeTree.routes.firstWhere((d) => d.name == routeName);
     if (Get.routing.current != routeName) {
       Get.toNamed(routeName);
     }

@@ -5,6 +5,8 @@ import 'package:promise/features/promise/ui/create_promise_view.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/promise/promise.dart';
+import 'package:promise/notifications/local/android_notification_details.dart';
+import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -12,6 +14,7 @@ import 'package:promise/util/log/log.dart';
 import 'package:promise/widgets/loading_overlay.dart';
 
 final _controller = Get.find<PromiseController>(tag: applicationTag);
+
 class PromiseListPage extends StatelessWidget {
   const PromiseListPage({super.key});
   @override
@@ -26,7 +29,7 @@ class PromiseListView extends StatelessWidget {
   const PromiseListView({super.key});
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       body: Obx(() => _getBodyForState(context)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -58,10 +61,9 @@ class PromiseListView extends StatelessWidget {
           ],
         );
       }
-    }  else if (_controller.loadingState.value.isError) {
+    } else if (_controller.loadingState.value.isError) {
       return _errorWidget(_controller.loadingState.value.errorKey, context);
-    } 
-    else {
+    } else {
       Log.e(UnimplementedError('EventListState not consumed'));
       return _errorWidget("EventListState not consumed", context);
     }
@@ -84,12 +86,9 @@ class PromiseListView extends StatelessWidget {
 
   Widget _emptyListWidget(BuildContext context) {
     return Center(
-        child: Text(
-          context.translate("promise_list_no_promises_message")
-        )
-      );
+        child: Text(context.translate("promise_list_no_promises_message")));
   }
- 
+
   Widget _errorWidget(String errorKey, BuildContext context) {
     return Center(child: Text(context.translate(errorKey)));
   }
@@ -115,7 +114,7 @@ class PromiseListView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
                 child: Text(
-                 context.translate('promise.title'),
+                  context.translate('promise.title'),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -129,11 +128,11 @@ class PromiseListView extends StatelessWidget {
             _PromiseListItem(
                 key: ValueKey(promise.id),
                 promise: promise,
-                onClick: (promise) =>  {} 
+                onClick: (promise) => {}
                 // context
                 //     .read<HomeRouterDelegate>()
                 //     .setPromiseDetailNavState(promise)
-                    ,
+                ,
                 onStatusChange: (promise, isDone) => {}
                 // promiseListBloc
                 //     .add(isDone ? EventCompleted(promise) :  EventReopened(promise)),

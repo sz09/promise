@@ -20,8 +20,8 @@ final Map<AndroidNotificationChannels, NotificationChannel> _channels = {
     channelShowBadge: false,
     enableVibration: true,
     enableLights: true,
-    playSound: true,
-    soundSource: 'resource://raw/call',
+    // playSound: true,
+    // soundSource: 'resource://raw/res_water',
   ),
   // B
   AndroidNotificationChannels.B: NotificationChannel(

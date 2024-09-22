@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:promise/const/text.dart';
+import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/features/page.deletegate.dart';
 import 'package:promise/main.dart';
+import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/disable_button.dart';
@@ -43,6 +45,7 @@ class LoginView extends StatelessWidget {
   LoginView({super.key, this.sessionExpiredRedirect = false});
   @override
   Widget build(BuildContext context) {
+    serviceLocator.get<LocalNotificationsManager>().requestUserPermission();
     Get.put<LoginController>(LoginController(), tag: applicationTag);
     return Scaffold(
         appBar: AppBar(

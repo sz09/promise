@@ -71,7 +71,8 @@ class LocalNotificationsManagerAwAdapter implements LocalNotificationsManager {
 
     await _awNotification.initialize(
       // set the icon to null if you want to use the default app icon
-      'resource://drawable/fcm_notification_icon',
+      // 'resource://drawable/res_notf_icon'
+      null,
       NotificationChannelsMethodsAw.allChannels(),
       debug: kDebugMode,
     );
