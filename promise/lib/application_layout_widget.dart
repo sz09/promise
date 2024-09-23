@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:promise/features/menu/menu.dart';
 import 'package:promise/util/localize.ext.dart';
 
-class ApplicationKey extends LocalKey {
-}
-
 var menu = const Drawer(
   child: DrawerMenu()
 );

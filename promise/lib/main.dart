@@ -1,3 +1,4 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,8 @@ import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/create.controller.dart';
+import 'package:promise/features/home/router/home_router.dart';
+import 'package:promise/features/home/router/home_router_delegate.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/people/ui/people_page.dart';
@@ -62,10 +65,12 @@ void main() async {
     homeNavigatorKey,
     userManager,
   );
-  runApp(GetMaterialApp(
+
+  var app = GetMaterialApp(
     home: Stack(children: [
       Router(
         routerDelegate: appRouterDelegate,
+        backButtonDispatcher: RootBackButtonDispatcher(),
       ),
       const OverlayView(),
     ]),
@@ -76,7 +81,6 @@ void main() async {
     //   );
     // },
     initialBinding: _InitialBinding(),
-    routingCallback: (value) {},
     locale: LocalizationService.locale,
     fallbackLocale: LocalizationService.fallbackLocale,
     themeMode: ThemeMode.light,
@@ -84,7 +88,18 @@ void main() async {
     darkTheme: themeDark(),
     translations: LocalizationService(),
     initialRoute: homeRoute,
-    defaultTransition: Transition.size,
+    defaultTransition: Transition.native,
+    transitionDuration: const Duration(seconds: 1),
+    onGenerateTitle:(context) {
+
+      return "Primise app abcd";
+    },
+    onReady: () {
+      BackButtonInterceptor.add(myInterceptor, name: 'get_intercepter', context: Get.context);
+    },
+    onDispose: (){
+      BackButtonInterceptor.add(myInterceptor, name: 'get_intercepter', context: Get.context);
+    },
     getPages: [
       GetPage(
           name: homeRoute,
@@ -104,8 +119,14 @@ void main() async {
               widgetKey: 'people.title', child: const PeoplePage())),
       GetPage(name: settingsRoute, page: () => const SettingsWidget())
     ],
-  ));
+  );
+  runApp(app);
   FlutterNativeSplash.remove();
+}
+
+bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+  Log.d("BACK BUTTON!"); // Do some stuff.
+  return true;
 }
 
 class _InitialBinding implements Bindings {

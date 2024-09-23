@@ -13,9 +13,13 @@ class HomeRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
+  final Future<bool> Function() onBackPressed;
 
   HomeRouterDelegate(this.navigatorKey,
-      [this.appNavState = const AppNavState.home()]);
+      {
+        required this.onBackPressed,
+        this.appNavState = const AppNavState.home()
+      });
 
   AppNavState appNavState = const AppNavState.home();
   bool isSettingsShownState = false;
@@ -35,12 +39,6 @@ class HomeRouterDelegate extends RouterDelegate
 
   void setApplicationState({required ApplicationState appState}) {
     appNavState = appState;
-    // switch(appState) {
-    //   case MemoryListState _:
-    //     pages.add(memoryListPage);
-    //   case PromiseListState _:
-    //     pages.add(promiseListPage);
-    // }
     notifyListeners();
   }
   @override
@@ -85,5 +83,11 @@ class HomeRouterDelegate extends RouterDelegate
   @override
   Future<void> setNewRoutePath(configuration) async {
     /* no-op */
+  }
+  
+
+  @override
+  Future<bool> popRoute() {
+    return onBackPressed();
   }
 }

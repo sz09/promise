@@ -77,6 +77,9 @@ class AppRouterDelegate extends RouterDelegate
           key: const ValueKey('HomeRouterPage'),
           child: HomeRouter(
             homeNavigatorKey,
+             onBackPressed: () async {
+              return false;
+             },
           ),
         )
       ];
