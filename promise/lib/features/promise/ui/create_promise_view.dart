@@ -13,8 +13,6 @@ class CreatePromiseView extends StatelessWidget {
   const CreatePromiseView({super.key});
   @override
   Widget build(BuildContext context) {
-    Get.put<CreatePromiseController>(CreatePromiseController(),
-        tag: applicationTag);
     return _CreatePromiseView();
   }
 }

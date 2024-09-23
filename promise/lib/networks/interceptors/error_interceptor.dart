@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:promise/features/force_update/force_update_handler.dart';
-import 'package:promise/user/unauthorized_user_exception.dart';
 import 'package:promise/user/unauthorized_user_handler.dart';
+import 'package:promise/util/log/log.dart';
 
 /// [RequestInterceptor] that parses errors.
 class ErrorInterceptor extends Interceptor {
@@ -10,7 +10,7 @@ class ErrorInterceptor extends Interceptor {
   final ForceUpdateHandler _forceUpdateHandler;
 
   ErrorInterceptor(this._unauthorizedUserHandler, this._forceUpdateHandler);
-  
+
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // todo modify when implementing force update
@@ -18,14 +18,19 @@ class ErrorInterceptor extends Interceptor {
     //   _forceUpdateHandler.onForceUpdateEvent();
     //   throw ForceUpdateException(response.base.reasonPhrase);
     // }
-
     // Unauthorized user after failed refresh token attempt
     if (response.statusCode == 401) {
       _unauthorizedUserHandler.onUnauthorizedUserEvent();
-      // TODO: extract reasonPhrase
-      // TODO: Flow response got problem
-      throw UnauthorizedUserException("response.base.reasonPhrase");
+    } else if (response.statusCode == 500) {
+      Log.e('[Error interceptor] [${response.realUri.path}] [status code: ${response.statusCode}] [error: Server error: ${response.data['error']}]');
+      var error = DioException.badResponse(
+        statusCode: response.statusCode!,
+        requestOptions: response.requestOptions,
+        response: response,
+      );
+      handler.reject(error);
+    } else {
+      handler.next(response);
     }
-    handler.next(response);
   }
 }

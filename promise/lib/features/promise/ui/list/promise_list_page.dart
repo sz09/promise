@@ -5,8 +5,6 @@ import 'package:promise/features/promise/ui/create_promise_view.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/promise/promise.dart';
-import 'package:promise/notifications/local/android_notification_details.dart';
-import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -19,7 +17,6 @@ class PromiseListPage extends StatelessWidget {
   const PromiseListPage({super.key});
   @override
   Widget build(BuildContext context) {
-    Get.put<PromiseController>(PromiseController(), tag: applicationTag);
     _controller.loadData(serviceLocator.get<PromiseService>().fetchAsync);
     return const PromiseListView();
   }

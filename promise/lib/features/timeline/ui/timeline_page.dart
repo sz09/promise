@@ -18,7 +18,6 @@ class TimelinePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put<TimelineController>(TimelineController(), tag: applicationTag);
     Future.microtask(() async {
       _controller.loadingState.value.isInprogress = true;
       _controller.loadingState.refresh();

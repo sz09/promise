@@ -20,7 +20,6 @@ class MemoryListPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    Get.put<MemoryController>(MemoryController(), tag: applicationTag);
     _controller.loadData(serviceLocator.get<MemoryService>().fetchAsync);
     return const MemoryListView();
   }

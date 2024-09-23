@@ -5,7 +5,9 @@ import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
+import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
+import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/people/ui/people_page.dart';
 import 'package:promise/features/promise/ui/list/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
@@ -18,6 +20,7 @@ import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:azure_app_config/azure_app_config.dart';
+import 'package:promise/util/log/log.dart';
 import 'main.reflectable.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -26,14 +29,12 @@ final authNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>();
 final userManager = serviceLocator.get<UserManager>();
 
-const String applicationTag = "application";
+const String applicationTag = "-application";
 
 void main() async {
-   FlutterError.onError = (details) {
+  FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    if (kReleaseMode) {
-      
-    }
+    if (kReleaseMode) {}
   };
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -50,25 +51,32 @@ void main() async {
     FlavorValues(baseUrlApi: result['BaseUrlApi']!),
   );
   initializeReflectable();
-  
-  await Future.wait(LocalizationService.langCodes.map((code) => LocalizationService.loadLanguage(languageCode: code)));
+
+  await Future.wait(LocalizationService.langCodes
+      .map((code) => LocalizationService.loadLanguage(languageCode: code)));
   await preAppConfig();
-  
+
   final AppRouterDelegate appRouterDelegate = AppRouterDelegate(
     rootNavigatorKey,
     authNavigatorKey,
     homeNavigatorKey,
     userManager,
   );
-
   runApp(GetMaterialApp(
     home: Stack(children: [
       Router(
         routerDelegate: appRouterDelegate,
-        backButtonDispatcher: RootBackButtonDispatcher(),
       ),
       const OverlayView(),
     ]),
+    // builder: (context, child1) {
+    //   return ApplicationLayout(
+    //     widgetKey: 'addadadadad',
+    //     child: child1!,
+    //   );
+    // },
+    initialBinding: _InitialBinding(),
+    routingCallback: (value) {},
     locale: LocalizationService.locale,
     fallbackLocale: LocalizationService.fallbackLocale,
     themeMode: ThemeMode.light,
@@ -81,29 +89,33 @@ void main() async {
       GetPage(
           name: homeRoute,
           page: () => ApplicationLayout(
-            widgetKey: 'timeline.title', 
-            child: const TimelinePage())
-          ),
+              widgetKey: 'timeline.title', child: const TimelinePage())),
       GetPage(
           name: promisesRoute,
           page: () => ApplicationLayout(
-            widgetKey: 'promise.title', 
-            child: const PromiseListPage())
-          ),
+              widgetKey: 'promise.title', child: const PromiseListPage())),
       GetPage(
           name: memoriesRoute,
           page: () => ApplicationLayout(
-            widgetKey: 'memory.title', 
-            child: const MemoryListPage())
-          ),
+              widgetKey: 'memory.title', child: const MemoryListPage())),
       GetPage(
           name: peopleRoute,
           page: () => ApplicationLayout(
-            widgetKey: 'people.title', 
-            child: const PeoplePage())
-          ),
+              widgetKey: 'people.title', child: const PeoplePage())),
       GetPage(name: settingsRoute, page: () => const SettingsWidget())
     ],
   ));
   FlutterNativeSplash.remove();
+}
+
+class _InitialBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => MemoryController(), tag: applicationTag, fenix: true);
+    Get.lazyPut(() => PromiseController(), tag: applicationTag, fenix: true);
+    Get.lazyPut(() => PeopleController(), tag: applicationTag, fenix: true);
+    Get.lazyPut(() => TimelineController(), tag: applicationTag, fenix: true);
+    Get.lazyPut(() => CreatePromiseController(),
+        tag: applicationTag, fenix: true);
+  }
 }
