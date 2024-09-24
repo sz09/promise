@@ -15,7 +15,7 @@ class LoadingState extends NetworkState {
 abstract class PageController<T> extends GetxController {
   var loadingState = LoadingState().obs;
   RxList<T> items = <T>[].obs;
-  Future loadData(Future<PageResult<T>> Function() func) async{
+  Future loadData(Future<PageResult<T>> Function() func) async {
     loadingState.value.isInprogress = true;
     loadingState.refresh();
     Log.d("GetX begin loadData for ${T.toPlural()} take");

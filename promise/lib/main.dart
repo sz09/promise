@@ -90,10 +90,6 @@ void main() async {
     initialRoute: homeRoute,
     defaultTransition: Transition.native,
     transitionDuration: const Duration(seconds: 1),
-    onGenerateTitle:(context) {
-
-      return "Primise app abcd";
-    },
     onReady: () {
       BackButtonInterceptor.add(myInterceptor, name: 'get_intercepter', context: Get.context);
     },

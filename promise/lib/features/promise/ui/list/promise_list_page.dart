@@ -13,6 +13,8 @@ import 'package:promise/widgets/loading_overlay.dart';
 
 final _controller = Get.find<PromiseController>(tag: applicationTag);
 
+final ScrollController _scrollController = ScrollController();
+
 class PromiseListPage extends StatelessWidget {
   const PromiseListPage({super.key});
   @override
@@ -43,8 +45,8 @@ class PromiseListView extends StatelessWidget {
     if (_controller.loadingState.value.isInprogress) {
       return loadingWidget();
     } else if (!_controller.loadingState.value.isInprogress) {
-      final List<Promise> memories = _controller.items;
-      if (memories.isEmpty) {
+      final List<Promise> promises = _controller.items;
+      if (promises.isEmpty) {
         return _emptyListWidget(context);
       } else {
         return Column(
@@ -52,7 +54,7 @@ class PromiseListView extends StatelessWidget {
             Expanded(
               child: _promiseListWidget(
                 context,
-                memories,
+                promises,
               ),
             ),
           ],
@@ -66,17 +68,37 @@ class PromiseListView extends StatelessWidget {
     }
   }
 
-  Widget _promiseListWidget(BuildContext context, List<Promise> memories) {
-    return Scrollbar(
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          color: context.containerLayoutColor,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[getItem(memories, context)],
-          ),
-        ),
+  Widget _promiseListWidget(BuildContext context, List<Promise> promises1) {
+   var promises = promises1;
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      controller: _scrollController,
+      child: Column(
+        children: [
+          for (Promise promise in promises)
+            _PromiseListItem(
+              key: ValueKey(promise.id),
+              promise: promise,
+              onClick: (promise) => {}
+              // context
+              //     .read<HomeRouterDelegate>()
+              //     .setPromiseDetailNavState(promise)
+              ,
+              onStatusChange: (promise, isDone) => {}
+                // promiseListBloc
+                //     .add(isDone ? EventCompleted(promise) :  EventReopened(promise)),
+            )
+          // ListView.separated(
+          //   shrinkWrap: true,
+          //   itemCount: 20,
+          //   separatorBuilder: (_, __) => const Divider(),
+          //   itemBuilder: (context, int index) {
+          //     return ListTile(
+          //       title: Text(promises[index].content),
+          //     );
+          //   },
+          // )
+        ],
       ),
     );
   }
@@ -121,19 +143,7 @@ class PromiseListView extends StatelessWidget {
           ),
         ),
         children: <Widget>[
-          for (Promise promise in promise)
-            _PromiseListItem(
-                key: ValueKey(promise.id),
-                promise: promise,
-                onClick: (promise) => {}
-                // context
-                //     .read<HomeRouterDelegate>()
-                //     .setPromiseDetailNavState(promise)
-                ,
-                onStatusChange: (promise, isDone) => {}
-                // promiseListBloc
-                //     .add(isDone ? EventCompleted(promise) :  EventReopened(promise)),
-                ),
+          
         ],
         onReorder: (oldIndex, newIndex) {
           // promiseListBloc.add(PromisesReordered(key, oldIndex, newIndex));

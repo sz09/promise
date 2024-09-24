@@ -64,6 +64,11 @@ class SynchronizationService {
     } while(isNeedSync);
   }
 
+
+  Future doSyncToServerAsync() async{
+
+  }
+  
   Future updateSystemVersion({required SystemVersion systemVersion, required String key, required int version}) async{
     await _lock2.synchronized(() async {
       systemVersion.versions[key] = version;

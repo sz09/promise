@@ -31,6 +31,13 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
     return ts;
   }
 
+  
+  Future deleteManyAsync() async {
+    var box = await localDatabase.getBoxAsync();
+    box.clear();
+    await box.flush();
+  }
+
   @override
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
     var box = await localDatabase.getBoxAsync();

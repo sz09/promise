@@ -14,6 +14,7 @@ abstract class BaseAuditModel extends BaseModel {
 
   @HiveField(4)
   late DateTime? updatedAt = DateTime.now();
+  
   BaseAuditModel Function(Map<String, dynamic>) fromJsonMethod();
 }
 
