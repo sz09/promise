@@ -7,8 +7,6 @@ import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/create.controller.dart';
-import 'package:promise/features/home/router/home_router.dart';
-import 'package:promise/features/home/router/home_router_delegate.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/people/ui/people_page.dart';
@@ -58,7 +56,6 @@ void main() async {
   await Future.wait(LocalizationService.langCodes
       .map((code) => LocalizationService.loadLanguage(languageCode: code)));
   await preAppConfig();
-
   final AppRouterDelegate appRouterDelegate = AppRouterDelegate(
     rootNavigatorKey,
     authNavigatorKey,

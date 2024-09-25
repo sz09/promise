@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/di/user_scope.dart';
+import 'package:promise/pre_app_config.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/models/user/user_credentials.dart';
 import 'package:promise/user/user_event_hook.dart';
@@ -34,6 +35,7 @@ class UserScopeHook extends UserEventHook<UserCredentials> {
     final userId = user.user.id;
     if (await _pushUserScope(userId, _lastUserScopeUserId)) {
       await setupUserScope(userId);
+      await setupWebSocket(userId);
     }
     _lastUserScopeUserId = userId;
   }
@@ -46,6 +48,7 @@ class UserScopeHook extends UserEventHook<UserCredentials> {
     }
     await teardownUserScope().catchError(onErrorLog);
     await _popUserScope();
+    await closeWebSocketConnection();
     _lastUserScopeUserId = null;
   }
 }
