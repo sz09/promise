@@ -11,9 +11,10 @@ class LoginController extends GetxController {
   login(String username, String password) async {
     loginState.value.isInprogress = true;
     loginState.refresh();
-    await loadingOverlay.during(userManager.login(username, password));
-    loginState.value.isInprogress = false;
-    loginState.refresh();
+    await loadingOverlay.during(userManager.login(username, password), finallyFunc: () {
+      loginState.value.isInprogress = false;
+      loginState.refresh();
+    });
     update();
   }
 }

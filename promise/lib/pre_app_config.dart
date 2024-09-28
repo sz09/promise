@@ -1,3 +1,5 @@
+// ignore_for_file: unused_catch_clause
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';

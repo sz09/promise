@@ -54,9 +54,20 @@ class LoadingOverlay {
     }
   }
 
-  Future<T> during<T>(Future<T> future) async {
+  Future<T> during<T>(Future<T> future, {T Function(T)? doneFunc = null, Function? finallyFunc = null}) async {
     await show();
-    return await future.whenComplete(() async => await hide());
+    return await future.then((r) async {
+      await hide();
+      return Future.sync(() { 
+        if(doneFunc != null) {
+           return doneFunc.call(r);
+        }
+        return r;
+      });
+    });
+    // .whenComplete(() {
+    //    finallyFunc?.call();
+    // });
   }
 
   LoadingOverlay._create(this._context);

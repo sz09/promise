@@ -27,8 +27,11 @@ abstract class DioClient {
 
   Future<Response<SyncResult<T>>> fetchSync<T>(String path, Object? data, 
       dynamic factoryMethod) async {
-    var response = await _dio.get(path, data: data);
-    return _convertResult(response: response, factoryMethod: factoryMethod);
+    return _dio.get(path, data: data)
+    .then((response) => _convertResult(response: response, factoryMethod: factoryMethod), 
+    onError: (e) => {
+
+    });
   }
   Future<Response<T>> get<T>(String path, Object? data) {
     return _dio.get<T>(path, data: data);

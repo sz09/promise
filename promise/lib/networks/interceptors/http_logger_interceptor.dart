@@ -5,20 +5,20 @@ import 'package:promise/util/log/log.dart';
 class HttpLoggerInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    // final base = await request.toBaseRequest();
-    // Log.d('--> ${base.method} ${base.url}');
-    // base.headers.forEach((k, v) => Log.d('$k: $v'));
+    Log.d('HTTP LOGGER: --> ${options.method} ${options.path}');
+    // options.headers.forEach((k, v) => Log.d('$k: $v'));
 
-    // var bytes = '';
-    // if (base is http.Request) {
-    //   final body = base.body;
+    var bytes = '';
+
+    // if (options.data != null) {
+    //   final body = options.data;
     //   if (body.isNotEmpty) {
-    //     Log.d(body);
-    //     bytes = ' (${base.bodyBytes.length}-byte body)';
+    //     // Log.d(body);
+    //     // bytes = ' (${options}-byte body)';
     //   }
     // }
 
-    // Log.d('--> END ${base.method}$bytes');
+    Log.d('--> END ${options.method}$bytes');
     handler.next(options);
   }
 
