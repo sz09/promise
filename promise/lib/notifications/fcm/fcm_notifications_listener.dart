@@ -40,7 +40,7 @@ import 'package:single_item_storage/storage.dart';
 class FcmNotificationsListener {
   final DataNotificationConsumer dataNotificationConsumer;
   final LocalNotificationsManager localNotificationsManager;
-  final UserApiService userApiService;
+  final AuthrizeUserApiService authrizeUserApiService;
   final Storage<String> _fcmTokenStorage;
 
   /// If true creates a local notification for Android only.
@@ -71,7 +71,7 @@ class FcmNotificationsListener {
     required Storage<String> fcm,
     required this.dataNotificationConsumer,
     required this.localNotificationsManager,
-    required this.userApiService,
+    required this.authrizeUserApiService,
   }) : _fcmTokenStorage = fcm {
     if (shouldConfigureFirebase()) {
       _fcm = FirebaseMessaging.instance;
@@ -205,15 +205,15 @@ class FcmNotificationsListener {
   }
 
   Future<void> _onFCMTokenReceived(String? token) async {
-    Log.d('FCM - Token: ${token == null ? 'false' : 'true'}');
+    Log.d('FCM - Token: ${token  == null ? 'false' : 'true'}');
     if (kDebugMode) print('FCM - Token: $token');
-
-    final storedToken = await _fcmTokenStorage.get();
+    await _fcmTokenStorage.delete(); // TODO: TEmp
+    final storedToken = await _fcmTokenStorage.get(); 
 
     if (storedToken == null || storedToken != token) {
       if (token != null) {
         try {
-          await userApiService.addNotificationsToken(token);
+          await authrizeUserApiService.addNotificationsToken(token);
           await _fcmTokenStorage.save(token);
         } catch (error) {
           Log.e('_onAPNSTokenReceived error ${error.toString()}');

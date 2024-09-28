@@ -57,7 +57,7 @@ class HttpApiServiceProvider {
 
   /// Returns singleton UserAuthApiService.
   UserAuthApiService getUserAuthApiService() => UserAuthApiService(client: _identityServerClient);
-
+  AuthrizeUserApiService getAuthrizeUserApiService() => AuthrizeUserApiService(client: _defaultClient);
   /// Returns singleton UserApiService.
   UserApiService getUserApiService() =>
       UserApiService(client: _identityServerClient);

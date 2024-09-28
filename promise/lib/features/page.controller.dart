@@ -21,7 +21,7 @@ abstract class PageController<T> extends GetxController {
     Log.d("GetX begin loadData for ${T.toPlural()}");
     final stopwatch = Stopwatch();
     stopwatch.start();
-    await loadingOverlay.during(func(), doneFunc: (data) {
+    await loadingOverlay.during(func(), doneHandler: (data) {
       reset();
       setData(data.data);
       update();

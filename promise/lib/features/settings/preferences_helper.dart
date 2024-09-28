@@ -9,7 +9,7 @@ class PreferencesHelper {
 
   /// Initializes fields if they are stored previously,
   /// call this method before using any fields from this class
-  init() async {
+  Future<void> init() async {
     languagePreferred = await _getPreferredLanguage();
     themePreferred = await _getPreferredTheme();
   }

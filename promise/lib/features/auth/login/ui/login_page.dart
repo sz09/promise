@@ -46,7 +46,6 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     serviceLocator.get<LocalNotificationsManager>().requestUserPermission();
-    Get.put<LoginController>(LoginController(), tag: applicationTag);
     return Scaffold(
         appBar: AppBar(
           actions: [

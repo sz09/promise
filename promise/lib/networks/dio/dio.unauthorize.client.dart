@@ -13,36 +13,33 @@ import 'package:promise/user/unauthorized_user_handler.dart';
 import 'package:promise/util/http_util.dart';
 import 'package:single_item_storage/storage.dart';
 
-class DioUnauthorizeClient extends DioClient { 
-
+class DioUnauthorizeClient extends DioClient {
   DioUnauthorizeClient(
-    PackageInfo? packageInfo,
-    Storage<UserCredentials> userStore){
+      PackageInfo? packageInfo, Storage<UserCredentials> userStore) {
     BaseOptions options = BaseOptions(
-      baseUrl: FlavorConfig.values.baseUrlApi,
-      connectTimeout: const Duration(seconds: CONNECT_TIMEOUT),
-      receiveTimeout: const Duration(seconds: TIMEOUT),
+        baseUrl: FlavorConfig.values.baseUrlApi,
+        validateStatus: (int? status) {
+          return status != null;
+        },
+        connectTimeout: const Duration(seconds: CONNECT_TIMEOUT),
+        receiveTimeout: const Duration(seconds: TIMEOUT),
+        headers: {
+          'Cache-Control': 'no-cache',
+          headerContentTypeJson.key: headerContentTypeJson.value
+        },
+        // contentType: 'application/json; charset=utf-8',
 
-      headers: {
-        'Cache-Control': 'no-cache',
-        headerContentTypeJson.key: headerContentTypeJson.value
-      },
-      // contentType: 'application/json; charset=utf-8',
-
-      responseType: ResponseType.json
-    );
+        responseType: ResponseType.json);
     final dio = Dio(options);
-    dio.interceptors.addAll(
-      [  
-        VersionInterceptor(packageInfo),
-        JsonResponseConverter(),
-        HttpLoggerInterceptor(),
-        ErrorInterceptor(
-          UnauthorizedUserHandler(userStore),
-          ForceUpdateHandler(),
-        )
-      ]
-    );
+    dio.interceptors.addAll([
+      VersionInterceptor(packageInfo),
+      JsonResponseConverter(),
+      HttpLoggerInterceptor(),
+      ErrorInterceptor(
+        UnauthorizedUserHandler(userStore),
+        ForceUpdateHandler(),
+      )
+    ]);
 
     client = dio;
   }

@@ -9,9 +9,9 @@ abstract class DioClient {
   set client(Dio dio) {
     _dio = dio;
   }
-  Future<Response<T>> post<T>(String path, Object? data, T Function(Map<String, dynamic>) factoryMethod) async {
+  Future<Response<T>> post<T>(String path, Object? data, { T Function(Map<String, dynamic>)? factoryMethod = null}) async {
     var response = await _dio.post(path, data: data);
-    return _convert(response, factoryMethod);
+    return _convert(response, factoryMethod: factoryMethod);
   }
 
   Future<Response<T>> put<T>(String path, Object? data) {
@@ -41,8 +41,8 @@ abstract class DioClient {
     return _dio.delete<T>(path, data: data);
   }
 
-  Response<T> _convert<T>(Response<dynamic> response,  T Function(Map<String, dynamic>) factoryMethod) {
-    final castData = factoryMethod(response.data);
+  Response<T> _convert<T>(Response<dynamic> response,  {T Function(Map<String, dynamic>)? factoryMethod = null }) {
+    final castData = factoryMethod == null ? response.data : factoryMethod(response.data);
     return Response(
       requestOptions: response.requestOptions, 
       data: castData,

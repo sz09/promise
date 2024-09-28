@@ -11,7 +11,7 @@ class UserApiService {
 
   /// Registers a user
   Future<void> signUp(RegisterUser user) async {
-     await client.post('$account/signup', user, RegisterUser.fromJson);
+     await client.post('$account/signup', user, factoryMethod: RegisterUser.fromJson);
   }
 
   /// Gets the logged in user
@@ -19,9 +19,17 @@ class UserApiService {
     final response = await client.post('$account/login', {
       'username': username,
       'password': password
-    }, Credentials.fromJson);
+    }, factoryMethod: Credentials.fromJson);
     return response.data!;
   }
+}
+
+class AuthrizeUserApiService {
+
+  final DioClient client;
+  static const String account = '/account';
+
+  AuthrizeUserApiService({required this.client});
 
   /// Returns user profile details
   Future<IdentityUser> getUserProfile({String? authHeader}) async {
@@ -46,18 +54,18 @@ class UserApiService {
 
   /// Adds token needed for logged in user to receive push notifications
   Future<void> addNotificationsToken(String token) async {
-    await client.post<IdentityUser>('$account/add-notification-token', {
+    await client.post('$account/add-notification-token', {
       token: token
-    }, IdentityUser.fromJson);
+    });
   }
 
   /// Logs out the user from server
   Future<void> logout() async {
-    await client.post<IdentityUser>('$account/logout', null, IdentityUser.fromJson);
+    await client.post('$account/logout', null);
   }
 
   /// Deactivates the user
   Future<void> deactivate() async {
-     await client.post<IdentityUser>('$account/deactive', null, IdentityUser.fromJson);
+     await client.post('$account/deactive', null);
   }
 }

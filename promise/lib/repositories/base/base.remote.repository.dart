@@ -15,7 +15,7 @@ import 'package:promise/util/sync_result.dart';
 
   @override
   Future<T> createAsync(BaseAuditModel t) async {
-    var result = await this.client.post<T>(path, t, itemFactoryMethod);
+    var result = await this.client.post<T>(path, t, factoryMethod: itemFactoryMethod);
     return result.data!;
   }
 

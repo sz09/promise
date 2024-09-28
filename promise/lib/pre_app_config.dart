@@ -24,8 +24,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 const String themeModeKey = "isDarkMode";
 const String languageCode = "languageCode";
-GetStorage get getStorage {
-  return _getStorage!;
+GetStorage get getStorage  {
+  return _getStorage ??= GetStorage();
 }
 
 GetStorage? _getStorage;
@@ -37,12 +37,12 @@ Future<void> preAppConfig() async {
   await configureFirebase();
   initLogger();
   await setupGlobalDependencies();
-  await serviceLocator.get<LocalNotificationsManager>().init();
-  await serviceLocator.get<UserManager>().init();
-  await serviceLocator.get<PreferencesHelper>().init();
-
-  await GetStorage.init();
-  _getStorage = GetStorage();
+  await Future.wait([
+    serviceLocator.get<LocalNotificationsManager>().init(),
+    serviceLocator.get<UserManager>().init(),
+    serviceLocator.get<PreferencesHelper>().init()
+  ]);
+  
   var isDarkTheme = getStorage.read<bool>(themeModeKey) ?? false;
   Get.changeTheme(isDarkTheme ? ThemeData.dark() : ThemeData.light());
   var language = getStorage.read<String>(languageCode) ?? EN.languageCode;

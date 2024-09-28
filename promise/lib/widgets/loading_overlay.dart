@@ -54,20 +54,24 @@ class LoadingOverlay {
     }
   }
 
-  Future<T> during<T>(Future<T> future, {T Function(T)? doneFunc = null, Function? finallyFunc = null}) async {
+  Future during<T>(Future<T> future, {T Function(T)? doneHandler = null, Function? finallyHandler = null, Function? errorHandler = null }) async {
     await show();
     return await future.then((r) async {
       await hide();
       return Future.sync(() { 
-        if(doneFunc != null) {
-           return doneFunc.call(r);
+        if(doneHandler != null) {
+           return doneHandler.call(r);
         }
         return r;
       });
+    })
+    // ignore: argument_type_not_assignable_to_error_handler
+    .catchError(() {
+      errorHandler?.call();
+    })
+    .whenComplete(() {
+       finallyHandler?.call();
     });
-    // .whenComplete(() {
-    //    finallyFunc?.call();
-    // });
   }
 
   LoadingOverlay._create(this._context);

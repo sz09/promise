@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "678731460115",
+    "project_id": "promise-99171",
+    "storage_bucket": "promise-99171.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678731460115:android:7fca5efa29e02895ce99e6",
+        "android_client_info": {
+          "package_name": "com.promise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJqNWMBWUoTxNHiceH4I4Dnj8P9Gfb7pY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

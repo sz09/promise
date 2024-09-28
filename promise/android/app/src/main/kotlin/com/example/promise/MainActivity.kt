@@ -1,4 +1,4 @@
-package com.example.promise
+package com.promise
 
 import io.flutter.embedding.android.FlutterActivity
 

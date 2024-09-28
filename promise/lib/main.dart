@@ -2,10 +2,12 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
+import 'package:promise/features/auth/login/login.controller.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
@@ -39,6 +41,7 @@ void main() async {
   };
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await GetStorage.init();
   await registerDatabase();
   final service =
       AzureAppConfig(connectionString: azureAppConfigConnectionStringDev);
@@ -47,7 +50,6 @@ void main() async {
   var result = {
     for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value
   };
-  result['BaseUrlApi'] = "https://f3ff-116-111-185-89.ngrok-free.app";
   FlavorConfig.set(
     Flavor.Dev,
     FlavorValues(baseUrlApi: result['BaseUrlApi']!),
@@ -126,6 +128,7 @@ bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
 class _InitialBinding implements Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => LoginController(), tag: applicationTag, fenix: true);
     Get.lazyPut(() => MemoryController(), tag: applicationTag, fenix: true);
     Get.lazyPut(() => PromiseController(), tag: applicationTag, fenix: true);
     Get.lazyPut(() => PeopleController(), tag: applicationTag, fenix: true);

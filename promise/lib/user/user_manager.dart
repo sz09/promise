@@ -29,6 +29,7 @@ import 'package:single_item_storage/storage.dart';
 /// notify the user manager of any changes you make.
 class UserManager with UpdatesStream<UserCredentials> {
   final UserApiService _apiService;
+  final AuthrizeUserApiService _authrizeUserApiService;
   final Storage<UserCredentials> _userStore;
   final Set<UserEventHook<UserCredentials>> userEventHooks;
   late final StreamSubscription _userStoreExternalUpdatesSubscription;
@@ -36,6 +37,7 @@ class UserManager with UpdatesStream<UserCredentials> {
 
   UserManager(
     this._apiService,
+    this._authrizeUserApiService,
     ObservedStorage<UserCredentials> observedStorage, {
     Iterable<UserEventHook<UserCredentials>> userEventHooks = const [],
   })  : _userStore = observedStorage.silent,
@@ -139,7 +141,7 @@ class UserManager with UpdatesStream<UserCredentials> {
       return;
     }
 
-    await _apiService
+    await _authrizeUserApiService
         .logout()
         .catchError((e) => Log.e('UserManager - Logout error: $e'));
 
@@ -184,7 +186,7 @@ class UserManager with UpdatesStream<UserCredentials> {
       throw UnauthorizedUserException('Updating user on logged out usr');
     }
 
-    await _apiService.updateUserProfile(user);
+    await _authrizeUserApiService.updateUserProfile(user);
     Log.d('UserManager - Updating user success');
 
     return refreshUser();
@@ -201,7 +203,7 @@ class UserManager with UpdatesStream<UserCredentials> {
       throw UnauthorizedUserException('Refreshing a logged out user');
     }
 
-    final IdentityUser newUser = await _apiService.getUserProfile();
+    final IdentityUser newUser = await _authrizeUserApiService.getUserProfile();
 
     final UserCredentials? oldUserCredentials = await _userStore.get();
     final UserCredentials newUserCredentials = UserCredentials(
@@ -222,7 +224,7 @@ class UserManager with UpdatesStream<UserCredentials> {
   /// Deactivates the user's profile and triggers an update to [updates] stream.
   Future<void> deactivateUser() async {
     Log.d('UserManager - Deactivating user');
-    await _apiService.deactivate();
+    await _authrizeUserApiService.deactivate();
     await _userStore.delete();
     Log.d('UserManager - Deactivating user success');
     addUpdate(null);

@@ -13,7 +13,7 @@ class UserAuthApiService {
   Future<Credentials> refreshToken(String refreshToken) async {
     var response = await client.post<Credentials>("$path/refresh-token", {
       'token': refreshToken
-    }, Credentials.fromJson);
+    }, factoryMethod: Credentials.fromJson);
 
     return response.data!;
   }

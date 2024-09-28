@@ -67,6 +67,7 @@ Future<void> setupGlobalDependencies() async {
 
   final AuthenticatorHelperJwt authHelperJwt = apiProvider.getAuthHelperJwt();
   UserApiService userApi = apiProvider.getUserApiService();
+  AuthrizeUserApiService authrizeUserApiService = apiProvider.getAuthrizeUserApiService();
   final UserAuthApiService userAuthApi = apiProvider.getUserAuthApiService();
   final apiClient = apiProvider.apiClient;
 
@@ -96,7 +97,7 @@ Future<void> setupGlobalDependencies() async {
     localNotificationsManager: localNotificationsManager,
     showInForeground: true,
     fcm: SharedPrefsStorage<String>.primitive(itemKey: fcmTokenKey),
-    userApiService: userApi,
+    authrizeUserApiService: authrizeUserApiService,
   );
 
   final firebaseUserHook = shouldConfigureFirebase()
@@ -107,6 +108,7 @@ Future<void> setupGlobalDependencies() async {
   final UserScopeHook userScopeHook = UserScopeHook();
   final UserManager userManager = UserManager(
     userApi,
+    authrizeUserApiService,
     userStorage,
     userEventHooks: [
       firebaseUserHook,
