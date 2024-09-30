@@ -55,7 +55,7 @@ class AuthrizeUserApiService {
   /// Adds token needed for logged in user to receive push notifications
   Future<void> addNotificationsToken(String token) async {
     await client.post('$account/add-notification-token', {
-      token: token
+      'token': token
     });
   }
 

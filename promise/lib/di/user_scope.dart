@@ -43,7 +43,7 @@ Future<void> setupUserScope(String userId) async {
   final SynchronizationService synchronizationService = SynchronizationService(
     repositories: {
       // memoryRemoteRepository: memoryLocalRepository,
-      promiseRemoteRepository: promiseLocalRepository,
+      // promiseRemoteRepository: promiseLocalRepository,
       // personRemoteRepository: personLocalRepository
     }
   );

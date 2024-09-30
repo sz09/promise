@@ -56,7 +56,7 @@ class LoadingOverlay {
 
   Future during<T>(Future<T> future, {T Function(T)? doneHandler = null, Function? finallyHandler = null, Function? errorHandler = null }) async {
     await show();
-    return await future.then((r) async {
+    return  await future.then((r) async {
       await hide();
       return Future.sync(() { 
         if(doneHandler != null) {
