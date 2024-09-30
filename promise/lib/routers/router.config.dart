@@ -17,6 +17,7 @@ const String promisesRoute = "/promises";
 const String memoriesRoute = "/memories";
 const String peopleRoute = "/people";
 const String settingsRoute = "/settings";
+const String chatRoute = "/chat";
 
 final APPLICATION_ROUTES = 
 <String, WidgetBuilder> {

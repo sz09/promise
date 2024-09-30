@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:promise/features/menu/menu.dart';
+import 'package:promise/routers/router.config.dart';
 import 'package:promise/util/localize.ext.dart';
 
 var menu = const Drawer(
@@ -16,8 +18,9 @@ class ApplicationLayout extends StatelessWidget {
     // Method to handle BottomNavigationBar imentem taps
   void _onItemTapped(int index) {
     _selectedIndex = index;
-    // Use PageController to jump to the selected page
-    _pageController.jumpToPage(index);
+    if(_selectedIndex == 1){
+      Get.toNamed(chatRoute);
+    }
   }
   
   @override
@@ -38,14 +41,15 @@ class ApplicationLayout extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: const [ //TODO: localization
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
-            label: 'My',
+            label: "Chat",
           ),
         ],
         currentIndex: _selectedIndex,

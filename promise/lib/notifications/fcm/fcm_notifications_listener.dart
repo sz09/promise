@@ -207,7 +207,6 @@ class FcmNotificationsListener {
   Future<void> _onFCMTokenReceived(String? token) async {
     Log.d('FCM - Token: ${token  == null ? 'false' : 'true'}');
     if (kDebugMode) print('FCM - Token: $token');
-    await _fcmTokenStorage.delete(); // TODO: TEmp
     final storedToken = await _fcmTokenStorage.get(); 
 
     if (storedToken == null || storedToken != token) {

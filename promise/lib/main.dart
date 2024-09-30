@@ -8,6 +8,7 @@ import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
+import 'package:promise/features/chat/chat_page.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
@@ -91,10 +92,12 @@ void main() async {
     defaultTransition: Transition.native,
     transitionDuration: const Duration(seconds: 1),
     onReady: () {
-      BackButtonInterceptor.add(myInterceptor, name: 'get_intercepter', context: Get.context);
+      BackButtonInterceptor.add(myInterceptor,
+          name: 'get_intercepter', context: Get.context);
     },
-    onDispose: (){
-      BackButtonInterceptor.add(myInterceptor, name: 'get_intercepter', context: Get.context);
+    onDispose: () {
+      BackButtonInterceptor.add(myInterceptor,
+          name: 'get_intercepter', context: Get.context);
     },
     getPages: [
       GetPage(
@@ -113,7 +116,11 @@ void main() async {
           name: peopleRoute,
           page: () => ApplicationLayout(
               widgetKey: 'people.title', child: const PeoplePage())),
-      GetPage(name: settingsRoute, page: () => const SettingsWidget())
+      GetPage(
+          name: chatRoute,
+          page: () => ApplicationLayout(
+              widgetKey: 'chat.title', child: const ChatPage())),
+      GetPage(name: settingsRoute, page: () => const SettingsWidget()),
     ],
   );
   runApp(app);
