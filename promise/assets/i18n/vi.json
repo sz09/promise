@@ -69,6 +69,9 @@
   "friend.people": "Kết nối",
   "timeline.with": "với",
 
+  "connection.receive_connection_request_from_title": "Nhận được yêu cầu kết nối từ {{fullName}}",
+  "connection.receive_connection_request_from": "{{fullName}} gửi cho bạn yêu cầu kết nối",
+  
   "promise.title": "Lời hứa",
   "memory.title": "Kỷ niệm",
   "people.title": "Kết nối",

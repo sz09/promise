@@ -10,3 +10,18 @@ extension Translate on BuildContext {
     }
   }
 }
+
+extension XX on String {
+  String translateAndReplace(Map<String, dynamic> params){
+    try{
+      // ignore: unnecessary_this
+      var translatedValue = this.tr;
+      for(var param in params.entries) {
+        translatedValue = translatedValue.replaceAll("{{${param.key}}}", param.value);
+      }
+      return translatedValue;
+    } catch(r){
+      return this;
+    }
+  }
+}

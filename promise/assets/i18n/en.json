@@ -70,6 +70,10 @@
   "people.title": "People",
   "chat.title": "Chat",
 
+  
+  "connection.receive_connection_request_from_title": "Receive connection request from {{fullName}}",
+  "connection.receive_connection_request_from": "{{fullName}} send a connection request",
+  
   "theme": "Theme",
   "dark_theme": "Dark theme",
   "settings": "Settings",

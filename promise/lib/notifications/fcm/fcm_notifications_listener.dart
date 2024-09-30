@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:promise/config/firebase_config.dart';
@@ -14,6 +15,7 @@ import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:single_item_storage/storage.dart';
+import 'package:promise/util/localize.ext.dart';
 
 /// Listens for remote messages using Firebase Cloud Messaging (FCM)
 ///
@@ -237,8 +239,15 @@ class FcmNotificationsListener {
         final id = message.messageId != null && message.messageId!.isNotEmpty
             ? message.messageId.hashCode
             : getMessageIdForType(type);
-        final title = message.notification!.title;
-        final body = message.notification!.body;
+        var title = "";
+        if(message.notification!.title != null){
+          title = message.notification!.title!.translateAndReplace(message.data);
+        }
+
+        var body = "";
+        if(message.notification!.body != null){
+           body = message.notification!.body!.translateAndReplace(message.data);
+        }
         final notificationDetails = getNotifDetailsForMessageType(type);
         final payload = model.Message(
             type: type, messageId: message.messageId, title: title, body: body);
