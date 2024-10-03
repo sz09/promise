@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:promise/features/menu/menu.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -16,10 +16,17 @@ class ApplicationLayout extends StatelessWidget {
   late int _selectedIndex = 0;
 
     // Method to handle BottomNavigationBar imentem taps
-  void _onItemTapped(int index) {
+  Future _onItemTapped(int index, BuildContext context) async {
     _selectedIndex = index;
-    if(_selectedIndex == 1){
-      Get.toNamed(chatRoute);
+    switch(_selectedIndex){
+      case 0:
+      await context.navigateTo(homeRoute);
+        break; 
+      case 1:
+      await context.navigateTo(chatRoute);
+        break;
+      case 2:
+        break;
     }
   }
   
@@ -41,19 +48,23 @@ class ApplicationLayout extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [ //TODO: localization
+        items: [ //TODO: localization
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: context.translate('Home'),
             
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: "Chat",
+            icon: const Icon(FontAwesomeIcons.telegram),
+            label:context.translate('Chat'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(FontAwesomeIcons.person),
+            label: context.translate('Me'),
           ),
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped
+        onTap: (i) async => await _onItemTapped(i, context)
       ),
     );
   } 

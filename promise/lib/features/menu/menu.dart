@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:promise/main.dart';
 import 'package:promise/routers/router.config.dart';
@@ -8,13 +9,9 @@ import 'package:promise/settings.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
-
 const drawerMenuKey = Key("drawer_menu");
 const closeMenuKey = Key("close_key_icon");
 
-const todoTileKey = Key("todo_tile");
-const tourTileKey = Key("tour_tile");
-const settingsTileKey = Key("settings_tile");
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
@@ -48,7 +45,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.menu_open),
+              icon: const Icon(FontAwesomeIcons.bars),
             ),
           ]),
       body: Column(children: _getMenuItems(context)),
@@ -61,42 +58,42 @@ List<Widget> _getMenuItems(BuildContext context) {
     _getMenuItem(
         context: context,
         key: const Key('home_title'),
-        icon: Icons.home,
-        state: () {
-          context.navigateTo(homeRoute);
+        icon: FontAwesomeIcons.house,
+        state: () async {
+          await context.navigateTo(homeRoute);
         },
         titleKey: 'menu.home'),
     _getMenuItem(
         context: context,
         key: const Key('promise_title'),
-        icon: Icons.settings,
-        state: () {
-          context.navigateTo(promisesRoute);
+        icon: FontAwesomeIcons.handHoldingHeart,
+        state: () async {
+          await context.navigateTo(promisesRoute);
         },
         titleKey: 'menu.promises'),
     _getMenuItem(
         context: context,
         key: const Key('memory_title'),
-        icon: Icons.settings,
-        state: () {
-          context.navigateTo(memoriesRoute);
+        icon: FontAwesomeIcons.cameraRetro,
+        state: () async {
+          await context.navigateTo(memoriesRoute);
         },
         titleKey: 'menu.memories'),
     _getMenuItem(
         context: context,
         key: const Key('people_title'),
-        icon: Icons.people,
-        state: () {
-          context.navigateTo(peopleRoute);
+        icon: FontAwesomeIcons.userGroup,
+        state: () async {
+          await context.navigateTo(peopleRoute);
         },
         titleKey: 'menu.people'),
     Expanded(child: Container()),
     _getMenuItem(
         context: context,
         key: const Key('setting_title'),
-        icon: Icons.settings,
-        state: () {
-          context.navigateTo(settingsRoute);
+        icon: FontAwesomeIcons.gear,
+        state: () async {
+          await context.navigateTo(settingsRoute);
         },
         titleKey: 'menu.settings'),
   ];
@@ -105,7 +102,7 @@ List<Widget> _getMenuItems(BuildContext context) {
     items.add(_getAuthMenuItem(
         context: context,
         key: const Key('logout_title'),
-        icon: Icons.logout,
+        icon: FontAwesomeIcons.rightFromBracket,
         route: logoutRoute,
         titleKey: 'menu.logout'));
   }
@@ -170,11 +167,11 @@ Container _getAuthMenuItem(
 }
 
 extension CustomNavigation on BuildContext {
-  navigateTo(String routeName) {
+  Future navigateTo(String routeName) async {
     var navigator = Navigator.of(this);
     navigator.pop();
     if (Get.routing.current != routeName) {
-      Get.toNamed(routeName);
+      await Get.toNamed(routeName);
     }
   }
 }
