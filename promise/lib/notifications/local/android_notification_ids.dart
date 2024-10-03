@@ -10,9 +10,10 @@ const TYPE_C_NOTIFICATION_ID = 333333;
 
 int getMessageIdForType(MessageType type) {
   switch (type) {
-    case MessageType.A:
+    case MessageType.Call:
       return TYPE_A_NOTIFICATION_ID;
-    case MessageType.B:
+    case MessageType.Message:
+    case MessageType.ConnectionRequest:
       return TYPE_B_NOTIFICATION_ID;
     case MessageType.UNKNOWN:
       return DateTime.now().millisecondsSinceEpoch;

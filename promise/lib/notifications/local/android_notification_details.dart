@@ -44,10 +44,12 @@ const infoNotificationDetails = AndroidNotificationDetails(
 
 AndroidNotificationDetails getNotifDetailsForMessageType(MessageType type) {
   switch (type) {
-    case MessageType.A:
-    case MessageType.B:
-      return typeANotificationDetails;
+    case MessageType.Message:
+    case MessageType.ConnectionRequest:
     case MessageType.UNKNOWN:
       return infoNotificationDetails;
+
+    case MessageType.Call:
+      return typeANotificationDetails;
   }
 }

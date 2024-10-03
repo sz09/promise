@@ -13,9 +13,9 @@ extension SerializableMessage on Message? {
     final messageType = getTypeFromMappedData(jsonData);
 
     switch (messageType) {
-      case MessageType.A:
+      case MessageType.Message:
       //return AMessage.fromJson(jsonData);
-      case MessageType.B:
+      case MessageType.ConnectionRequest:
       //return BMessage.fromJson(jsonData);
       default:
         return Message.fromJson(jsonData);

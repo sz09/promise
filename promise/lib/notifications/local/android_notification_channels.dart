@@ -23,9 +23,10 @@ extension AndroidNotificationChannelsMethods on AndroidNotificationChannels {
 
 AndroidNotificationChannels getChannelForMessageType(MessageType type) {
   switch (type) {
-    case MessageType.A:
-    case MessageType.B:
+    case MessageType.Call:
       return AndroidNotificationChannels.A;
+    case MessageType.Message:
+    case MessageType.ConnectionRequest:
     case MessageType.UNKNOWN:
       return AndroidNotificationChannels.B;
   }
