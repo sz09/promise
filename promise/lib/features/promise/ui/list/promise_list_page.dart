@@ -6,7 +6,6 @@ import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
-import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/widgets/loading_overlay.dart';
@@ -117,36 +116,6 @@ class PromiseListView extends StatelessWidget {
         context: context,
         builder: (context) {
           return const CreatePromiseView();
-        });
-  }
-
-  ReorderableListView getItem(List<Promise> promise, BuildContext context) {
-    return ReorderableListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        header: SizedBox(
-          height: 50,
-          child: Container(
-            color: context.containerLayoutColor,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 8.0),
-                child: Text(
-                  context.translate('promise.title'),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        children: <Widget>[
-          
-        ],
-        onReorder: (oldIndex, newIndex) {
-          // promiseListBloc.add(PromisesReordered(key, oldIndex, newIndex));
         });
   }
 }

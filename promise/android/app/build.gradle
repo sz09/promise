@@ -50,7 +50,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        // classpath "com.android.tools.build:gradle:8.8"
     }
 
     buildTypes {

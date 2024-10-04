@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart' as http;
@@ -208,7 +209,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+
+   return Scaffold(
         body: Chat(
           messages: _messages,
           onAttachmentPressed: _handleAttachmentPressed,
@@ -218,6 +221,33 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
+          l10n: _getChatL10n()
         ),
       );
+  }
 }
+_getChatL10n() {
+  if(Get.locale!.countryCode != 'en'){
+    return const ChatL10nVN();
+  }
+
+  return const ChatL10nEn();
+}
+@immutable
+class ChatL10nVN extends ChatL10n {
+  /// Creates English l10n. Use this constructor if you want to
+  /// override only a couple of properties, otherwise create a new class
+  /// which extends [ChatL10n].
+  const ChatL10nVN({
+    super.and = 'và',
+    super.attachmentButtonAccessibilityLabel = 'Gửi đa phương tiện',
+    super.emptyChatPlaceholder = 'Không có tin nhắn',
+    super.fileButtonAccessibilityLabel = 'File',
+    super.inputPlaceholder = 'Tin nhắn',
+    super.isTyping = 'đang nhập...',
+    super.others = 'khác',
+    super.sendButtonAccessibilityLabel = 'Gửi',
+    super.unreadMessagesLabel = 'Tin nhắn chưa đọc',
+  });
+}
+

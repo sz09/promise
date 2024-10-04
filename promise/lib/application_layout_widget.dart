@@ -48,7 +48,7 @@ class ApplicationLayout extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [ //TODO: localization
+        items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
             label: context.translate('Home'),
