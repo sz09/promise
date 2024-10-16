@@ -60,7 +60,7 @@ List<Widget> _getMenuItems(BuildContext context) {
         key: const Key('home_title'),
         icon: FontAwesomeIcons.house,
         state: () async {
-          await context.navigateTo(homeRoute);
+          await context.quickNavigateTo(homeRoute);
         },
         titleKey: 'menu.home'),
     _getMenuItem(
@@ -68,7 +68,7 @@ List<Widget> _getMenuItems(BuildContext context) {
         key: const Key('promise_title'),
         icon: FontAwesomeIcons.handHoldingHeart,
         state: () async {
-          await context.navigateTo(promisesRoute);
+          await context.quickNavigateTo(promisesRoute);
         },
         titleKey: 'menu.promises'),
     _getMenuItem(
@@ -76,7 +76,7 @@ List<Widget> _getMenuItems(BuildContext context) {
         key: const Key('memory_title'),
         icon: FontAwesomeIcons.cameraRetro,
         state: () async {
-          await context.navigateTo(memoriesRoute);
+          await context.quickNavigateTo(memoriesRoute);
         },
         titleKey: 'menu.memories'),
     _getMenuItem(
@@ -84,7 +84,7 @@ List<Widget> _getMenuItems(BuildContext context) {
         key: const Key('people_title'),
         icon: FontAwesomeIcons.userGroup,
         state: () async {
-          await context.navigateTo(peopleRoute);
+          await context.quickNavigateTo(peopleRoute);
         },
         titleKey: 'menu.people'),
     Expanded(child: Container()),
@@ -93,7 +93,7 @@ List<Widget> _getMenuItems(BuildContext context) {
         key: const Key('setting_title'),
         icon: FontAwesomeIcons.gear,
         state: () async {
-          await context.navigateTo(settingsRoute);
+          await context.quickNavigateTo(settingsRoute);
         },
         titleKey: 'menu.settings'),
   ];
@@ -167,9 +167,13 @@ Container _getAuthMenuItem(
 }
 
 extension CustomNavigation on BuildContext {
-  Future navigateTo(String routeName) async {
+  Future quickNavigateTo(String routeName) async {
     var navigator = Navigator.of(this);
     navigator.pop();
+    await navigateTo(routeName);
+  }
+
+  Future navigateTo(String routeName) async {
     if (Get.routing.current != routeName) {
       await Get.toNamed(routeName);
     }

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
@@ -22,6 +23,7 @@ import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/resources/theme/app_theme.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
+import 'package:promise/routing/navigation_observer.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:azure_app_config/azure_app_config.dart';
 import 'package:promise/util/log/log.dart';
@@ -34,6 +36,7 @@ final homeNavigatorKey = GlobalKey<NavigatorState>();
 final userManager = serviceLocator.get<UserManager>();
 
 const String applicationTag = "-application";
+var navigationHistoryObserver = NavigationRoutesObserver();
 
 void main() async {
   FlutterError.onError = (details) {
@@ -75,6 +78,7 @@ void main() async {
       ),
       const OverlayView(),
     ]),
+    navigatorObservers: [navigationHistoryObserver],
     // builder: (context, child1) {
     //   return ApplicationLayout(
     //     widgetKey: 'addadadadad',

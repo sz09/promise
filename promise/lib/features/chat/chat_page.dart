@@ -8,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:promise/features/chat/utils/chat.language.dart';
+import 'package:promise/features/chat/utils/chat.theme.dart';
+import 'package:promise/util/localize.ext.dart';
 import 'package:uuid/uuid.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mime/mime.dart';
@@ -51,9 +54,9 @@ class _ChatPageState extends State<ChatPage> {
                   Navigator.pop(context);
                   _handleImageSelection();
                 },
-                child: const Align(
+                child: Align(
                   alignment: AlignmentDirectional.centerStart,
-                  child: Text('Photo'),
+                  child: Text(context.translate('chat.photo')),
                 ),
               ),
               TextButton(
@@ -61,16 +64,16 @@ class _ChatPageState extends State<ChatPage> {
                   Navigator.pop(context);
                   _handleFileSelection();
                 },
-                child: const Align(
+                child: Align(
                   alignment: AlignmentDirectional.centerStart,
-                  child: Text('File'),
+                  child: Text(context.translate('chat.file')),
                 ),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Align(
+                child: Align(
                   alignment: AlignmentDirectional.centerStart,
-                  child: Text('Cancel'),
+                  child: Text(context.translate('buttons.cancel')),
                 ),
               ),
             ],
@@ -197,10 +200,13 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _loadMessages() async {
-    final response = "{}";
-    final messages = jsonDecode(response)
+    final response = "";
+    List<types.Message> messages =  List<types.Message>.empty();
+    if(response.isNotEmpty){
+      messages = jsonDecode(response)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
+    }
 
     setState(() {
       _messages = messages;
@@ -218,6 +224,8 @@ class _ChatPageState extends State<ChatPage> {
           showUserAvatars: true,
           showUserNames: true,
           user: _user,
+          l10n: getChatL10n(),
+          theme: getChatTheme()
         ),
       );
 }

@@ -20,7 +20,12 @@
   "login.login_progress": "Login in progress...",
   "login.label_username": "Username",
   "login.label_password": "Password",
-  "goBack_button": "Go back",
+
+
+  "chat.photo": "Photo",
+  "chat.file": "File",
+
+  "buttons.cancel": "Cancel",
 
   "next": "Next",
   "submit": "Submit",

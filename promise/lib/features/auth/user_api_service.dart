@@ -61,7 +61,7 @@ class AuthrizeUserApiService {
 
   /// Logs out the user from server
   Future<void> logout() async {
-    await client.post('$account/logout', null);
+    // await client.post('$account/logout', null);
   }
 
   /// Deactivates the user

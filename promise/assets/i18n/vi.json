@@ -23,9 +23,11 @@
 
   "login.label_username": "Username",
   "login.label_password": "Password",
-  "goBack_button": "Go back",
 
+  "chat.photo": "Ảnh",
+  "chat.file": "File",
 
+  "buttons.cancel": "Hủy",
   "next": "Next",
   "submit": "Submit",
   "remove": "Remove",

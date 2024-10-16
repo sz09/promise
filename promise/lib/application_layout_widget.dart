@@ -20,10 +20,10 @@ class ApplicationLayout extends StatelessWidget {
     _selectedIndex = index;
     switch(_selectedIndex){
       case 0:
-      await context.navigateTo(homeRoute);
+        await context.navigateTo(homeRoute);
         break; 
       case 1:
-      await context.navigateTo(chatRoute);
+        await context.navigateTo(chatRoute);
         break;
       case 2:
         break;
