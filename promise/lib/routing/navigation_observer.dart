@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:promise/features/force_update/force_update_alert.dart';
 import 'package:promise/util/log/log.dart';
@@ -8,7 +7,6 @@ import 'package:promise/widgets/alert_dialog.dart';
 /// Does not take modal routes into consideration.
 class NavigationRoutesObserver extends RouteObserver<PageRoute<dynamic>> {
   final List<String> _dialogQueue = [];
-
   bool get isErrorDialogDisplayed =>
       _dialogQueue.contains(errorDialogRouteName);
 
@@ -18,7 +16,6 @@ class NavigationRoutesObserver extends RouteObserver<PageRoute<dynamic>> {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     super.didPush(route, previousRoute);
-
     if (_isDialogRoute(route)) {
       _dialogQueue.add(route.settings.name!);
       Log.d('NavigationRoutesObserver - Error dialog shown');

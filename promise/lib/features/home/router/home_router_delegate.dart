@@ -10,16 +10,16 @@ import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_nav_state.dart';
 
 class HomeRouterDelegate extends RouterDelegate
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  @override
-  final GlobalKey<NavigatorState> navigatorKey;
+    with ChangeNotifier {
   final Future<bool> Function() onBackPressed;
 
-  HomeRouterDelegate(this.navigatorKey,
+  HomeRouterDelegate(
       {
         required this.onBackPressed,
         this.appNavState = const AppNavState.home()
-      });
+      }) {
+        // navigatorKey = UniqueKey<NavigatorState>();
+      }
 
   AppNavState appNavState = const AppNavState.home();
   bool isSettingsShownState = false;
@@ -44,7 +44,7 @@ class HomeRouterDelegate extends RouterDelegate
   @override
   Widget build(BuildContext context) {
     return Navigator(
-        key: navigatorKey,
+        key: UniqueKey(),
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case loginRoute:

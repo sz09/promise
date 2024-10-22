@@ -5,13 +5,11 @@ import 'package:promise/features/auth/signup/ui/password/password_page.dart';
 import 'package:promise/features/auth/signup/ui/username/username_page.dart';
 
 class AuthRouterDelegate extends RouterDelegate
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  @override
-  final GlobalKey<NavigatorState> navigatorKey;
+    with ChangeNotifier {
 
   AuthNavState _authNavState;
 
-  AuthRouterDelegate(this.navigatorKey,
+  AuthRouterDelegate(
       [this._authNavState = const AuthNavState.login()]);
 
   void setLoginNavState() {
@@ -40,7 +38,7 @@ class AuthRouterDelegate extends RouterDelegate
           ],
         ];
     return Navigator(
-        key: navigatorKey,
+        key: UniqueKey(),
         pages: pages,
         onDidRemovePage: (page){
           _authNavState = _authNavState.prevState ?? const AuthNavState.login();
@@ -52,5 +50,10 @@ class AuthRouterDelegate extends RouterDelegate
   @override
   Future<void> setNewRoutePath(configuration) async {
     /* no-op */
+  }
+  
+  @override
+  Future<bool> popRoute() async {
+    return true;
   }
 }

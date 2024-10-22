@@ -1,9 +1,7 @@
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:promise/application_layout_widget.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
@@ -26,17 +24,12 @@ import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/routing/navigation_observer.dart';
 import 'package:promise/user/user_manager.dart';
 import 'package:azure_app_config/azure_app_config.dart';
-import 'package:promise/util/log/log.dart';
 import 'main.reflectable.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-final rootNavigatorKey = GlobalKey<NavigatorState>();
-final authNavigatorKey = GlobalKey<NavigatorState>();
-final homeNavigatorKey = GlobalKey<NavigatorState>();
 final userManager = serviceLocator.get<UserManager>();
-
 const String applicationTag = "-application";
-var navigationHistoryObserver = NavigationRoutesObserver();
+final navigationHistoryObserver = NavigationRoutesObserver();
 
 void main() async {
   FlutterError.onError = (details) {
@@ -64,12 +57,8 @@ void main() async {
       .map((code) => LocalizationService.loadLanguage(languageCode: code)));
   await preAppConfig();
   final AppRouterDelegate appRouterDelegate = AppRouterDelegate(
-    rootNavigatorKey,
-    authNavigatorKey,
-    homeNavigatorKey,
     userManager,
   );
-
   var app = GetMaterialApp(
     home: Stack(children: [
       Router(
@@ -79,12 +68,6 @@ void main() async {
       const OverlayView(),
     ]),
     navigatorObservers: [navigationHistoryObserver],
-    // builder: (context, child1) {
-    //   return ApplicationLayout(
-    //     widgetKey: 'addadadadad',
-    //     child: child1!,
-    //   );
-    // },
     initialBinding: _InitialBinding(),
     locale: LocalizationService.locale,
     fallbackLocale: LocalizationService.fallbackLocale,
@@ -93,16 +76,8 @@ void main() async {
     darkTheme: themeDark(),
     translations: LocalizationService(),
     initialRoute: homeRoute,
-    defaultTransition: Transition.native,
+    defaultTransition: Transition.noTransition,
     transitionDuration: const Duration(seconds: 1),
-    onReady: () {
-      BackButtonInterceptor.add(myInterceptor,
-          name: 'get_intercepter', context: Get.context);
-    },
-    onDispose: () {
-      BackButtonInterceptor.add(myInterceptor,
-          name: 'get_intercepter', context: Get.context);
-    },
     getPages: [
       GetPage(
           name: homeRoute,
@@ -129,11 +104,6 @@ void main() async {
   );
   runApp(app);
   FlutterNativeSplash.remove();
-}
-
-bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-  Log.d("BACK BUTTON!"); // Do some stuff.
-  return true;
 }
 
 class _InitialBinding implements Bindings {

@@ -14,11 +14,7 @@ import 'app_nav_state.dart';
 
 /// Root rooter of this application
 class AppRouterDelegate extends RouterDelegate
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin {
-  @override
-  final GlobalKey<NavigatorState> navigatorKey;
-  final GlobalKey<NavigatorState> authNavigatorKey;
-  final GlobalKey<NavigatorState> homeNavigatorKey;
+    with ChangeNotifier {
 
   StreamSubscription<UserCredentials?>? _userUpdatesSubscription;
 
@@ -26,9 +22,6 @@ class AppRouterDelegate extends RouterDelegate
   bool _isUserLoggedIn = false;
 
   AppRouterDelegate(
-    this.navigatorKey,
-    this.authNavigatorKey,
-    this.homeNavigatorKey,
     UserManager userManager, [
     this._navState = const AppNavState.auth(),
   ]) {
@@ -51,22 +44,21 @@ class AppRouterDelegate extends RouterDelegate
   Widget build(BuildContext context) {
     return Navigator(
       transitionDelegate: NoAnimationTransitionDelegate(),
-      key: navigatorKey,
+      key: UniqueKey(),
       pages: _getPages(),
       onDidRemovePage: (page){
 
       },
       onGenerateRoute: ROUTER_HANDLER,
-      
     );
   }
 
   List<Page> _getPages() {
     if (_navState is AuthNavState) {
       return [
-        MaterialPage(
-          key: const ValueKey('AuthRouterPage'),
-          child: AuthRouter(authNavigatorKey),
+        const MaterialPage(
+          key: ValueKey('AuthRouterPage'),
+          child: AuthRouter(),
         )
       ];
     }
@@ -76,7 +68,6 @@ class AppRouterDelegate extends RouterDelegate
         MaterialPage(
           key: const ValueKey('HomeRouterPage'),
           child: HomeRouter(
-            homeNavigatorKey,
              onBackPressed: () async {
               return false;
              },
@@ -117,5 +108,10 @@ class AppRouterDelegate extends RouterDelegate
   void setHomeNavState() {
     _navState = const AppNavState.home();
     notifyListeners();
+  }
+  
+  @override
+  Future<bool> popRoute() async {
+    return true;
   }
 }

@@ -5,10 +5,9 @@ import 'package:provider/provider.dart';
 
 /// Nested router that hosts all task screens and manages navigation among them.
 class HomeRouter extends StatelessWidget {
-  final GlobalKey<NavigatorState> navigatorKey;
   final Future<bool> Function() onBackPressed;
 
-  const HomeRouter(this.navigatorKey, {super.key, required this.onBackPressed});
+  const HomeRouter({super.key, required this.onBackPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,8 @@ class HomeRouter extends StatelessWidget {
 
     return ChangeNotifierProvider<HomeRouterDelegate>(
         create: (_) {
-          var x = HomeRouterDelegate(navigatorKey, onBackPressed: onBackPressed);
+          var x = HomeRouterDelegate(
+            onBackPressed: onBackPressed);
           Get.routerDelegate = x;
           return x;
         },

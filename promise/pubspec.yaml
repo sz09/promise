@@ -85,7 +85,6 @@ dependencies:
   async: any
   get_storage: ^2.1.1
   flutter_bloc: ^8.1.6
-  back_button_interceptor: ^7.0.3
   web_socket_channel: ^3.0.1
   flutter_chat_ui: ^1.6.15
   image_picker: ^1.1.2
@@ -96,7 +95,6 @@ dependencies:
   flutter_chat_types: ^3.6.2
   flutter_slidable: ^3.1.1
   font_awesome_flutter: ^10.7.0
-  navigation_history_observer: ^1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
