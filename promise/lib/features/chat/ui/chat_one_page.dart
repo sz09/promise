@@ -9,36 +9,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:promise/features/chat/utils/chat.language.dart';
+import 'package:promise/features/chat/utils/chat.theme.dart';
+import 'package:promise/features/page.controller.dart';
+import 'package:promise/main.dart';
 import 'package:uuid/uuid.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mime/mime.dart';
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
-
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
-  List<types.Message> _messages = [];
+final _controller = Get.find<ChatOneController>(tag: applicationTag);
+class ChatOnePage extends StatelessWidget {
+  late String conversationId;
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
   );
+  ChatOnePage({super.key});
 
-  @override
-  void initState() {
-    super.initState();
-    _loadMessages();
-  }
-
-  void _addMessage(types.Message message) {
-    setState(() {
-      _messages.insert(0, message);
-    });
-  }
-
-  void _handleAttachmentPressed() {
+  void _handleAttachmentPressed(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => SafeArea(
@@ -97,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
         uri: result.files.single.path!,
       );
 
-      _addMessage(message);
+      _controller.sendMessage(message);
     }
   }
 
@@ -122,8 +109,7 @@ class _ChatPageState extends State<ChatPage> {
         uri: result.path,
         width: image.width.toDouble(),
       );
-
-      _addMessage(message);
+      _controller.sendMessage(message);
     }
   }
 
@@ -134,15 +120,11 @@ class _ChatPageState extends State<ChatPage> {
       if (message.uri.startsWith('http')) {
         try {
           final index =
-              _messages.indexWhere((element) => element.id == message.id);
+              _controller.items.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-              (_messages[index] as types.FileMessage).copyWith(
+              (_controller.items[index] as types.FileMessage).copyWith(
             isLoading: true,
           );
-
-          setState(() {
-            _messages[index] = updatedMessage;
-          });
 
           final client = http.Client();
           final request = await client.get(Uri.parse(message.uri));
@@ -156,15 +138,11 @@ class _ChatPageState extends State<ChatPage> {
           }
         } finally {
           final index =
-              _messages.indexWhere((element) => element.id == message.id);
+              _controller.items.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-              (_messages[index] as types.FileMessage).copyWith(
+              (_controller.items[index] as types.FileMessage).copyWith(
             isLoading: null,
           );
-
-          setState(() {
-            _messages[index] = updatedMessage;
-          });
         }
       }
 
@@ -176,14 +154,10 @@ class _ChatPageState extends State<ChatPage> {
     types.TextMessage message,
     types.PreviewData previewData,
   ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+    final index = _controller.items.indexWhere((element) => element.id == message.id);
+    final updatedMessage = (_controller.items[index] as types.TextMessage).copyWith(
       previewData: previewData,
     );
-
-    setState(() {
-      _messages[index] = updatedMessage;
-    });
   }
 
   void _handleSendPressed(types.PartialText message) {
@@ -194,7 +168,7 @@ class _ChatPageState extends State<ChatPage> {
       text: message.text,
     );
 
-    _addMessage(textMessage);
+    _controller.sendMessage(textMessage);
   }
 
   void _loadMessages() async {
@@ -202,52 +176,29 @@ class _ChatPageState extends State<ChatPage> {
     final messages = jsonDecode(response)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
-
-    setState(() {
-      _messages = messages;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-
-   return Scaffold(
-        body: Chat(
-          messages: _messages,
-          onAttachmentPressed: _handleAttachmentPressed,
+    if(Get.arguments is Map<String, String>){
+      conversationId = Get.arguments['id'] as String;
+    }
+    _controller.loadMessges(conversationId);
+    return Scaffold(
+        body: Obx(() =>  Chat(
+          // ignore: invalid_use_of_protected_member
+          messages: _controller.items.value,
+          onAttachmentPressed: () => _handleAttachmentPressed(context),
           onMessageTap: _handleMessageTap,
           onPreviewDataFetched: _handlePreviewDataFetched,
           onSendPressed: _handleSendPressed,
           showUserAvatars: true,
           showUserNames: true,
+          theme: getChatTheme(),
           user: _user,
-          l10n: _getChatL10n()
+          l10n: getChatL10n()
         ),
-      );
+      ));
   }
-}
-_getChatL10n() {
-  if(Get.locale!.countryCode != 'en'){
-    return const ChatL10nVN();
-  }
-
-  return const ChatL10nEn();
-}
-@immutable
-class ChatL10nVN extends ChatL10n {
-  /// Creates English l10n. Use this constructor if you want to
-  /// override only a couple of properties, otherwise create a new class
-  /// which extends [ChatL10n].
-  const ChatL10nVN({
-    super.and = 'và',
-    super.attachmentButtonAccessibilityLabel = 'Gửi đa phương tiện',
-    super.emptyChatPlaceholder = 'Không có tin nhắn',
-    super.fileButtonAccessibilityLabel = 'File',
-    super.inputPlaceholder = 'Tin nhắn',
-    super.isTyping = 'đang nhập...',
-    super.others = 'khác',
-    super.sendButtonAccessibilityLabel = 'Gửi',
-    super.unreadMessagesLabel = 'Tin nhắn chưa đọc',
-  });
 }
 

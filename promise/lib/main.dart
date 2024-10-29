@@ -8,6 +8,7 @@ import 'package:promise/config/network.const.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
 import 'package:promise/features/chat/chat_page.dart';
+import 'package:promise/features/chat/ui/chat_one_page.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
@@ -98,7 +99,11 @@ void main() async {
       GetPage(
           name: chatRoute,
           page: () => ApplicationLayout(
-              widgetKey: 'chat.title', child: const ChatPage())),
+              widgetKey: 'chat.title', child: ChatPage())),
+      GetPage(
+          name: chatOneRoute,
+          page: () => ApplicationLayout(
+              widgetKey: 'chat.title', child: ChatOnePage())),
       GetPage(name: settingsRoute, page: () => const SettingsWidget()),
     ],
   );
@@ -114,7 +119,7 @@ class _InitialBinding implements Bindings {
     Get.lazyPut(() => PromiseController(), tag: applicationTag, fenix: true);
     Get.lazyPut(() => PeopleController(), tag: applicationTag, fenix: true);
     Get.lazyPut(() => TimelineController(), tag: applicationTag, fenix: true);
-    Get.lazyPut(() => CreatePromiseController(),
-        tag: applicationTag, fenix: true);
+    Get.lazyPut(() => ChatOneController(), tag: applicationTag, fenix: true);
+    Get.lazyPut(() => CreatePromiseController(), tag: applicationTag, fenix: true);
   }
 }

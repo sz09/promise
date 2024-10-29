@@ -8,6 +8,7 @@ import 'package:promise/util/log/log.dart';
 import 'package:promise/util/response.ext.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:promise/widgets/loading_overlay.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class LoadingState extends NetworkState {
 }
@@ -43,3 +44,13 @@ class MemoryController extends PageController<Memory> {}
 class PromiseController extends PageController<Promise> {}
 class TimelineController extends PageController<TimelineItem> {}
 class PeopleController extends PageController<Person> {}
+class ChatOneController extends PageController<types.Message> {
+  loadMessges(String conversationId){
+
+  }
+
+  sendMessage(types.Message message){
+    items.insert(0, message);
+    update();
+  }
+}

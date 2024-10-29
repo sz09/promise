@@ -18,6 +18,7 @@ const String memoriesRoute = "/memories";
 const String peopleRoute = "/people";
 const String settingsRoute = "/settings";
 const String chatRoute = "/chat";
+const String chatOneRoute = "/chat-one";
 
 final APPLICATION_ROUTES = 
 <String, WidgetBuilder> {

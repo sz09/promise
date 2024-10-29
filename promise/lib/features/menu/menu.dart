@@ -178,4 +178,10 @@ extension CustomNavigation on BuildContext {
       await Get.toNamed(routeName);
     }
   }
+
+  Future navigateToWithArguments(String routeName, Map<String, String> arguments) async {
+    if (Get.routing.current != routeName) {
+      await Get.toNamed(routeName, arguments: arguments);
+    }
+  }
 }
