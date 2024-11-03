@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:promise/features/page.controller.dart';
-import 'package:promise/features/promise/ui/create_promise_view.dart';
+import 'package:promise/features/promise/ui/promise_view.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
+import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/widgets/custom_stateful.page.dart';
@@ -67,8 +68,7 @@ class PromiseListView extends StateView<PromiseListView> {
     }
   }
 
-  Widget _promiseListWidget(BuildContext context, List<Promise> promises1) {
-    var promises = promises1;
+  Widget _promiseListWidget(BuildContext context, List<Promise> promises) {
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       controller: _scrollController,
@@ -112,11 +112,30 @@ class PromiseListView extends StateView<PromiseListView> {
   }
 
   void _openCreatePromise(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return const CreatePromiseView();
-        });
+    showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.9, // 90% chiều cao màn hình
+        width: MediaQuery.of(context).size.width, // Chiều rộng toàn màn hình
+        padding: EdgeInsets.only(
+          top: 10,
+          left: 0,  // Đảm bảo không có padding ở cạnh trái
+          right: 0, // Đảm bảo không có padding ở cạnh phải
+          bottom: MediaQuery.of(context).viewInsets.bottom + 15,
+        ),
+        decoration: BoxDecoration(
+          color: context.containerLayoutColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: const SingleChildScrollView(
+          child: PromiseDialog(),
+        ),
+      );
+    },
+  );
   }
 }
 

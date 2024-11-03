@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/models/person/person.dart';
@@ -9,8 +10,6 @@ import 'package:promise/util/response.ext.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:promise/widgets/loading_overlay.dart';
 
-class LoadingState extends NetworkState {
-}
 abstract class CreateController<T> extends GetxController {
   var loadingState = LoadingState().obs;
   RxList<T> items = <T>[].obs;

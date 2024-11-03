@@ -65,6 +65,8 @@
   "promise_list_no_promises_message": "You have no promises. Yay! Do nothing!",
   "promise_list_error_loading_promises": "Error loading promises.",
   
+  "timeline_page_no_timeline_items_message": "Chưa ai chia sẻ câu chuyện của họ cả",
+
   "person_list_no_memories_message": "You have no people. Yay! Do nothing!",
   
   "timeline.title": "Dòng thời gian",

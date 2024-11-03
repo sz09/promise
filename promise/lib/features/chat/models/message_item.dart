@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:promise/const/text.dart';
 import 'package:flutter/material.dart';
-import 'package:promise/util/layout_util.dart';
 
 /// The base class for the different types of items the list can contain.
 abstract class ListItem {

@@ -15,7 +15,7 @@ class Promise extends BaseAuditModel {
   @HiveField(6)
   late DateTime? dueDate;
   late String? to;
-  // ignore: avoid_init_to_null
+  
   Promise({required String id, required this.content, this.to = null, this.dueDate = null}) {
     this.id = id;
   }

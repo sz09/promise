@@ -20,7 +20,9 @@
   "login.login_progress": "Login in progress...",
   "login.label_username": "Username",
   "login.label_password": "Password",
-
+  "login.username_hint": "Please enter username",
+  "login.password_hint": "Please enter password",
+  "login.label_login": "Login",
 
   "chat.photo": "Photo",
   "chat.file": "File",
@@ -64,8 +66,13 @@
   "promise_list_create_new": "Create new promise",
   "promise_list_no_promises_message": "You have no promises. Yay! Do nothing!",
   "promise_list_error_loading_promises": "Error loading promises.",
-  "promise.create.with": "With",
+  "promise.label_content": "Content",
+  "promise.content_hint": "Enter what you want to promise",
+  "promise.label_with": "With",
+  "promise.with_hint": "Whom you want to promise",
   
+  "timeline_page_no_timeline_items_message": "No shared stories yet",
+
   "person_list_no_memories_message": "You have no people. Yay! Do nothing!",
   "timeline.title": "Timeline",
   "timeline.with": "with",

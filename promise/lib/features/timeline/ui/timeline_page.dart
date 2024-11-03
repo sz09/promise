@@ -90,7 +90,7 @@ class TimelineView extends StatelessWidget {
 
   Widget _emptyListWidget(BuildContext context) {
     return Center(
-        child: Text(context.translate("promise_list_no_memories_message")));
+        child: Text(context.translate("timeline_page_no_timeline_items_message")));
   }
 
   Widget _errorWidget(String errorKey, BuildContext context) {

@@ -10,7 +10,8 @@ import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/disable_button.dart';
-import 'package:promise/widgets/pm_textform_field.dart';
+import 'package:promise/widgets/wrap/wrap_password.dart';
+import 'package:promise/widgets/wrap/wrap_text_field.dart';
 import 'package:provider/provider.dart';
 
 final _controller = Get.find<LoginController>(tag: applicationTag);
@@ -41,7 +42,6 @@ class LoginView extends StatelessWidget {
       TextEditingController(text: "phatph");
   final TextEditingController _passwordController =
       TextEditingController(text: "Sz19@2107");
-  final paddingBox = const SizedBox(height: 10);
   LoginView({super.key, this.sessionExpiredRedirect = false});
   @override
   Widget build(BuildContext context) {
@@ -72,24 +72,21 @@ class LoginView extends StatelessWidget {
                   Text(
                     context.translate('application.title'),
                     style: const TextStyle(
-                      color: Colors.blueAccent,
                       fontSize: textFontSize,
                     ),
                   ),
                   Text(context.translate('login.page_title')),
-                  paddingBox,
-                  PTextFormField(
+                  WrapTextFormField(
                       labelText: context.translate("login.label_username"),
                       controller: _userNameController,
-                      hintText: context.translate("login.label_username")),
-                  paddingBox,
-                  PTextFormField(
+                      hintText: context.translate("login.username_hint")),
+                  WrapPasswordFormField(
                       labelText: context.translate("login.label_password"),
                       controller: _passwordController,
-                      hintText: context.translate("login.label_password")),
-                  paddingBox,
+                      hintText: context.translate("login.password_hint")),
                   DisablableButton(
-                      text: "Login",
+                      text: context.translate("login.label_login"),
+                      applyPaddingTop: true,
                       mainContext: context,
                       action: () => _onLoginPressed(context),
                       enableFunc: () =>

@@ -17,7 +17,11 @@ extension ContainerLayout on BuildContext {
 
   Color get iconColor 
   {
-    var theme = Theme.of(this).textTheme;
+    final theme = Theme.of(this).textTheme;
     return theme.titleLarge!.color!;
   }
 }
+
+
+const EdgeInsets contentPadding = EdgeInsets.all(15);
+const EdgeInsets paddingTop = EdgeInsets.only(top: 10);
