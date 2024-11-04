@@ -1,12 +1,13 @@
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:get/get.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:promise/main.dart';
-import 'package:promise/services/user/user_reference.service.dart';
+import 'package:promise/services/person/person.service.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/widgets/dropdown/dropdown_textfield.dart';
+import 'package:promise/widgets/wrap/wrap_checkbox.dart';
 import 'package:promise/widgets/wrap/wrap_multi_dropdown.dart';
 import 'package:promise/widgets/wrap/wrap_textarea.dart';
 
@@ -19,13 +20,20 @@ class PromiseDialog extends StatefulWidget {
 }
 
 class _PromiseDialogState extends State<PromiseDialog> {
-  final _nameController = TextEditingController();
+  final _contentController = TextEditingController();
   final _withController = MultiValueDropDownController();
   final _priceController = TextEditingController();
+  late bool _isForYourSelf = true;
 
+  void _toggleForYourSelfCheckbox(bool value) {
+    setState(() {
+      _isForYourSelf = value;
+    });
+  }
   @override
   void dispose() {
-    _nameController.dispose();
+    _withController.clearDropDown();
+    _contentController.dispose();
     _priceController.dispose();
     _withController.dispose();
     super.dispose();
@@ -48,15 +56,23 @@ class _PromiseDialogState extends State<PromiseDialog> {
             ),
           ),
           WrapTextAreaFormField(
-            controller: _nameController,
+            controller: _contentController,
             maxLines: 8,
             minLines: 3,
             labelText: context.translate("promise.label_content"),
             hintText: context.translate("promise.content_hint"),
           ),
-          WrapMultiDropdownFormField(
+          WrapCheckbox(
+            label: context.translate("promise.label_for_yourself"),
+            isChecked: _isForYourSelf,
+            onChanged: _toggleForYourSelfCheckbox,
+          ),
+          if(!_isForYourSelf) WrapMultiDropdownFormField(
             uniqueName: "Create_Promise_With",
-            loadItemsFunc: () => serviceLocator.get<UserService>.),
+            loadItemsFunc: () async {
+              final items = await serviceLocator.get<PersonService>().getUserReferences();
+              return items.map((d) => DropDownValueModel(name: d.hint, value: d.referenceUserId)).toList();
+            },
             controller: _withController,
             labelText: context.translate("promise.label_with"),
             hintText: context.translate("promise.with_hint"),
@@ -66,12 +82,8 @@ class _PromiseDialogState extends State<PromiseDialog> {
             alignment: Alignment.centerRight,
             child: ElevatedButton(
               onPressed: () async {
-                // ignore: unused_local_variable
-                final name = _nameController.text;
-                // ignore: unused_local_variable
-                final price = _priceController.text;
                 await _onCreatePromise();
-                Navigator.of(context).pop(); // Đóng dialog
+                //Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -91,6 +103,8 @@ class _PromiseDialogState extends State<PromiseDialog> {
   }
   
   Future _onCreatePromise() async {
+        final content = _contentController.text;
+        final withs = _withController.dropDownValueList?.map((d) => d.value.toString()).toList() ?? [];
     // if (_formKey.currentState!.validate()) {
     //   // BlocProvider.of<CreatePromiseCubit>(context).onCreatePromise(Promise(
     //   //     id: 'id',

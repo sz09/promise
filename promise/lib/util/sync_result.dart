@@ -2,8 +2,8 @@
 class SyncResult<T> {
 
   List<T> _data =  List<T>.empty();
-  late int _version = 0;
-  late int _lastVersion = 0;
+  late BigInt _version = BigInt.zero;
+  late BigInt _lastVersion = BigInt.zero;
   late T Function(Map<String, dynamic>) _itemFactoryMethod;
   late Map<String, dynamic> _response;
   set resolveItem (T Function(Map<String, dynamic>) itemFactoryMethod) {
@@ -14,17 +14,29 @@ class SyncResult<T> {
     this._response = response;
   }
 
-  int get version => _version;
-  int get lastVersion => _lastVersion;
+  BigInt get version => _version;
+  BigInt get lastVersion => _lastVersion;
   List<T> get data => _data;
   void create() {
     List<T> result = [];
-    final data = _response['data'] as List<dynamic>;
-    if(data.isNotEmpty){
-      result = data.map((e) => _itemFactoryMethod(e)).toList();
+    if(_response['data'] is List<dynamic>){
+      final data = _response['data'] as List<dynamic>;
+      if(data.isNotEmpty){
+        result = data.map((e){
+          final item = e as Map<String, dynamic>;
+          final a = _itemFactoryMethod(item);
+         return a;
+        }).toList();
+      }
     }
-    var version = _response['version'] as int;
-    var lastVersion = _response['lastVersion'] as int;
+    else if (_response['data'] is List<Map<String, dynamic>>){
+      final data = _response['data'] as List<Map<String, dynamic>>;
+      if(data.isNotEmpty){
+        result = data.map((e) => _itemFactoryMethod(e)).toList();
+      }
+    }
+    var version = BigInt.from(_response['version']);
+    var lastVersion = BigInt.from(_response['lastVersion']);
 
     this._data = result;
     this._version = version;
@@ -33,7 +45,7 @@ class SyncResult<T> {
 
   SyncResult.defaultValue() {
     this._data = [];
-    this._version = 0;
+    this._version = BigInt.zero;
   }
   
   SyncResult.set(this._data, this._version);

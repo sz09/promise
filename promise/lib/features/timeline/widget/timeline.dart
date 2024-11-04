@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:promise/const/text.dart';
-import 'package:promise/models/story/story.model.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
@@ -8,7 +8,7 @@ class TimelineItem {
   final String title;
   final String description;
   final DateTime time;
-  final User user;
+  final Person user;
   final String to;
 
   const TimelineItem({
@@ -50,7 +50,7 @@ class TimelineItemWidget extends StatelessWidget {
               children: [
                 Row(children: [
                   Text(
-                    "${item.user.username}: ",
+                    "${item.user.nickname}: ",
                     style: const TextStyle(
                       fontSize: textFontSize,
                       fontWeight: FontWeight.bold,

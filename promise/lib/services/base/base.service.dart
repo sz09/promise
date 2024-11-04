@@ -31,6 +31,10 @@ abstract class BaseService<T extends BaseAuditModel> {
 
     return result;
   }
+
+  Future<T?> fetchOneAsync(bool Function(T) predicate) async {
+    return await localRepository.fetchOneAsync(predicate);
+  }
   Future<void> teardown() async {
     await remoteRepository.teardown();
     await localRepository.teardown();

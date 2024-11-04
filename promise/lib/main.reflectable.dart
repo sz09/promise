@@ -89,8 +89,16 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => ({id, nickname}) =>
-                  b ? prefix2.Person(id: id, nickname: nickname) : null,
+              r'': (bool b) =>
+                  ({id, email, firstName, lastName, references, nickname}) => b
+                      ? prefix2.Person(
+                          email: email,
+                          firstName: firstName,
+                          id: id,
+                          lastName: lastName,
+                          nickname: nickname,
+                          references: references)
+                      : null,
               r'fromJson': (bool b) =>
                   (json) => b ? prefix2.Person.fromJson(json) : null
             },
@@ -125,13 +133,60 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'updatedAt': 0,
               r'updatedAt=': 1,
               r'fromJsonMethod': 0,
-              r'nickname': 0
+              r'email': 0,
+              r'email=': 1,
+              r'firstName': 0,
+              r'firstName=': 1,
+              r'lastName': 0,
+              r'lastName=': 1,
+              r'references': 0,
+              r'references=': 1,
+              r'nickname': 0,
+              r'nickname=': 1
+            }),
+        r.NonGenericClassMirrorImpl(
+            r'UserReference',
+            r'.UserReference',
+            134217735,
+            2,
+            const prefix0.HiveTypeReflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {},
+            {},
+            {
+              r'': (bool b) => ({referenceUserId, hint}) => b
+                  ? prefix2.UserReference(
+                      hint: hint, referenceUserId: referenceUserId)
+                  : null,
+              r'fromJson': (bool b) =>
+                  (json) => b ? prefix2.UserReference.fromJson(json) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            const <Object>[
+              const prefix5.HiveType(typeId: prefix6.UserReferenceHiveType),
+              prefix0.hiveTypeReflector
+            ],
+            {
+              r'==': 1,
+              r'toString': 0,
+              r'noSuchMethod': 1,
+              r'hashCode': 0,
+              r'runtimeType': 0,
+              r'referenceUserId': 0,
+              r'referenceUserId=': 1,
+              r'hint': 0,
+              r'hint=': 1
             }),
         r.NonGenericClassMirrorImpl(
             r'Promise',
             r'.Promise',
             134217735,
-            2,
+            3,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -190,7 +245,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             r'SystemVersion',
             r'.SystemVersion',
             134217735,
-            3,
+            4,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -240,10 +295,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
       <Type>[
         prefix1.Memory,
         prefix2.Person,
+        prefix2.UserReference,
         prefix3.Promise,
         prefix4.SystemVersion
       ],
-      4,
+      5,
       {
         r'==': (dynamic instance) => (x) => instance == x,
         r'toString': (dynamic instance) => instance.toString,
@@ -264,7 +320,13 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'updatedAt': (dynamic instance) => instance.updatedAt,
         r'fromJsonMethod': (dynamic instance) => instance.fromJsonMethod,
         r'description': (dynamic instance) => instance.description,
+        r'email': (dynamic instance) => instance.email,
+        r'firstName': (dynamic instance) => instance.firstName,
+        r'lastName': (dynamic instance) => instance.lastName,
+        r'references': (dynamic instance) => instance.references,
         r'nickname': (dynamic instance) => instance.nickname,
+        r'referenceUserId': (dynamic instance) => instance.referenceUserId,
+        r'hint': (dynamic instance) => instance.hint,
         r'toJson': (dynamic instance) => instance.toJson,
         r'content': (dynamic instance) => instance.content,
         r'dueDate': (dynamic instance) => instance.dueDate,
@@ -278,6 +340,15 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'updatedAt=': (dynamic instance, value) => instance.updatedAt = value,
         r'description=': (dynamic instance, value) =>
             instance.description = value,
+        r'email=': (dynamic instance, value) => instance.email = value,
+        r'firstName=': (dynamic instance, value) => instance.firstName = value,
+        r'lastName=': (dynamic instance, value) => instance.lastName = value,
+        r'references=': (dynamic instance, value) =>
+            instance.references = value,
+        r'nickname=': (dynamic instance, value) => instance.nickname = value,
+        r'referenceUserId=': (dynamic instance, value) =>
+            instance.referenceUserId = value,
+        r'hint=': (dynamic instance, value) => instance.hint = value,
         r'content=': (dynamic instance, value) => instance.content = value,
         r'dueDate=': (dynamic instance, value) => instance.dueDate = value,
         r'to=': (dynamic instance, value) => instance.to = value,
@@ -295,7 +366,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #nickname]
+          const [#id, #email, #firstName, #lastName, #references, #nickname]
+        ],
+        const [
+          0,
+          0,
+          const [#referenceUserId, #hint]
         ],
         const [
           0,

@@ -1,17 +1,6 @@
 import 'package:promise/models/base/base.model.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/util/json_ext.dart';
-
-class User {
-  final String id;
-  final String username;
-  factory User.fromJson(Map<String, dynamic> json){
-    return User(
-      id: jsonTryGet(json, 'id'),
-      username: jsonTryGet(json, 'username')
-    );
-  }
-  User({required this.id, required this.username});
-}
 
 class Story extends BaseModel {
   Story({
@@ -28,16 +17,16 @@ class Story extends BaseModel {
   final String content;
   final String title;
   final DateTime time;
-  final User user;
+  final Person user;
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
-      id: jsonTryGet<String>(json, 'id') ?? '',
-      to: jsonTryGet<String>(json, 'to') ?? '@her',
-      user: User.fromJson(jsonTryGet<Map<String, dynamic>>(json, 'user')!),
-      title: jsonTryGet<String>(json, 'title') ?? '',
-      time: jsonTryGet<DateTime>(json, 'time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),
-      content: jsonTryGet<String>(json, 'content') ?? ''
+      id: json.tryGet<String>('id') ?? '',
+      to: json.tryGet<String>('to') ?? '',
+      user: Person.fromJson(json.tryGet<Map<String, dynamic>>('user')!),
+      title: json.tryGet<String>('title') ?? '',
+      time: json.tryGet<DateTime>('time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),
+      content: json.tryGet<String>('content') ?? ''
     );
   }
 }

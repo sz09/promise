@@ -9,7 +9,7 @@ part 'system-version.model.g.dart';
 @hiveTypeReflector
 class SystemVersion extends BaseModel {
   @HiveField(2)
-  late Map<String, int> versions;
+  late Map<String, BigInt> versions;
   SystemVersion({required String id, required String userId, required this.versions}){
     this.id = id;
     this.userId = userId;
@@ -20,7 +20,7 @@ class SystemVersion extends BaseModel {
     return SystemVersion(
       id: (json['id'] ?? '') as String,
       userId: (json['userId'] ?? '') as String,
-      versions: json.tryGet<Map<String, int>>('versions') ?? {}
+      versions: json.tryGet<Map<String, BigInt>>('versions') ?? {}
     );
   }
 

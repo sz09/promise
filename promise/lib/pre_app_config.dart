@@ -64,6 +64,7 @@ registerDatabase() async {
   Hive.registerAdapter(MemoryAdapter());
   Hive.registerAdapter(PromiseAdapter());
   Hive.registerAdapter(PersonAdapter());
+  Hive.registerAdapter(UserReferenceAdapter());
 }
 late WebSocketChannel _channel;
 Future<void> setupWebSocket(String userId) async {

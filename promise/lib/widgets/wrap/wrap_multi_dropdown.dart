@@ -1,10 +1,10 @@
-import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/main.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/log/log.dart';
+import 'package:promise/widgets/dropdown/dropdown_textfield.dart';
 
 class DropdownController extends GetxController {
   var loadingState = LoadingState().obs;
@@ -26,11 +26,16 @@ class DropdownController extends GetxController {
     items.addAll(data);
     loadingState.refresh();
   }
+
+  clear() {
+    items.clear();
+    loadingState = LoadingState().obs;
+    loadingState.refresh();
+  }
 }
 
 @immutable
-class WrapMultiDropdownFormField extends StatelessWidget {
-  late String _hintText;
+class WrapMultiDropdownFormField extends StatefulWidget {
   late String labelText;
   late String uniqueName;
   late bool validState;
@@ -44,20 +49,26 @@ class WrapMultiDropdownFormField extends StatelessWidget {
       required this.labelText,
       String? hintText = null,
       super.key,
-      this.validState = true}) {
-    _hintText = hintText ?? '';
-  }
+      this.validState = true}) {}
 
   @override
+  State<WrapMultiDropdownFormField> createState() {
+    return _StateWrapMultiDropdownFormField();
+  }
+}
+
+class _StateWrapMultiDropdownFormField extends State<WrapMultiDropdownFormField> {
+  late DropdownController fetchItemController;
+  _StateWrapMultiDropdownFormField(){
+  }
+  @override
   Widget build(BuildContext context) {
-    final fetchItemController =
-        Get.find<DropdownController>(tag: "$applicationTag.$uniqueName");
-    fetchItemController.loadData(loadItemsFunc, uniqueName);
     return Padding(
-      padding: paddingTop,
-      child: Obx(() => DropDownTextField.multiSelection(
+        padding: paddingTop,
+        child: Obx(() => DropDownTextField.multiSelection(
+              displayCompleteItem: true,
               clearOption: false,
-              controller: controller,
+              controller: widget.controller,
               listTextStyle: TextStyle(
                 color: context.textColor,
                 backgroundColor: context.containerLayoutColor,
@@ -65,15 +76,27 @@ class WrapMultiDropdownFormField extends StatelessWidget {
               textStyle:
                   TextStyle(backgroundColor: context.containerLayoutColor),
               textFieldDecoration: InputDecoration(
-                  labelText: labelText,
+                  labelText: widget.labelText,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
               // ignore: invalid_use_of_protected_member
               dropDownList: fetchItemController.items.value,
-              checkBoxProperty: CheckBoxProperty(checkColor: Colors.red),
+              checkBoxProperty: CheckBoxProperty(checkColor: context.textColor),
               submitButtonColor: context.containerLayoutColor,
-            )
-        ));
+            )));
+  }
+
+  @override
+  void initState() {
+    fetchItemController = Get.find<DropdownController>(tag: "$applicationTag.${widget.uniqueName}");
+    fetchItemController.loadData(widget.loadItemsFunc, widget.uniqueName);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    fetchItemController.clear();
+    super.dispose();
   }
 }

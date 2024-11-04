@@ -25,9 +25,9 @@ abstract class DioClient {
   }
 
 
-  Future<Response<SyncResult<T>>> fetchSync<T>(String path, Object? data, 
+  Future<Response<SyncResult<T>>> fetchSync<T>(String path, Map<String, dynamic>? queryParameters, 
       dynamic factoryMethod) async {
-    return _dio.get(path, data: data)
+    return _dio.get(path, queryParameters: queryParameters)
     .then((response) => _convertResult(response: response, factoryMethod: factoryMethod), 
     onError: (e) => {
 

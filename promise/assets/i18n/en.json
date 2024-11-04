@@ -39,6 +39,7 @@
   "send": "Send",
   "start": "Start",
   "reset": "Reset",
+  "common.save": "Save",
 
   "logout": "Logout",
 
@@ -70,7 +71,8 @@
   "promise.content_hint": "Enter what you want to promise",
   "promise.label_with": "With",
   "promise.with_hint": "Whom you want to promise",
-  
+  "promise.label_for_yourself": "For yourself",
+
   "timeline_page_no_timeline_items_message": "No shared stories yet",
 
   "person_list_no_memories_message": "You have no people. Yay! Do nothing!",

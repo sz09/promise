@@ -17,19 +17,49 @@ class Person extends BaseAuditModel {
   }
 
   @HiveField(5)
-  final String nickname;
+  late String email;
+  @HiveField(6)
+  late String firstName;
+  @HiveField(7)
+  late String lastName;
+  @HiveField(8)
+  late List<UserReference> references;
+  @HiveField(9)
+  late String nickname;
 
-  Person({required String id, required this.nickname}) {
+  Person({required String id, required this.email, required this.firstName, required this.lastName, required this.references, required this.nickname}) {
     this.id = id;
   }
 
   factory Person.fromJson(Map<String, dynamic> json) {
     var person = Person(
       id: (json['id'] ?? '') as String,
-      nickname: (json['nickname'] ?? '') as String
+      email: (json['email'] ?? '') as String,
+      firstName: json.tryGet<String>('firstName') ?? "",
+      lastName: json.tryGet<String>('lastName') ?? "",
+      references: json.tryGetCast<List<Map<String, dynamic>>, List<dynamic>>("references", func: (x) {
+        return x.map((d) => d as Map<String, dynamic>).toList();
+      })?.map((d) => UserReference.fromJson(d)).toList() ?? [],
+      nickname: json.tryGet<String>('nickname') ?? "",
     );
     person.createdAt = json.tryGet<DateTime?>('createdAt', func: DateTime.tryParse) ?? DateTimeConst.min;
     // person.updatedAt = json.tryGet<DateTime?>('updatedAt', func: DateTime.tryParse) ?? DateTimeConst.min; 
     return person;
   }
+}
+
+@HiveType(typeId: UserReferenceHiveType)
+@hiveTypeReflector
+class UserReference {
+  UserReference({required this.referenceUserId, required this.hint} );
+  factory UserReference.fromJson(Map<String, dynamic> json) {
+    return UserReference(
+      referenceUserId: json.tryGet("referenceUserId") ?? "",
+      hint: json.tryGet("hint") ?? ""
+    );
+  }
+  @HiveField(0)
+  late String referenceUserId;
+  @HiveField(1)
+  late String hint;
 }

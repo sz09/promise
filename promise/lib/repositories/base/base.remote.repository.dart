@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:promise/const/const.dart';
 import 'package:promise/networks/dio/dio.client.dart';
@@ -40,8 +41,8 @@ import 'package:promise/util/sync_result.dart';
     return fetchData.data!;
   }
 
-  Future<SyncResult<T>> fetchFromVersionAsync({required int version, int pageSize = FECTH_VERSION_PAGE_SIZE }) async {
-    final syncResult = SyncResult<T>.set([], 0);
+  Future<SyncResult<T>> fetchFromVersionAsync({required BigInt version, int pageSize = FECTH_VERSION_PAGE_SIZE }) async {
+    final syncResult = SyncResult<T>.set([], BigInt.zero);
     SyncResult<T> factoryMethod(Response<dynamic> response){
     if(response.data['data'] is List && (response.data['data'] as List).isEmpty){
       return SyncResult.defaultValue();
@@ -53,7 +54,7 @@ import 'package:promise/util/sync_result.dart';
   }
 
     var fetchData = await client.fetchSync<T>('$path/from-version', {
-      'version': version,
+      'fromVersion': version,
       'pageSize': pageSize
     },  factoryMethod);
 

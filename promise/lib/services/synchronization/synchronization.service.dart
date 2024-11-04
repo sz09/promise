@@ -32,9 +32,9 @@ class SynchronizationService {
 
       var syncTasks = repositories.entries.map((map) => Future.microtask(() async {
         var tableName = map.value.tableName;
-        var storedVersion = systemVersion!.versions[tableName] ?? 0;
+        var storedVersion = systemVersion!.versions[tableName] ?? BigInt.zero;
         final fetchData = await map.key.fetchFromVersionAsync(version: storedVersion);
-        if(fetchData.data.isEmpty && fetchData.version == 0){
+        if(fetchData.data.isEmpty && fetchData.version == BigInt.zero){
           return SyncDataItemResult(
             tableName: tableName,
             isContinue: false
@@ -50,7 +50,7 @@ class SynchronizationService {
         );
         syncDataItemResult.isSynced = true;
         return syncDataItemResult;
-      }));
+      })).toList();
 
       var result = await Future.wait(
         syncTasks
@@ -69,7 +69,7 @@ class SynchronizationService {
 
   }
   
-  Future updateSystemVersion({required SystemVersion systemVersion, required String key, required int version}) async{
+  Future updateSystemVersion({required SystemVersion systemVersion, required String key, required BigInt version}) async{
     await _lock2.synchronized(() async {
       systemVersion.versions[key] = version;
     });
