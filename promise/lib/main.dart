@@ -9,10 +9,10 @@ import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
 import 'package:promise/features/chat/chat_page.dart';
 import 'package:promise/features/chat/ui/chat_one_page.dart';
-import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/memory/ui/memory_list_page.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/people/ui/people_page.dart';
+import 'package:promise/features/promise/controller/controller.dart';
 import 'package:promise/features/promise/ui/list/promise_list_page.dart';
 import 'package:promise/features/settings/ui/settings_page.dart';
 import 'package:promise/features/timeline/ui/timeline_page.dart';
@@ -48,7 +48,7 @@ void main() async {
   var result = {
     for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value
   };
-  result.addAll({"BaseUrlApi": "https://8a6f-116-111-185-94.ngrok-free.app"});
+  result.addAll({"BaseUrlApi": "https://227d-113-176-61-185.ngrok-free.app"});
   FlavorConfig.set(
     Flavor.Dev,
     FlavorValues(baseUrlApi: result['BaseUrlApi']!),

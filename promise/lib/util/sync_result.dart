@@ -23,9 +23,7 @@ class SyncResult<T> {
       final data = _response['data'] as List<dynamic>;
       if(data.isNotEmpty){
         result = data.map((e){
-          final item = e as Map<String, dynamic>;
-          final a = _itemFactoryMethod(item);
-         return a;
+          return _itemFactoryMethod(e as Map<String, dynamic>);
         }).toList();
       }
     }

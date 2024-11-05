@@ -4,7 +4,7 @@ import 'dropdown_textfield.dart';
 
 class SingleSelection extends StatefulWidget {
   const SingleSelection(
-      {Key? key,
+      {super.key,
       required this.dropDownList,
       required this.onChanged,
       required this.height,
@@ -24,8 +24,7 @@ class SingleSelection extends StatefulWidget {
       this.listTextStyle,
       this.searchDecoration,
       required this.listPadding,
-      this.clearIconProperty})
-      : super(key: key);
+      this.clearIconProperty});
   final List<DropDownValueModel> dropDownList;
   final ValueSetter onChanged;
   final double height;
@@ -72,7 +71,7 @@ class _SingleSelectionState extends State<SingleSelection> {
   @override
   void initState() {
     _focusScopeNode = FocusScopeNode();
-    _inpDec = widget.searchDecoration ?? InputDecoration();
+    _inpDec = widget.searchDecoration ?? const InputDecoration();
     if (widget.searchAutofocus) {
       widget.searchFocusNode.requestFocus();
     }

@@ -20,8 +20,8 @@ class Memory extends BaseAuditModel {
       id: (json['id'] ?? '') as String,
       description: (json['description'] ?? '') as String
     );
-    memory.createdAt = json.tryGet<DateTime?>('createdAt', func: DateTime.tryParse) ?? DateTimeConst.min;
-    memory.updatedAt = json.tryGet<DateTime?>('updatedAt', func: DateTime.tryParse); 
+    memory.createdAt = json.tryGetCast<DateTime?, String>(key: 'createdAt', func: (s) => DateTime.tryParse(s)) ?? DateTimeConst.min;
+    memory.updatedAt = json.tryGetCast<DateTime?, String>(key: 'updatedAt', func: (s) => DateTime.tryParse(s) ); 
     return memory;
   }
   

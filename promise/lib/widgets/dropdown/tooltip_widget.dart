@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ToolTipWidget extends StatefulWidget {
-  const ToolTipWidget({Key? key, required this.msg}) : super(key: key);
+  const ToolTipWidget({super.key, required this.msg});
   final String msg;
 
   @override

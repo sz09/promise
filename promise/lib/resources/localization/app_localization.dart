@@ -61,7 +61,7 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
 }
 
 
-const EN = Locale('en');
+const EN = Locale('en', "US");
 const VN = Locale('vi', "VN");
 
 class L10n {

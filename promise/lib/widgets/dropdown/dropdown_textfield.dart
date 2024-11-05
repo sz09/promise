@@ -17,14 +17,14 @@ class IconProperty {
 class CheckBoxProperty {
   final MouseCursor? mouseCursor;
   final Color? activeColor;
-  final MaterialStateProperty<Color?>? fillColor;
+  final WidgetStateProperty<Color?>? fillColor;
   final Color? checkColor;
   final bool tristate;
   final MaterialTapTargetSize? materialTapTargetSize;
   final VisualDensity? visualDensity;
   final Color? focusColor;
   final Color? hoverColor;
-  final MaterialStateProperty<Color?>? overlayColor;
+  final WidgetStateProperty<Color?>? overlayColor;
   final double? splashRadius;
   final FocusNode? focusNode;
   final bool autofocus;
@@ -52,7 +52,7 @@ class CheckBoxProperty {
 
 class DropDownTextField extends StatefulWidget {
   const DropDownTextField(
-      {Key? key,
+      {super.key,
       this.controller,
       this.initialValue,
       required this.dropDownList,
@@ -89,7 +89,7 @@ class DropDownTextField extends StatefulWidget {
             "readOnly!=true or enableSearch=true both condition does not work"),
         assert(
           !(controller != null &&
-              !(controller is SingleValueDropDownController)),
+              controller is! SingleValueDropDownController),
           "controller must be type of SingleValueDropDownController",
         ),
         checkBoxProperty = null,
@@ -99,10 +99,9 @@ class DropDownTextField extends StatefulWidget {
         displayCompleteItem = false,
         submitButtonColor = null,
         submitButtonText = null,
-        submitButtonTextStyle = null,
-        super(key: key);
+        submitButtonTextStyle = null;
   const DropDownTextField.multiSelection(
-      {Key? key,
+      {super.key,
       this.controller,
       this.displayCompleteItem = false,
       this.initialValue,
@@ -132,7 +131,7 @@ class DropDownTextField extends StatefulWidget {
             "you cannot add both initialValue and multiController\nset initial value using controller\n\tMultiValueDropDownController(data:initial value)"),
         assert(
           !(controller != null &&
-              !(controller is MultiValueDropDownController)),
+              controller is! MultiValueDropDownController),
           "controller must be type of MultiValueDropDownController",
         ),
         multiController = controller,
@@ -145,9 +144,7 @@ class DropDownTextField extends StatefulWidget {
         searchShowCursor = null,
         singleController = null,
         searchDecoration = null,
-        keyboardType = null,
-        // keyboardHeight = 0,
-        super(key: key);
+        keyboardType = null;
 
   ///single and multiple dropdown controller.
   ///It must be type of SingleValueDropDownController or MultiValueDropDownController.
@@ -1017,9 +1014,9 @@ class KeyboardVisibilityBuilder extends StatefulWidget {
     bool isKeyboardVisible,
   ) builder;
   const KeyboardVisibilityBuilder({
-    Key? key,
+    super.key,
     required this.builder,
-  }) : super(key: key);
+  });
   @override
   _KeyboardVisibilityBuilderState createState() =>
       _KeyboardVisibilityBuilderState();

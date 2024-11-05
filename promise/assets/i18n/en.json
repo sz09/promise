@@ -72,6 +72,11 @@
   "promise.label_with": "With",
   "promise.with_hint": "Whom you want to promise",
   "promise.label_for_yourself": "For yourself",
+  "promise.label_duedate":"Due date",
+  "promise.duedate_hint":"Enter due date",
+  "promise.with_list_label": "With",
+  "promise.no_reference_user": "no ref user",
+  "promise.self_promise": "Self promise",
 
   "timeline_page_no_timeline_items_message": "No shared stories yet",
 

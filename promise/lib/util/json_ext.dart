@@ -1,3 +1,5 @@
+// import 'package:dart_json_mapper/dart_json_mapper.dart';
+
 T? _jsonTryGet<T, T1>(Map<String, dynamic> json, String key,
     {T Function(T1)? func}) {
   if (json.containsKey(key)) {
@@ -5,21 +7,37 @@ T? _jsonTryGet<T, T1>(Map<String, dynamic> json, String key,
       final value = json[key];
       return func(value);
     }
-    return json[key] as T?;
+    var a = json[key];
+    var b = a as T;
+    return b;
   }
 
   return null;
 }
 
+// T? _tryCast<T>(dynamic t) {
+//   final type = typeOf<T>();
+//   switch(t){
+//     case Map map:
+//     {
+      
+//     }
+//     break;
+
+//     case List list:
+//     {
+//       return list.cast<List<T>>();
+//     }
+//   }
+// }
+
 
 extension JsonExtensions on Map<String, dynamic> {
-  T? tryGet<T>(String key,
-    {T Function(String)? func}) {
-      return _jsonTryGet<T, String>(this, key, func: func);
+  T? tryGet<T>(String key) {
+      return _jsonTryGet<T, String>(this, key);
     }
     
-  T? tryGetCast<T, T1>(String key,
-    {T Function(T1)? func}) {
+  T? tryGetCast<T, T1>({required String key, required T Function(T1) func}) {
       return _jsonTryGet<T, T1>(this, key, func: func);
     }
 }

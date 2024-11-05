@@ -195,10 +195,20 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => ({id, content, to = null, dueDate = null}) => b
-                  ? prefix3.Promise(
-                      dueDate: dueDate, to: to, content: content, id: id)
-                  : null,
+              r'': (bool b) => (
+                      {id,
+                      content,
+                      forYourself = false,
+                      to = null,
+                      dueDate = null}) =>
+                  b
+                      ? prefix3.Promise(
+                          dueDate: dueDate,
+                          forYourself: forYourself,
+                          to: to,
+                          content: content,
+                          id: id)
+                      : null,
               r'fromJson': (bool b) =>
                   (json) => b ? prefix3.Promise.fromJson(json) : null
             },
@@ -239,7 +249,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'dueDate': 0,
               r'dueDate=': 1,
               r'to': 0,
-              r'to=': 1
+              r'to=': 1,
+              r'forYourself': 0,
+              r'forYourself=': 1
             }),
         r.NonGenericClassMirrorImpl(
             r'SystemVersion',
@@ -331,6 +343,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'content': (dynamic instance) => instance.content,
         r'dueDate': (dynamic instance) => instance.dueDate,
         r'to': (dynamic instance) => instance.to,
+        r'forYourself': (dynamic instance) => instance.forYourself,
         r'versions': (dynamic instance) => instance.versions
       },
       {
@@ -352,6 +365,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'content=': (dynamic instance, value) => instance.content = value,
         r'dueDate=': (dynamic instance, value) => instance.dueDate = value,
         r'to=': (dynamic instance, value) => instance.to = value,
+        r'forYourself=': (dynamic instance, value) =>
+            instance.forYourself = value,
         r'versions=': (dynamic instance, value) => instance.versions = value
       },
       null,
@@ -376,7 +391,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #content, #to, #dueDate]
+          const [#id, #content, #forYourself, #to, #dueDate]
         ],
         const [
           0,

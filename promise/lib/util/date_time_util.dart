@@ -1,20 +1,34 @@
 import 'package:intl/intl.dart';
+import 'package:promise/resources/localization/app_localization.dart';
 
 extension DateFormatter on DateTime {
-  String hourMinAndSeconds(String localeName) {
+  static String? _locale = null;
+  String get localeName {
+    return _locale ??= LocalizationService.locale.toString();
+  }
+  String hourMinAndSeconds() {
     return DateFormat.Hms(localeName).format(this);
   }
 
-  String hourAndMin(String localeName) {
+  String hourAndMin() {
     return DateFormat.Hm(localeName).format(this);
   }
 
-  String dayMonthYear(String localeName) {
+  String dayMonthYear() {
     return DateFormat.yMMMMd(localeName).format(this);
   }
 
-  String dayMonthYearHourMinute(String localeName) {
+  String dayMonthYearHourMinute() {
     return '${DateFormat.yMMMMd(localeName).format(this)}, ${DateFormat.Hm(localeName).format(this)}';
+  }
+
+  String asString(bool isDateOnly) {
+    return isDateOnly ? dayMonthYear() : toString();
+  }
+
+  DateTime endOfDay(){
+    final duration = Duration(hours: 24 - hour, minutes: 60 - minute, seconds: 60 - second, microseconds: -microsecond, milliseconds: -millisecond);
+    return add(duration);
   }
 }
 

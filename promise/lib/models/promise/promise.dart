@@ -18,10 +18,10 @@ class Promise extends BaseAuditModel {
   @HiveField(7)
   late List<String>? to;
 
-  @HiveField(7)
+  @HiveField(8)
   late bool forYourself;
   
-  Promise({required String id, required this.content, this.to = null, this.dueDate = null}) {
+  Promise({required String id, required this.content, this.forYourself = false, this.to = null, this.dueDate = null}) {
     this.id = id;
   }
   
@@ -29,7 +29,14 @@ class Promise extends BaseAuditModel {
     return Promise(
       id: (json['id'] ?? '') as String,
       content: (json['content'] ?? '') as String,
-      to: json.tryGet<List<String>>('to')
+      to: json.tryGetCast<List<String>, List>(key: 'to', func: (list) {
+          if(list.isNotEmpty) {
+            return list.cast<String>();
+          }
+          return [];
+      } ),
+      dueDate: json.tryGetCast<DateTime, String>(key: 'dueDate',  func: (s) => DateTime.parse(s)),
+      forYourself: json.tryGet<bool>('forYourself') ?? false
     );
   }
 
@@ -41,7 +48,8 @@ class Promise extends BaseAuditModel {
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'dueDate': instance.dueDate?.toIso8601String(),
       'content': instance.content,
-      'to': instance.to
+      'to': instance.to,
+      'forYourself': instance.forYourself
     };
 
   @override

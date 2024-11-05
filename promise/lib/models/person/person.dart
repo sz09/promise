@@ -37,12 +37,12 @@ class Person extends BaseAuditModel {
       email: (json['email'] ?? '') as String,
       firstName: json.tryGet<String>('firstName') ?? "",
       lastName: json.tryGet<String>('lastName') ?? "",
-      references: json.tryGetCast<List<Map<String, dynamic>>, List<dynamic>>("references", func: (x) {
+      references: json.tryGetCast<List<Map<String, dynamic>>, List<dynamic>>(key: "references", func: (x) {
         return x.map((d) => d as Map<String, dynamic>).toList();
       })?.map((d) => UserReference.fromJson(d)).toList() ?? [],
       nickname: json.tryGet<String>('nickname') ?? "",
     );
-    person.createdAt = json.tryGet<DateTime?>('createdAt', func: DateTime.tryParse) ?? DateTimeConst.min;
+    person.createdAt = json.tryGetCast<DateTime?, String>(key: 'createdAt', func: DateTime.tryParse) ?? DateTimeConst.min;
     // person.updatedAt = json.tryGet<DateTime?>('updatedAt', func: DateTime.tryParse) ?? DateTimeConst.min; 
     return person;
   }

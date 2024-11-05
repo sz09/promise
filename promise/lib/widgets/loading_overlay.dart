@@ -6,6 +6,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:queue/queue.dart';
 import 'package:synchronized/synchronized.dart';
 
 LoadingOverlay? _loadingOverlay = null;
@@ -15,70 +16,78 @@ set loadingOverlay(LoadingOverlay loadingOverlay) {
 }
 
 LoadingOverlay get loadingOverlay {
-  if(_loadingOverlay == null){
+  if (_loadingOverlay == null) {
     loadingOverlay = LoadingOverlay._create(Get.context!);
   }
   return _loadingOverlay!;
 }
 
 class LoadingOverlay {
-  BuildContext _context;
-  final Lock _lock = Lock();
+  final BuildContext _context;
   int _counter = 0;
+  bool _showingDialog = false;
+  final Lock _lock = Lock();
 
-  Future<void> hide() async {
-    await _lock.synchronized((){
-      _counter--;
-    });
-    if(_counter == 0){
-      Navigator.of(_context).pop();
-    }
+  final Queue queue = Queue(delay: const Duration(milliseconds: 10));
+
+  void _hide() {
+    queue.add(() => Future.microtask(() async {
+          await _lock.synchronized(() {
+            _counter--;
+          });
+          if (_counter == 0 && _showingDialog) {
+            Navigator.of(_context).pop();
+            _showingDialog = false;
+          }
+
+          Future.sync(() => {});
+        }));
   }
 
-  Future<void> show({bool shouldPop = true}) async {
-    await _lock.synchronized((){
-      _counter++;
-    });
-    if(_counter > 0){
-      showDialog(
-        useSafeArea: false,
-        context: _context,
-        barrierDismissible: false,
-        builder: (builderContext) => PopScope(
-          onPopInvokedWithResult: (x, y) async{
-
-          },
-          child: _FullScreenLoader(),
-        ),
-      );
-    }
+  void _show({bool shouldPop = true}) {
+    queue.add(() => Future.microtask(() async {
+          await _lock.synchronized(() async {
+            _counter++;
+            if (_counter > 0 && !_showingDialog) {
+              _showingDialog = true;
+              showDialog(
+                useSafeArea: false,
+                context: _context,
+                barrierDismissible: false,
+                builder: (builderContext) => PopScope(
+                  onPopInvokedWithResult: (x, y) async {},
+                  child: _FullScreenLoader(),
+                ),
+              ).then((value) {});
+            }
+          });
+        }));
   }
 
-  Future during<T>(Future<T> future, {T Function(T)? doneHandler = null, Function? finallyHandler = null, Function? errorHandler = null }) async {
-    await show();
-    return  await future.then((r) async {
-      await hide();
-      return Future.sync(() { 
-        if(doneHandler != null) {
-           return doneHandler.call(r);
+  Future during<T>(Future<T> future,
+      {T Function(T)? doneHandler = null,
+      Function? finallyHandler = null,
+      Function? errorHandler = null}) async {
+    _show();
+    return await future.then((r) async {
+      _hide();
+      return Future.sync(() {
+        if (doneHandler != null) {
+          return doneHandler.call(r);
         }
         return r;
       });
     })
-    // ignore: argument_type_not_assignable_to_error_handler
-    .catchError(() {
-      errorHandler?.call();
-    })
-    .whenComplete(() {
-       finallyHandler?.call();
-    });
+        // ignore: argument_type_not_assignable_to_error_handler
+      .catchError(() async {
+        errorHandler?.call();
+        _hide();
+      }).whenComplete(() async {
+        finallyHandler?.call();
+      });
   }
 
   LoadingOverlay._create(this._context);
-
-  factory LoadingOverlay.of(BuildContext context) {
-    return LoadingOverlay._create(context);
-  }
 }
 
 class _FullScreenLoader extends StatelessWidget {
@@ -88,7 +97,8 @@ class _FullScreenLoader extends StatelessWidget {
 
     return Theme(
       data: themeData.copyWith(
-        cupertinoOverrideTheme: const CupertinoThemeData(brightness: Brightness.dark),
+        cupertinoOverrideTheme:
+            const CupertinoThemeData(brightness: Brightness.dark),
       ),
       child: Container(
         decoration: const BoxDecoration(
@@ -106,7 +116,6 @@ class _FullScreenLoader extends StatelessWidget {
   }
 }
 
-
-  Widget loadingWidget() {
-    return const Center(child: CircularProgressIndicator());
-  }
+Widget loadingWidget() {
+  return const Center(child: CircularProgressIndicator());
+}

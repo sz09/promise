@@ -94,6 +94,7 @@ dependencies:
   flutter_chat_types: ^3.6.2
   flutter_slidable: ^3.1.1
   font_awesome_flutter: ^10.7.0
+  queue: ^3.1.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

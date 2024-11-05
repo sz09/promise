@@ -11,6 +11,7 @@ import 'package:promise/widgets/loading_overlay.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class LoadingState extends NetworkState {
+  late bool completed = false;
 }
 
 abstract class PageController<T> extends GetxController {
@@ -41,7 +42,6 @@ abstract class PageController<T> extends GetxController {
 }
 
 class MemoryController extends PageController<Memory> {}
-class PromiseController extends PageController<Promise> {}
 class TimelineController extends PageController<TimelineItem> {}
 class PeopleController extends PageController<Person> {}
 class ChatOneController extends PageController<types.Message> {

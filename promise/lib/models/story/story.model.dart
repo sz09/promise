@@ -25,7 +25,7 @@ class Story extends BaseModel {
       to: json.tryGet<String>('to') ?? '',
       user: Person.fromJson(json.tryGet<Map<String, dynamic>>('user')!),
       title: json.tryGet<String>('title') ?? '',
-      time: json.tryGet<DateTime>('time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),
+      time: json.tryGetCast<DateTime, String>(key: 'time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),
       content: json.tryGet<String>('content') ?? ''
     );
   }

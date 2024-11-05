@@ -5,7 +5,7 @@ import 'dropdown_textfield.dart';
 
 class MultiSelection extends StatefulWidget {
   const MultiSelection(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       required this.dropDownList,
       required this.list,
@@ -16,8 +16,7 @@ class MultiSelection extends StatefulWidget {
       required this.listTileHeight,
       required this.listPadding,
       this.listTextStyle,
-      this.checkBoxProperty})
-      : super(key: key);
+      this.checkBoxProperty});
   final List<DropDownValueModel> dropDownList;
   final ValueSetter onChanged;
   final List<bool> list;
