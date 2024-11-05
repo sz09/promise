@@ -48,6 +48,7 @@ void main() async {
   var result = {
     for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value
   };
+  result.addAll({"BaseUrlApi": "https://8a6f-116-111-185-94.ngrok-free.app"});
   FlavorConfig.set(
     Flavor.Dev,
     FlavorValues(baseUrlApi: result['BaseUrlApi']!),

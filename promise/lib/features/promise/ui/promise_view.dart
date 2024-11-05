@@ -1,17 +1,18 @@
 import 'package:get/get.dart';
 import 'package:promise/di/service_locator.dart';
-import 'package:promise/features/create.controller.dart';
 import 'package:flutter/material.dart';
+import 'package:promise/features/create.controller.dart';
 import 'package:promise/main.dart';
 import 'package:promise/services/person/person.service.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/dropdown/dropdown_textfield.dart';
 import 'package:promise/widgets/wrap/wrap_checkbox.dart';
+import 'package:promise/widgets/wrap/wrap_datetime.dart';
 import 'package:promise/widgets/wrap/wrap_multi_dropdown.dart';
 import 'package:promise/widgets/wrap/wrap_textarea.dart';
-
 final _controller = Get.find<CreatePromiseController>(tag: applicationTag);
+
 class PromiseDialog extends StatefulWidget {
   const PromiseDialog({super.key});
 
@@ -21,10 +22,9 @@ class PromiseDialog extends StatefulWidget {
 
 class _PromiseDialogState extends State<PromiseDialog> {
   final _contentController = TextEditingController();
-  final _withController = MultiValueDropDownController();
-  final _priceController = TextEditingController();
+  final _toController = MultiValueDropDownController();
   late bool _isForYourSelf = true;
-
+  final _formKey = GlobalKey<FormState>();
   void _toggleForYourSelfCheckbox(bool value) {
     setState(() {
       _isForYourSelf = value;
@@ -32,10 +32,9 @@ class _PromiseDialogState extends State<PromiseDialog> {
   }
   @override
   void dispose() {
-    _withController.clearDropDown();
     _contentController.dispose();
-    _priceController.dispose();
-    _withController.dispose();
+    _toController.clearDropDown();
+    _toController.dispose();
     super.dispose();
   }
 
@@ -44,7 +43,9 @@ class _PromiseDialogState extends State<PromiseDialog> {
     Get.lazyPut(() => DropdownController(), tag: "$applicationTag.Create_Promise_With");
     return Padding(
       padding: contentPadding,
-      child: Column(
+      child: Form(
+        key: _formKey,
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -73,17 +74,18 @@ class _PromiseDialogState extends State<PromiseDialog> {
               final items = await serviceLocator.get<PersonService>().getUserReferences();
               return items.map((d) => DropDownValueModel(name: d.hint, value: d.referenceUserId)).toList();
             },
-            controller: _withController,
+            controller: _toController,
             labelText: context.translate("promise.label_with"),
             hintText: context.translate("promise.with_hint"),
           ),
-
+          WrapDateTimePicker(
+            controller: _dueDateController,
+          )
           Align(
             alignment: Alignment.centerRight,
             child: ElevatedButton(
-              onPressed: () async {
-                await _onCreatePromise();
-                //Navigator.of(context).pop();
+              onPressed: () {
+                _onCreatePromise(context);
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -99,19 +101,21 @@ class _PromiseDialogState extends State<PromiseDialog> {
           ),
         ],
       ),
-    );
+    ));
   }
   
-  Future _onCreatePromise() async {
-        final content = _contentController.text;
-        final withs = _withController.dropDownValueList?.map((d) => d.value.toString()).toList() ?? [];
-    // if (_formKey.currentState!.validate()) {
-    //   // BlocProvider.of<CreatePromiseCubit>(context).onCreatePromise(Promise(
-    //   //     id: 'id',
-    //   //     content: _promiseDescriptionController.text,
-    //   //     to: _cntMulti.dropDownValueList?.map((x) => x.value).join(', '),
-    //   //     dueDate: null));
-    // }
+  void _onCreatePromise(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      
+      final content = _contentController.text;
+      final tos = _toController.dropDownValueList?.map((d) => d.value.toString()).toList() ?? [];
+       _controller.create(content: content, forYourself: _isForYourSelf, to: tos);
+      // BlocProvider.of<CreatePromiseCubit>(context).onCreatePromise(Promise(
+      //     id: 'id',
+      //     content: _promiseDescriptionController.text,
+      //     to: _cntMulti.dropDownValueList?.map((x) => x.value).join(', '),
+      //     dueDate: null));
+    }
 
     
   }

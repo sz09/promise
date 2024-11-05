@@ -14,7 +14,12 @@ class Promise extends BaseAuditModel {
   late String content;
   @HiveField(6)
   late DateTime? dueDate;
-  late String? to;
+  
+  @HiveField(7)
+  late List<String>? to;
+
+  @HiveField(7)
+  late bool forYourself;
   
   Promise({required String id, required this.content, this.to = null, this.dueDate = null}) {
     this.id = id;
@@ -24,7 +29,7 @@ class Promise extends BaseAuditModel {
     return Promise(
       id: (json['id'] ?? '') as String,
       content: (json['content'] ?? '') as String,
-      to: json.tryGet<String>('to')
+      to: json.tryGet<List<String>>('to')
     );
   }
 

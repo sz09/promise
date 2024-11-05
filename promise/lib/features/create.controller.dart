@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/networks/getx_api.state.dart';
+import 'package:promise/services/person/person.service.dart';
+import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/util/response.ext.dart';
 import 'package:promise/util/string_util.dart';
@@ -33,19 +36,9 @@ abstract class CreateController<T> extends GetxController {
 class CreateMemoryController extends CreateController<Memory> {}
 class CreatePromiseController extends CreateController<Promise> {
   var loadingPeopleState = LoadingState().obs;
-  RxList<Person> people = <Person>[].obs;
-  loadPeople(Future<PageResult<Person>> Function() func) async {
-    Log.d("GetX begin loadData for ${(Person).toPlural()}");
-    final stopwatch = Stopwatch();
-    stopwatch.start();
-    loadingState.onLoading();
-    var pageResult = await func();
-    loadingState.onLoaded();
-    people.clear();
-    people.addAll(pageResult.data);
 
-    Log.d("GetX loadData for ${(Person).toPlural()} take ${stopwatch.elapsedMilliseconds}ms");
-  
+  create({required String content, required bool forYourself, required List<String> to}){
+    serviceLocator.get<PromiseService>().createAsync(Promise(id: '', content: content, to: to));
   }
 }
 class CreateTimelineController extends CreateController<TimelineItem> {}

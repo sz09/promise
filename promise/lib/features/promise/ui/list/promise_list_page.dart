@@ -113,6 +113,7 @@ class PromiseListView extends StateView<PromiseListView> {
 
   void _openCreatePromise(BuildContext context) {
     showModalBottomSheet(
+      isDismissible: false,
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,

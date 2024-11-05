@@ -10,15 +10,15 @@ class WrapCheckbox extends StatelessWidget {
     return GestureDetector(
       onTap:() => onChanged,  // Taps on the entire row toggle the checkbox
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(label),
           Checkbox(
             value: isChecked,
             onChanged: (bool? value) {
               onChanged(value ?? false);
             },
           ),
+          Text(label)
         ],
       ),
     );
