@@ -186,7 +186,6 @@ class ChatOnePage extends StatelessWidget {
     _controller.loadMessges(conversationId);
     return Scaffold(
         body: Obx(() =>  Chat(
-          // ignore: invalid_use_of_protected_member
           messages: _controller.items.value,
           onAttachmentPressed: () => _handleAttachmentPressed(context),
           onMessageTap: _handleMessageTap,

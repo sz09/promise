@@ -17,7 +17,7 @@ class Person extends BaseAuditModel {
   }
 
   @HiveField(5)
-  late String email;
+  late String? email;
   @HiveField(6)
   late String firstName;
   @HiveField(7)
@@ -27,14 +27,16 @@ class Person extends BaseAuditModel {
   @HiveField(9)
   late String nickname;
 
-  Person({required String id, required this.email, required this.firstName, required this.lastName, required this.references, required this.nickname}) {
+  Person({required String id, required  String userId, required this.email, required this.firstName, required this.lastName, required this.references, required this.nickname}) {
     this.id = id;
+    this.userId = userId;
   }
 
   factory Person.fromJson(Map<String, dynamic> json) {
     var person = Person(
       id: (json['id'] ?? '') as String,
-      email: (json['email'] ?? '') as String,
+      userId: json.tryGet('userId') ?? '',
+      email: json.tryGet<String>('email'),
       firstName: json.tryGet<String>('firstName') ?? "",
       lastName: json.tryGet<String>('lastName') ?? "",
       references: json.tryGetCast<List<Map<String, dynamic>>, List<dynamic>>(key: "references", func: (x) {

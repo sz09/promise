@@ -4,8 +4,8 @@ import 'dart:core';
 import 'package:hive/hive.dart' as prefix5;
 import 'package:json_annotation/src/json_serializable.dart' as prefix7;
 import 'package:promise/models/hive_type_model.const.dart' as prefix6;
-import 'package:promise/models/memory/memory.dart' as prefix1;
-import 'package:promise/models/person/person.dart' as prefix2;
+import 'package:promise/models/memory/memory.dart' as prefix2;
+import 'package:promise/models/person/person.dart' as prefix1;
 import 'package:promise/models/promise/promise.dart' as prefix3;
 import 'package:promise/models/system-versions/system-version.model.dart'
     as prefix4;
@@ -26,8 +26,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.HiveTypeReflector(): r.ReflectorData(
       <m.TypeMirror>[
         r.NonGenericClassMirrorImpl(
-            r'Memory',
-            r'.Memory',
+            r'Person',
+            r'.Person',
             134217735,
             0,
             const prefix0.HiveTypeReflector(),
@@ -38,69 +38,26 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => ({id, description}) =>
-                  b ? prefix1.Memory(description: description, id: id) : null,
-              r'fromJson': (bool b) =>
-                  (json) => b ? prefix1.Memory.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            const <Object>[
-              const prefix5.HiveType(typeId: prefix6.MemoryHiveType),
-              prefix0.hiveTypeReflector
-            ],
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'capabilities': 0,
-              r'canReflect': 1,
-              r'reflect': 1,
-              r'canReflectType': 1,
-              r'reflectType': 1,
-              r'findLibrary': 1,
-              r'libraries': 0,
-              r'annotatedClasses': 0,
-              r'id': 0,
-              r'id=': 1,
-              r'userId': 0,
-              r'userId=': 1,
-              r'createdAt': 0,
-              r'createdAt=': 1,
-              r'updatedAt': 0,
-              r'updatedAt=': 1,
-              r'fromJsonMethod': 0,
-              r'description': 0,
-              r'description=': 1
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'Person',
-            r'.Person',
-            134217735,
-            1,
-            const prefix0.HiveTypeReflector(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (bool b) =>
-                  ({id, email, firstName, lastName, references, nickname}) => b
-                      ? prefix2.Person(
+              r'': (bool b) => (
+                      {id,
+                      userId,
+                      email,
+                      firstName,
+                      lastName,
+                      references,
+                      nickname}) =>
+                  b
+                      ? prefix1.Person(
                           email: email,
                           firstName: firstName,
                           id: id,
                           lastName: lastName,
                           nickname: nickname,
-                          references: references)
+                          references: references,
+                          userId: userId)
                       : null,
               r'fromJson': (bool b) =>
-                  (json) => b ? prefix2.Person.fromJson(json) : null
+                  (json) => b ? prefix1.Person.fromJson(json) : null
             },
             -1,
             -1,
@@ -148,7 +105,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             r'UserReference',
             r'.UserReference',
             134217735,
-            2,
+            1,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -158,11 +115,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {
               r'': (bool b) => ({referenceUserId, hint}) => b
-                  ? prefix2.UserReference(
+                  ? prefix1.UserReference(
                       hint: hint, referenceUserId: referenceUserId)
                   : null,
               r'fromJson': (bool b) =>
-                  (json) => b ? prefix2.UserReference.fromJson(json) : null
+                  (json) => b ? prefix1.UserReference.fromJson(json) : null
             },
             -1,
             -1,
@@ -183,6 +140,57 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'hint=': 1
             }),
         r.NonGenericClassMirrorImpl(
+            r'Memory',
+            r'.Memory',
+            134217735,
+            2,
+            const prefix0.HiveTypeReflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {},
+            {},
+            {
+              r'': (bool b) => ({id, description}) =>
+                  b ? prefix2.Memory(description: description, id: id) : null,
+              r'fromJson': (bool b) =>
+                  (json) => b ? prefix2.Memory.fromJson(json) : null
+            },
+            -1,
+            -1,
+            const <int>[-1],
+            const <Object>[
+              const prefix5.HiveType(typeId: prefix6.MemoryHiveType),
+              prefix0.hiveTypeReflector
+            ],
+            {
+              r'==': 1,
+              r'toString': 0,
+              r'noSuchMethod': 1,
+              r'hashCode': 0,
+              r'runtimeType': 0,
+              r'capabilities': 0,
+              r'canReflect': 1,
+              r'reflect': 1,
+              r'canReflectType': 1,
+              r'reflectType': 1,
+              r'findLibrary': 1,
+              r'libraries': 0,
+              r'annotatedClasses': 0,
+              r'id': 0,
+              r'id=': 1,
+              r'userId': 0,
+              r'userId=': 1,
+              r'createdAt': 0,
+              r'createdAt=': 1,
+              r'updatedAt': 0,
+              r'updatedAt=': 1,
+              r'fromJsonMethod': 0,
+              r'description': 0,
+              r'description=': 1
+            }),
+        r.NonGenericClassMirrorImpl(
             r'Promise',
             r'.Promise',
             134217735,
@@ -197,20 +205,22 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {
               r'': (bool b) => (
                       {id,
+                      userId,
                       content,
                       forYourself = false,
                       to = null,
-                      dueDate = null}) =>
+                      expectedTime = null}) =>
                   b
                       ? prefix3.Promise(
-                          dueDate: dueDate,
+                          expectedTime: expectedTime,
                           forYourself: forYourself,
                           to: to,
                           content: content,
-                          id: id)
+                          id: id,
+                          userId: userId)
                       : null,
               r'fromJson': (bool b) =>
-                  (json) => b ? prefix3.Promise.fromJson(json) : null
+                  (input) => b ? prefix3.Promise.fromJson(input) : null
             },
             -1,
             -1,
@@ -246,8 +256,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'fromJsonMethod': 0,
               r'content': 0,
               r'content=': 1,
-              r'dueDate': 0,
-              r'dueDate=': 1,
+              r'expectedTime': 0,
+              r'expectedTime=': 1,
               r'to': 0,
               r'to=': 1,
               r'forYourself': 0,
@@ -299,15 +309,17 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'userId': 0,
               r'userId=': 1,
               r'versions': 0,
-              r'versions=': 1
+              r'versions=': 1,
+              r'modelVersions': 0,
+              r'modelVersions=': 1
             })
       ],
       null,
       null,
       <Type>[
-        prefix1.Memory,
-        prefix2.Person,
-        prefix2.UserReference,
+        prefix1.Person,
+        prefix1.UserReference,
+        prefix2.Memory,
         prefix3.Promise,
         prefix4.SystemVersion
       ],
@@ -331,7 +343,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'createdAt': (dynamic instance) => instance.createdAt,
         r'updatedAt': (dynamic instance) => instance.updatedAt,
         r'fromJsonMethod': (dynamic instance) => instance.fromJsonMethod,
-        r'description': (dynamic instance) => instance.description,
         r'email': (dynamic instance) => instance.email,
         r'firstName': (dynamic instance) => instance.firstName,
         r'lastName': (dynamic instance) => instance.lastName,
@@ -339,20 +350,20 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'nickname': (dynamic instance) => instance.nickname,
         r'referenceUserId': (dynamic instance) => instance.referenceUserId,
         r'hint': (dynamic instance) => instance.hint,
+        r'description': (dynamic instance) => instance.description,
         r'toJson': (dynamic instance) => instance.toJson,
         r'content': (dynamic instance) => instance.content,
-        r'dueDate': (dynamic instance) => instance.dueDate,
+        r'expectedTime': (dynamic instance) => instance.expectedTime,
         r'to': (dynamic instance) => instance.to,
         r'forYourself': (dynamic instance) => instance.forYourself,
-        r'versions': (dynamic instance) => instance.versions
+        r'versions': (dynamic instance) => instance.versions,
+        r'modelVersions': (dynamic instance) => instance.modelVersions
       },
       {
         r'id=': (dynamic instance, value) => instance.id = value,
         r'userId=': (dynamic instance, value) => instance.userId = value,
         r'createdAt=': (dynamic instance, value) => instance.createdAt = value,
         r'updatedAt=': (dynamic instance, value) => instance.updatedAt = value,
-        r'description=': (dynamic instance, value) =>
-            instance.description = value,
         r'email=': (dynamic instance, value) => instance.email = value,
         r'firstName=': (dynamic instance, value) => instance.firstName = value,
         r'lastName=': (dynamic instance, value) => instance.lastName = value,
@@ -362,12 +373,17 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'referenceUserId=': (dynamic instance, value) =>
             instance.referenceUserId = value,
         r'hint=': (dynamic instance, value) => instance.hint = value,
+        r'description=': (dynamic instance, value) =>
+            instance.description = value,
         r'content=': (dynamic instance, value) => instance.content = value,
-        r'dueDate=': (dynamic instance, value) => instance.dueDate = value,
+        r'expectedTime=': (dynamic instance, value) =>
+            instance.expectedTime = value,
         r'to=': (dynamic instance, value) => instance.to = value,
         r'forYourself=': (dynamic instance, value) =>
             instance.forYourself = value,
-        r'versions=': (dynamic instance, value) => instance.versions = value
+        r'versions=': (dynamic instance, value) => instance.versions = value,
+        r'modelVersions=': (dynamic instance, value) =>
+            instance.modelVersions = value
       },
       null,
       [
@@ -376,12 +392,15 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #description]
-        ],
-        const [
-          0,
-          0,
-          const [#id, #email, #firstName, #lastName, #references, #nickname]
+          const [
+            #id,
+            #userId,
+            #email,
+            #firstName,
+            #lastName,
+            #references,
+            #nickname
+          ]
         ],
         const [
           0,
@@ -391,7 +410,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [
           0,
           0,
-          const [#id, #content, #forYourself, #to, #dueDate]
+          const [#id, #description]
+        ],
+        const [
+          0,
+          0,
+          const [#id, #userId, #content, #forYourself, #to, #expectedTime]
         ],
         const [
           0,

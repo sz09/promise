@@ -15,9 +15,10 @@ class LoginController extends GetxController {
     errorHandler: () => {
       
     },
-    finallyHandler: () {
+    doneHandler: (t) {
       loginState.value.isInprogress = false;
       loginState.refresh();
+      return t;
     });
     update();
   }

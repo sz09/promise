@@ -1,48 +1,74 @@
 
 import 'package:flutter/material.dart';
 import 'package:promise/util/layout_util.dart';
+import 'package:promise/util/localize.ext.dart';
 
 @immutable
-class WrapTextAreaFormField extends StatelessWidget {
-  late String _hintText;
-  late String _labelText;
-  late int _maxLines;
-  late int _minLines;
-  late bool validState;
-  late TextEditingController? _controller;
+class WrapTextAreaFormField extends StatefulWidget {
+  final String labelText;
+  final int maxLines;
+  final int minLines;
+  final bool required;
+  late String? errorText;
+  late String hintText;
+  late TextEditingController controller;
 
   WrapTextAreaFormField(
-      {required TextEditingController? controller,
-      required String labelText,
-      required int maxLines,
-      required int minLines,
+      {required this.controller,
+      required this.labelText,
+      required this.maxLines,
+      required this.minLines,
+      required this.required,
+      this.errorText = null,
       super.key,
-      String? hintText = null,
-      this.validState = true}) {
-    _controller = controller;
-    _labelText = labelText;
-    _maxLines = maxLines;
-    _minLines = minLines;
-    _hintText = hintText ?? '';
-  }
+      this.hintText = ''
+    }) {}
 
+  @override
+  State<StatefulWidget> createState() {
+    return _StateWrapTextAreaFormField();
+  }
+}
+
+class _StateWrapTextAreaFormField extends State<WrapTextAreaFormField>{
+  late bool _validState = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: paddingTop,
       child: TextFormField(
         scrollPadding: const EdgeInsets.all(10),
-        controller: _controller,
-        maxLines: _maxLines,
-        minLines: _minLines,
+        controller: widget.controller,
+        maxLines: widget.maxLines,
+        minLines: widget.minLines,
+        onChanged: (value) {
+          setState(() {
+            _validState = value.isNotEmpty ;
+          });
+        },
+        validator: (value) {
+          if(widget.required){
+            setState(() {
+              _validState = value?.isNotEmpty ?? false;
+            });
+           return _errorText;
+          }
+
+          return null;
+        },
         decoration: InputDecoration(
-          labelText: _labelText,
-          hintText: _hintText,
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          errorText: _errorText,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: roundedItem,
           ),
         ),
       )
     );
+  }
+
+  String? get _errorText {
+    return !_validState ? widget.errorText ?? context.translate("common.text.cannot_be_empty") : null;
   }
 }

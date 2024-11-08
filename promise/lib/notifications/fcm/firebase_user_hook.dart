@@ -19,7 +19,7 @@ class FirebaseUserHook extends UserEventHook<UserCredentials> {
 
   @override
   Future<void> onUserAuthorized(UserCredentials user, bool isExplicitUserLogin) async {
-    await _crashlytics.setUserIdentifier(user.user.id);
+    await _crashlytics.setUserIdentifier(user.user.userId);
 
     if (!_notificationListener.setupInitialized) {
       await _notificationListener.setupPushNotifications();

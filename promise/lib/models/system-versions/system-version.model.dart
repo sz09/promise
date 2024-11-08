@@ -12,7 +12,7 @@ class SystemVersion extends BaseModel {
   late Map<String, BigInt> versions;
   @HiveField(3)
   //TODO: https://chatgpt.com/c/6729d251-dd08-8007-b75f-d165a1c23c81
-  late Map<String, int> modelVersions; 
+  late Map<String, int> modelVersions = {}; 
   SystemVersion({required String id, required String userId, required this.versions}){
     this.id = id;
     this.userId = userId;

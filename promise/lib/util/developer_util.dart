@@ -32,7 +32,7 @@ Future<void> sendDeveloperInfo() async {
     logFilePath: await fileLogger.getLogFilePath(),
     appName: packageInfo.appName,
     appVersion: packageInfo.version,
-    userId: (await userManager.getLoggedInUser())?.user.id ?? 'n/a',
+    userId: (await userManager.getLoggedInUser())?.user.userId ?? 'n/a',
     username: (await userManager.getLoggedInUser())?.user.username ?? 'n/a',
     flavor: FlavorConfig.flavorName,
     platform: Platform.isIOS

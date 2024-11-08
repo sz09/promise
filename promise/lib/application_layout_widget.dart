@@ -4,18 +4,21 @@ import 'package:promise/features/menu/menu.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/util/localize.ext.dart';
 
-var menu = const Drawer(child: DrawerMenu());
-
 class ApplicationLayout extends StatelessWidget {
   final Widget child;
   final String widgetKey;
+  final Function(BuildContext)? createFuntion;
   late int _selectedIndex = 1;
-  ApplicationLayout({super.key, required this.child, required this.widgetKey}) {
-    switch(widgetKey) {
-       case 'chat.title': 
+  ApplicationLayout(
+      {super.key,
+      required this.child,
+      required this.widgetKey,
+      this.createFuntion = null}) {
+    switch (widgetKey) {
+      case 'layout.chat_title':
         _selectedIndex = 1;
         break;
-       case 'me.title': 
+      case 'layout.me_title':
         _selectedIndex = 2;
         break;
       default:
@@ -35,6 +38,7 @@ class ApplicationLayout extends StatelessWidget {
         await context.navigateTo(chatRoute);
         break;
       case 2:
+        await context.navigateTo(meRoute);
         break;
     }
   }
@@ -51,8 +55,18 @@ class ApplicationLayout extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(context.translate(widgetKey)),
+            actions: [
+              if (createFuntion != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: IconButton(onPressed: () { 
+                  createFuntion!(context);
+                }, 
+                icon: const Icon(FontAwesomeIcons.plus)),
+              )
+            ],
           ),
-          drawer: menu,
+          drawer: const Drawer(width: 230, child: DrawerMenu()),
           body: PageView(
             controller: _pageController,
             children: [child],
@@ -67,15 +81,15 @@ class ApplicationLayout extends StatelessWidget {
               items: [
                 BottomNavigationBarItem(
                   icon: const Icon(Icons.home),
-                  label: context.translate('Home'),
+                  label: context.translate('layout.home'),
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(FontAwesomeIcons.telegram),
-                  label: context.translate('Chat'),
+                  label: context.translate('layout.chat'),
                 ),
                 BottomNavigationBarItem(
                   icon: const Icon(FontAwesomeIcons.person),
-                  label: context.translate('Me'),
+                  label: context.translate('layout.me'),
                 ),
               ],
               currentIndex: _selectedIndex,

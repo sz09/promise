@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 const WidgetStateProperty<double?> _iconSize = WidgetStatePropertyAll(18);
 
@@ -10,10 +11,11 @@ class WrapDateTimePicker extends StatefulWidget {
   late String _hintText;
   late String labelText;
   late bool validState;
+  late bool clearable;
   final bool isDateOnly;
   final DateTime firstDate;
   final DateTime lastDate;
-  final DateTime selectedDate;
+  final DateTime? selectedDate;
 
   final ValueChanged<DateTime>? onChanged;
 
@@ -23,6 +25,7 @@ class WrapDateTimePicker extends StatefulWidget {
       required this.firstDate,
       required this.lastDate,
       required this.selectedDate,
+      this.clearable = false,
       this.onChanged = null,
       this.isDateOnly = true,
       super.key,
@@ -38,7 +41,7 @@ class WrapDateTimePicker extends StatefulWidget {
 }
 
 class _StateWrapDateTimePicker extends State<WrapDateTimePicker> {
-  late DateTime _selectedDate;
+  late DateTime? _selectedDate = null;
   final TextEditingController _controller = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -46,21 +49,27 @@ class _StateWrapDateTimePicker extends State<WrapDateTimePicker> {
         context: context,
         initialDate: _selectedDate,
         firstDate: widget.firstDate,
-        lastDate: widget.lastDate
+        lastDate: widget.lastDate,
+        keyboardType: TextInputType.datetime
       );
-    if (picked != null && picked != _selectedDate) {
+   _onSelectedDate(picked);
+  }
+
+  void _onSelectedDate(DateTime? picked) {
+    if (picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _controller.text = _selectedDate.asString(widget.isDateOnly);
-        if(widget.onChanged != null) widget.onChanged!(_selectedDate);
+        _controller.text = _selectedDate?.asString(widget.isDateOnly) ?? "";
+        if(widget.onChanged != null && _selectedDate != null) widget.onChanged!(_selectedDate!);
       });
     }
   }
+
   @override 
   void initState() {
     super.initState();
-    _selectedDate = widget.selectedDate;
-    _controller.text = _selectedDate.asString(widget.isDateOnly);
+    initializeDateFormatting();
+    _onSelectedDate(widget.selectedDate);
   }
   @override
   Widget build(BuildContext context) {
@@ -72,23 +81,26 @@ class _StateWrapDateTimePicker extends State<WrapDateTimePicker> {
               child: TextField(
                 readOnly: true,
                 controller: _controller,
+                onTap: () => _selectDate(context),
                 decoration: InputDecoration(
                     labelText: widget.labelText,
                     hintText: widget._hintText,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
+                      borderRadius: roundedItem,
+                    ),
+                    suffix: widget.clearable ? ElevatedButton(
+                          style: ButtonStyle(
+                              iconSize: _iconSize,
+                              shadowColor: const WidgetStatePropertyAll(Colors.transparent),
+                              backgroundColor: WidgetStatePropertyAll(
+                                  context.containerLayoutColor)),
+                          child: const Icon(FontAwesomeIcons.x),
+                          onPressed: () {
+                            _onSelectedDate(null);
+                          }): null
+                ),
               ),
             )
-            ,
-            ElevatedButton(
-                style: ButtonStyle(
-                    iconSize: _iconSize,
-                    backgroundColor:
-                        WidgetStatePropertyAll(context.containerLayoutColor)),
-                child: const Icon(FontAwesomeIcons.calendar),
-                onPressed: () => _selectDate(context)
-              )
           ]
         ));
   }

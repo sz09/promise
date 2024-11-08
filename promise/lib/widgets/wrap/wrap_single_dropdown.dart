@@ -69,10 +69,9 @@ class WrapSingleDropdownFormField extends StatelessWidget {
               textFieldDecoration: InputDecoration(
                   labelText: labelText,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: roundedItem,
                   )
               ),
-              // ignore: invalid_use_of_protected_member
               dropDownList: fetchItemController.items.value,
               searchDecoration: InputDecoration(
                 hintText: _hintText,

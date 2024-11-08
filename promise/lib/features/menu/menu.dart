@@ -5,14 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:promise/main.dart';
 import 'package:promise/routers/router.config.dart';
-import 'package:promise/settings.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
 const drawerMenuKey = Key("drawer_menu");
 const closeMenuKey = Key("close_key_icon");
 
-
+const double _iconSize = 25;
+const double _textSize = 20;
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
   
@@ -21,12 +21,9 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  late Future<List<MenuItemInfo>> menuItems;
-
   @override
   void initState() {
     super.initState();
-    menuItems = loadMenuItems();
   }
 
   @override
@@ -38,16 +35,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset("assets/images/promise_logo.png",
                 fit: BoxFit.fitHeight, height: 30),
-          ),
-          actions: [
-            IconButton(
-              key: closeMenuKey,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(FontAwesomeIcons.bars),
-            ),
-          ]),
+          )),
       body: Column(children: _getMenuItems(context)),
     );
   }
@@ -124,11 +112,11 @@ Container _getMenuItem(
       leading: Icon(
         icon,
         color: context.iconColor,
-        size: 40,
+        size: _iconSize,
       ),
       title: Text(context.translate(titleKey),
           style: TextStyle(
-            fontSize: 22,
+            fontSize: _textSize,
             color: context.textColor,
           )),
       onTap: () async {
@@ -155,10 +143,10 @@ Container _getAuthMenuItem(
       leading: Icon(
         icon,
         color: context.iconColor,
-        size: 40,
+        size: _iconSize,
       ),
       title: Text(context.translate(titleKey),
-          style: const TextStyle(fontSize: 22)),
+          style: const TextStyle(fontSize: _textSize)),
       onTap: () async {
         await userManager.logout();
       },

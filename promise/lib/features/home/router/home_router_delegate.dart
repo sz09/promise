@@ -57,17 +57,17 @@ class HomeRouterDelegate extends RouterDelegate
             case promisesRoute:
               return MaterialPageRoute(
                   builder: (context) => ApplicationLayout(
-                      widgetKey: 'promise.title',
-                      child: const PromiseListPage()));
+                      widgetKey: 'layout.promise_title',
+                      child: PromiseListPage()));
             case memoriesRoute:
               return MaterialPageRoute(
                   builder: (context) => ApplicationLayout(
-                      widgetKey: 'memory.title',
+                      widgetKey: 'layout.memory_title',
                       child: const MemoryListPage()));
             case peopleRoute:
               return MaterialPageRoute(
                   builder: (context) => ApplicationLayout(
-                      widgetKey: 'people.title',
+                      widgetKey: 'layout.people_title',
                       child: const PeoplePage()));
             case settingsRoute:
               return MaterialPageRoute(

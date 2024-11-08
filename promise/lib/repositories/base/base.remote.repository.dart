@@ -21,6 +21,17 @@ import 'package:promise/util/sync_result.dart';
   }
 
   @override
+  Future<T> modifyAsync(BaseAuditModel t) async {
+    var result = await this.client.put<dynamic>(path, t, factoryMethod: itemFactoryMethod);
+    return result.data!;
+  }
+
+  @override
+  Future deleteAsync(String id) async {
+    await this.client.delete<dynamic>("$path/$id");
+  }
+
+  @override
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
     final pageResult = PageResult<T>.set([], 0);
    PageResult<T> factoryMethod(Response<dynamic> response){

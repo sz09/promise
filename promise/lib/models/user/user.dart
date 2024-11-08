@@ -7,11 +7,10 @@ part 'user.g.dart';
 @JsonSerializable()
 @immutable
 class IdentityUser extends Equatable {
-  @JsonKey(name: 'uuid')
-  final String id;
+  final String userId;
   final String username;
 
-  const IdentityUser({required this.id, required this.username});
+  const IdentityUser({required this.userId, required this.username});
 
   factory IdentityUser.fromJson(Map<String, dynamic> json) =>
       _$UserFromJson(json);
@@ -19,12 +18,12 @@ class IdentityUser extends Equatable {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   @override
-  List<Object?> get props => [id, username];
+  List<Object?> get props => [userId, username];
 
   @override
   String toString() {
     return 'User{'
-        'id: $id, '
+        'userId: $userId, '
         'username: $username'
         '}';
   }

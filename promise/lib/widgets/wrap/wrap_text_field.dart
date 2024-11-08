@@ -28,7 +28,7 @@ class WrapTextFormField extends StatelessWidget {
           labelText: _labelText,
           hintText: _hintText,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: roundedItem,
           ),
         ),
       ));

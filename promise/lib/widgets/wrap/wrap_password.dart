@@ -68,6 +68,7 @@ class _WrapPasswordFormFieldState extends State<WrapPasswordFormField> {
                       suffix: ElevatedButton(
                           style: ButtonStyle(
                               iconSize: _iconSize,
+                              shadowColor: const WidgetStatePropertyAll(Colors.transparent),
                               backgroundColor: WidgetStatePropertyAll(
                                   context.containerLayoutColor)),
                           child: _obscureText

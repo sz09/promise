@@ -1,30 +1,40 @@
 import 'package:promise/models/base/base.model.dart';
-import 'package:promise/models/person/person.dart';
 import 'package:promise/util/json_ext.dart';
+enum PromiseAction {
+    Promise,
+    CompleteChallenge
+}
 
 class Story extends BaseModel {
   Story({
     required String id, 
     required this.to,
-    required this.user,
-    required this.title,
     required this.content,
+    required this.action,
+    required this.from,
     required this.time,
     }) {
     this.id = id;
   }
-  final String to;
+  final List<String> to;
   final String content;
-  final String title;
   final DateTime time;
-  final Person user;
+  final PromiseAction action;
+  final String from;
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
       id: json.tryGet<String>('id') ?? '',
-      to: json.tryGet<String>('to') ?? '',
-      user: Person.fromJson(json.tryGet<Map<String, dynamic>>('user')!),
-      title: json.tryGet<String>('title') ?? '',
+      from: json.tryGet<String>('from') ?? '',
+      to:  json.tryGetCast<List<String>, List>(key: 'to', func: (list) {
+          if(list.isNotEmpty) {
+            return list.cast<String>();
+          }
+          return [];
+      }) ?? [],
+      action: json.tryGetCast<PromiseAction, int>(key: 'action', func: (a) {
+        return PromiseAction.values[a];
+      }) ?? PromiseAction.Promise,
       time: json.tryGetCast<DateTime, String>(key: 'time', func: (x) => DateTime.parse(x)) ?? DateTime.now(),
       content: json.tryGet<String>('content') ?? ''
     );

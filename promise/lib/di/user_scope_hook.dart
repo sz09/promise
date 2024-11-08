@@ -32,7 +32,7 @@ class UserScopeHook extends UserEventHook<UserCredentials> {
     UserCredentials user,
     bool isExplicitUserLogin,
   ) async {
-    final userId = user.user.id;
+    final userId = user.user.userId;
     if (await _pushUserScope(userId, _lastUserScopeUserId)) {
       await setupUserScope(userId);
       await setupWebSocket(userId);

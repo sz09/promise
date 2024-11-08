@@ -7,9 +7,7 @@ class WrapCheckbox extends StatelessWidget {
   const WrapCheckbox({super.key, required this.label, required this.isChecked, required this.onChanged});
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap:() => onChanged,  // Taps on the entire row toggle the checkbox
-      child: Row(
+    return  Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Checkbox(
@@ -18,9 +16,13 @@ class WrapCheckbox extends StatelessWidget {
               onChanged(value ?? false);
             },
           ),
-          Text(label)
-        ],
-      ),
-    );
+          GestureDetector(
+            onTap: () { 
+              onChanged(!isChecked);
+            },
+            child: Text(label),
+          )
+        ]
+      );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:promise/features/home/router/home_router_delegate.dart';
 import 'package:promise/features/page.controller.dart';
 import 'package:promise/features/memory/ui/create_memory_view.dart';
@@ -18,6 +17,14 @@ final _controller = Get.find<MemoryController>(tag: applicationTag);
 class MemoryListPage extends StatelessWidget {
   const MemoryListPage({super.key});
   
+  static void openCreateMemory(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const CreateMemoryView();
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     _controller.loadData(serviceLocator.get<MemoryService>().fetchAsync);
@@ -32,13 +39,6 @@ class MemoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => _getBodyForState(context)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _openCreateMemory(context);
-        },
-        tooltip: context.translate('memory_list_create_new'),
-        child: const Icon(Icons.add),
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -95,14 +95,6 @@ class MemoryListView extends StatelessWidget {
 
   Widget _errorWidget(String errorKey, BuildContext context) {
     return Center(child: Text(context.translate(errorKey)));
-  }
-
-  void _openCreateMemory(BuildContext context) {
-    showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return const CreateMemoryView();
-        });
   }
 
   ReorderableListView _getItem(List<Memory> memory, BuildContext context) {

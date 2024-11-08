@@ -44,7 +44,7 @@ Future<void> setupUserScope(String userId) async {
     repositories: {
       // memoryRemoteRepository: memoryLocalRepository,
       promiseRemoteRepository: promiseLocalRepository,
-      // personRemoteRepository: personLocalRepository
+      personRemoteRepository: personLocalRepository
     }
   );
   serviceLocator

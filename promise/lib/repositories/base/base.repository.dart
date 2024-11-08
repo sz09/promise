@@ -12,6 +12,12 @@ abstract class BaseRepository<T extends BaseAuditModel> {
   Future<T> createAsync(T t);
 
   @protected
+  Future<T> modifyAsync(T t);
+
+  @protected
+  Future deleteAsync(String id);
+
+  @protected
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]);
 
   @protected

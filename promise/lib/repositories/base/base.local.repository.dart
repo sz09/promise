@@ -18,9 +18,25 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   Future<T> createAsync(dynamic t) async {
     var box = await localDatabase.getBoxAsync();
     t.userId = this.userId;
-    box.add(t);
+    box.put(t.id, t);
     await box.flush();
     return t;
+  }
+
+  @override
+  Future<T> modifyAsync(dynamic t) async {
+    var box = await localDatabase.getBoxAsync();
+    t.userId = userId;
+    box.put(t.id, t);
+    await box.flush();
+    return t;
+  }
+  
+  @override
+  Future deleteAsync(String id) async {
+    var box = await localDatabase.getBoxAsync();
+    box.delete(id);
+    await box.flush();
   }
 
   Future<Iterable<T>> createManyAsync(Iterable<T> ts) async {
@@ -53,6 +69,21 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
     return PageResult<T>.set(values, count);
   }
 
+  Future<PageResult<T>> fetchAsync1([int page = 1, int pageSize = PAGE_SIZE]) async {
+    var box = await localDatabase.getBoxAsync();
+    query(T d) => true;
+    var count = box.values.where(query).length;
+    if(count == 0){
+      return PageResult<T>.set([], 0);
+    }
+    var values = box.values
+                    .where(query)
+                    .sortedBy((d) => d.createdAt);
+
+    return PageResult<T>.set(values, count);
+  }
+
+
   Future<T?> fetchOneAsync(bool Function(T) predicate) async {
     final box = await localDatabase.getBoxAsync();
     return box.values.where(predicate).firstOrNull;
@@ -61,7 +92,6 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   Future doSyncToLocalAsync(List<T> data) async {
     var box = await localDatabase.getBoxAsync();
     for(var x in data) {
-      x.userId = this.userId;
       box.put(x.id, x);
     }
     await box.flush();

@@ -44,7 +44,7 @@ class LoadingOverlay {
         }));
   }
 
-  void _show({bool shouldPop = true}) {
+  void _show() {
     queue.add(() => Future.microtask(() async {
           await _lock.synchronized(() async {
             _counter++;
@@ -64,27 +64,23 @@ class LoadingOverlay {
         }));
   }
 
-  Future during<T>(Future<T> future,
+  Future<T> during<T>(Future<T> future,
       {T Function(T)? doneHandler = null,
       Function? finallyHandler = null,
       Function? errorHandler = null}) async {
     _show();
-    return await future.then((r) async {
-      _hide();
-      return Future.sync(() {
+   return future.then((r) async {
+        _hide();
         if (doneHandler != null) {
           return doneHandler.call(r);
         }
         return r;
-      });
-    })
+      })
         // ignore: argument_type_not_assignable_to_error_handler
-      .catchError(() async {
-        errorHandler?.call();
-        _hide();
-      }).whenComplete(() async {
-        finallyHandler?.call();
-      });
+        .catchError(() async {
+          errorHandler?.call();
+          _hide();
+        });
   }
 
   LoadingOverlay._create(this._context);

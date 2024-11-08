@@ -12,6 +12,7 @@ analyzer:
     avoid_init_to_null: ignore
     constant_identifier_names: ignore
     empty_constructor_bodies: ignore
+    invalid_use_of_protected_member: ignore
     library_private_types_in_public_api: ignore
     must_be_immutable: ignore
     prefer_const_declarations: ignore

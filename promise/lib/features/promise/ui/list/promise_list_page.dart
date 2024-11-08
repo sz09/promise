@@ -6,6 +6,7 @@ import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
+import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/util/log/log.dart';
@@ -16,30 +17,21 @@ final _controller = Get.find<PromiseController>(tag: applicationTag);
 
 final ScrollController _scrollController = ScrollController();
 
-class PromiseListPage extends StatelessWidget {
-  const PromiseListPage({super.key});
-  @override
-  Widget build(BuildContext context) {
+class PromiseListPage extends PullToRefreshStateView {
+  void openCreatePromise(BuildContext context) {
+    showEditableDialog(context: context, func: () => PromiseDialog.create(reloadData: _loadData));
+  }
+  PromiseListPage({super.key})
+      : super(){
+        super.loadDataFunc = _loadData;
+        super.buildWidgetFunc = (context) => Scaffold(
+            body: Obx(() => _getBodyForState(context))
+          );
+      }
+
+  void _loadData(){
     _controller.loadData(serviceLocator.get<PromiseService>().fetchAsync);
     _controller.loadUserRefereces();
-    return PromiseListView();
-  }
-}
-
-class PromiseListView extends StateView<PromiseListView> {
-  PromiseListView({super.key}) {
-    buildWidgetFunc = (context) => Scaffold(
-          body: Obx(() => _getBodyForState(context)),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              _openCreatePromise(context);
-            },
-            tooltip: context.translate('promise_list_create_new'),
-            child: const Icon(Icons.add),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-        );
   }
 
   Widget _getBodyForState(BuildContext context) {
@@ -70,7 +62,7 @@ class PromiseListView extends StateView<PromiseListView> {
   }
 
   Widget _promiseListWidget(BuildContext context, List<Promise> promises) {
-    int a = 0;
+    int index = 0;
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       controller: _scrollController,
@@ -78,10 +70,10 @@ class PromiseListView extends StateView<PromiseListView> {
         children: [
           for (Promise promise in promises)
             _PromiseListItem(
-                key: ValueKey(promise.id + (a++).toString()),
+                key: ValueKey(promise.id + (index++).toString()),
                 promise: promise,
-                onTap: (promise) => {
-
+                onTap: (promise) {
+                  _onEditPromise(context, promise);
                 })
         ],
       ),
@@ -97,62 +89,8 @@ class PromiseListView extends StateView<PromiseListView> {
     return Center(child: Text(context.translate(errorKey)));
   }
 
-  void _openCreatePromise(BuildContext context) {
-    showModalBottomSheet(
-      isDismissible: false,
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height *
-              0.9, // 90% chiều cao màn hình
-          width: MediaQuery.of(context).size.width, // Chiều rộng toàn màn hình
-          padding: EdgeInsets.only(
-            top: 10,
-            left: 0, // Đảm bảo không có padding ở cạnh trái
-            right: 0, // Đảm bảo không có padding ở cạnh phải
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15,
-          ),
-          decoration: BoxDecoration(
-            color: context.containerLayoutColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: const SingleChildScrollView(
-            child: PromiseDialog(),
-          ),
-        );
-      },
-    );
-  }
-
-  void _onEditPromise(BuildContext context, Promise promise){
-    showModalBottomSheet(
-      isDismissible: false,
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height *
-              0.9, // 90% chiều cao màn hình
-          width: MediaQuery.of(context).size.width, // Chiều rộng toàn màn hình
-          padding: EdgeInsets.only(
-            top: 10,
-            left: 0, // Đảm bảo không có padding ở cạnh trái
-            right: 0, // Đảm bảo không có padding ở cạnh phải
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15,
-          ),
-          decoration: BoxDecoration(
-            color: context.containerLayoutColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          child: const SingleChildScrollView(
-            child: PromiseDialog.edit(promise),
-          ),
-        );
-      },
-    );
+  void _onEditPromise(BuildContext context, Promise promise) {
+    showEditableDialog(context: context, func: () => PromiseDialog.edit(promise: promise, reloadData: _loadData));
   }
 }
 
@@ -166,10 +104,13 @@ class _PromiseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap,
+      onTap: () {
+        onTap(promise);
+      },
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        // color:  //context.containerLayoutColor
+        shape: RoundedRectangleBorder(borderRadius: roundedItem),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -183,34 +124,26 @@ class _PromiseListItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Obx(() => Text(
-                              _controller.loadingReferenceState.value.completed
-                                  ? _userReferenceText(context, promise)
-                                  : "",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() => _controller
+                                    .loadingReferenceState.value.completed
+                                ? _userReference(context, promise)
+                                : Container()),
+                            _dueDate(promise)
+                          ]),
+                        Padding(
+                            padding: halfPaddingTop,
+                            child: Text(
+                              promise.content,
+                              style: const TextStyle(fontSize: 14),
                             )),
-                        Text(
-                          promise.content,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        Padding(padding: halfPaddingTop, child: Container())
                       ],
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                "description",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                ),
               ),
             ],
           ),
@@ -219,16 +152,50 @@ class _PromiseListItem extends StatelessWidget {
     );
   }
 
-  String _userReferenceText(BuildContext context, Promise promise) {
+  Widget _userReference(BuildContext context, Promise promise) {
+    String text;
     if (promise.forYourself) {
-      return context.translate('promise.self_promise');
+      text = context.translate('promise.self_promise');
+    } else {
+      final listPeople = promise.to?.map((d) {
+        final item = _controller.userReferences.value
+            .firstWhereOrNull((s) => s.referenceUserId == d);
+        return item?.hint ?? context.translate('promise.no_reference_user');
+      }).join(", ");
+      text = "${context.translate('promise.with_list_label')} $listPeople";
     }
-    final listPeople = promise.to!.map((d) {
-      // ignore: invalid_use_of_protected_member
-      final item = _controller.userReferences.value
-          .firstWhereOrNull((s) => s.referenceUserId == d);
-      return item?.hint ?? context.translate('promise.no_reference_user');
-    }).join(", ");
-    return "${context.translate('promise.with_list_label')} $listPeople";
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+      decoration: BoxDecoration(
+        color: Colors.blueAccent.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.blueAccent,
+          fontSize: 14.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _dueDate(Promise promise) {
+    if (promise.expectedTime != null) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Text(
+          promise.expectedTime!.asString(true),
+          style: const TextStyle(fontStyle: FontStyle.italic),
+        ),
+      );
+    }
+
+    return Container();
   }
 }

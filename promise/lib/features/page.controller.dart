@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
-import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/models/memory/memory.dart';
-import 'package:promise/models/person/person.dart';
-import 'package:promise/models/promise/promise.dart';
+import 'package:promise/models/story/story.model.dart';
 import 'package:promise/networks/getx_api.state.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/util/response.ext.dart';
@@ -36,14 +34,14 @@ abstract class PageController<T> extends GetxController {
   }
   void setData(List<T> data) {
     loadingState.value.isInprogress = false;
+    loadingState.value.completed = true;
     items.addAll(data);
     loadingState.refresh();
   }
 }
 
 class MemoryController extends PageController<Memory> {}
-class TimelineController extends PageController<TimelineItem> {}
-class PeopleController extends PageController<Person> {}
+class TimelineController extends PageController<Story> {}
 class ChatOneController extends PageController<types.Message> {
   loadMessges(String conversationId){
 

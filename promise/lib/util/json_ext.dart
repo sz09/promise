@@ -1,15 +1,16 @@
-// import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 T? _jsonTryGet<T, T1>(Map<String, dynamic> json, String key,
     {T Function(T1)? func}) {
   if (json.containsKey(key)) {
     if (func != null) {
       final value = json[key];
-      return func(value);
+      if(value != null){
+        return func(value);
+      }
+      return null;
     }
-    var a = json[key];
-    var b = a as T;
-    return b;
+    
+    return json[key] as T?;
   }
 
   return null;

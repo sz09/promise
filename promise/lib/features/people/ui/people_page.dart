@@ -1,183 +1,237 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:promise/const/text.dart';
 import 'package:promise/di/service_locator.dart';
-import 'package:promise/features/home/router/home_router_delegate.dart';
-import 'package:promise/features/page.controller.dart';
+import 'package:promise/features/people/controller/controllerr.dart';
 import 'package:promise/main.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/services/person/person.service.dart';
 import 'package:promise/util/batch.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
-import 'package:promise/util/log/log.dart';
-import 'package:provider/provider.dart';
+import 'package:promise/widgets/loading_overlay.dart';
 
 final _controller = Get.find<PeopleController>(tag: applicationTag);
-class PeoplePage extends StatelessWidget {
-  
+
+class PeoplePage extends StatefulWidget {
   const PeoplePage({super.key});
-
+  
+  static void openCreatePerson(BuildContext context) {
+    // showModalBottomSheet(
+    //   context: context,
+    //   builder: (context) {
+    //     return const CreateMemoryView();
+    //   });
+  }
+  
   @override
-  Widget build(BuildContext context) {
-    _controller.loadData(serviceLocator.get<PersonService>().fetchAsync);
-   return  const PeopleView();
+  State<StatefulWidget> createState() {
+    return _StatePeoplePage();
   }
 }
 
-class PeopleView extends StatelessWidget {
-  const PeopleView({super.key});
+class _StatePeoplePage extends State<PeoplePage> {
+  final int _batchSize = 2;
+  final PersonService personService = serviceLocator.get<PersonService>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadData();
+    });
+  }
+
+  _loadData(){
+    _controller.loadData(personService.getUsersWithHint);
+    _controller.loadPromiseCountByPerson();
+  }
+  @override
+  void dispose() {
+    _controller.reset();
+    _controller.resetPromiseData();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-        body: Obx(() => _getBodyForState(context)),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // _openCreatePerson(context);
-          },
-          tooltip: context.translate('person_list_create_new'),
-          child: const Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      );
+    return Scaffold(
+      body: Obx(() => _getBodyForState(context)),
+    );
   }
-}
 
   Widget _getBodyForState(BuildContext context) {
     if (!_controller.loadingState.value.isInprogress) {
       final List<Person> people = _controller.items;
-      var batchPeople = batch(people, 2);
+      var batchPeople = batch(people, _batchSize);
       if (batchPeople.isEmpty) {
         return _emptyListWidget(context);
       } else {
-        return Column(
-          children: <Widget>[
-            Expanded(
-              child: _peopleListWidget(
-                context,
-                batchPeople,
-              ),
-            ),
-          ],
+        return _peopleListWidget(
+          context,
+          batchPeople,
         );
       }
     } else if (_controller.loadingState.value.isError) {
       return _errorWidget(_controller.loadingState.value.errorKey, context);
-    } 
-    else {
-      Log.e(UnimplementedError('EventListState not consumed'));
-      return _errorWidget("EventListState not consumed", context);
+    } else if (_controller.loadingState.value.isInprogress) {
+      return loadingWidget();
     }
+
+    return Container();
   }
 
-  
   Widget _emptyListWidget(BuildContext context) {
     return Center(
-        child: Text(
-          context.translate("person_list_no_memories_message")));
+        child: Text(context.translate("person_list_no_memories_message")));
   }
 
   Widget _errorWidget(String errorKey, BuildContext context) {
     return Center(child: Text(context.translate(errorKey)));
-  }  
+  }
 
-  Widget _peopleListWidget(BuildContext context, List<List<Person>> batchPeople) {
-    return Scrollbar(
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: ListView(
-          // color: context.containerLayoutColor,
-          children: _getRow(context, batchPeople)
-          ,
-        ),
-      ),
+  Widget _peopleListWidget(
+      BuildContext context, List<List<Person>> batchPeople) {
+    return ListView.builder(
+      itemCount: batchPeople.length,
+      itemBuilder: (context, index) {
+        var people = batchPeople[index];
+        return Padding(
+          padding: paddingTop,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            for (int i = 0; i < _batchSize; i++)
+              people.length > i
+                  ? _PersonListItem(
+                      key: ValueKey(people[i].id),
+                      currentUserId: personService.localRepository.userId,
+                      person: people[i],
+                      onTap: (person) {},
+                    )
+                  : Expanded(child: Container())
+          ]),
+        );
+      },
     );
   }
+}
 
-  List<Row> _getRow(BuildContext context, List<List<Person>> batchPeople){
-    return batchPeople.map((item) => Row(
-      key: Key("row_${item.map((i) => i.id).join("_")}"),
-      children: [
-        Column(
-          key: Key("column_${item.map((i) => i.id).join("_")}"),
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[_getItem(item, context)],
-      )]
-    )).toList();
-  }
-  
-  Column _getItem(List<Person> people, BuildContext context) {
-    return Column(
-        // shrinkWrap: true,
-        // physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          for (Person person in people)
-            _PersonListItem(
-                key: ValueKey(person.id),
-                person: person,
-                onClick: (person) => context
-                    .read<HomeRouterDelegate>()
-                    // .setPersonDetailNavState(person),
-                    ,
-                onStatusChange: (person, isDone) => {}
-                // personListBloc
-                //     .add(isDone ? EventCompleted(person) :  EventReopened(person)),
-                ),
-        ]);
-  }
-
-  
 class _PersonListItem extends StatelessWidget {
+  final String currentUserId;
   final Person person;
-  final Function(Person person) onClick;
-  final Function(Person person, bool isDone) onStatusChange;
-
-  const _PersonListItem({
-    super.key,
-    required this.person,
-    required this.onClick,
-    required this.onStatusChange,
-  });
+  final Function(Person person) onTap;
+  _PersonListItem({super.key, required this.currentUserId, required this.person, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
-    return Ink(
-      color: themeData.cardColor,
-      child: ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        decoration: BoxDecoration(
-          color: context.containerLayoutColor,
-          borderRadius: BorderRadius.circular(5),
-          shape: BoxShape.rectangle,
-          boxShadow: [
-            BoxShadow(color: context.containerLayoutColor, spreadRadius: 3)
-          ],
-          border: Border.all(color: context.borderColor)
-        ),
-        
-        child: Row(
-          children: [
-            const SizedBox(width: 20.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                  Text(
-                    person.nickname,
-                    style: const TextStyle(
-                      fontSize: textFontSize,
-                      fontWeight: FontWeight.bold,
+    return Expanded(
+        child: InkWell(
+      onTap: () {
+        onTap(person);
+      },
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: roundedItem),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Adjust height based on content
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _getDisplayName(context),
+                          style: TextStyle(
+                            fontSize: _isYou ? context.fontLargeSize : context.fontSize,
+                            fontWeight: _isYou ? FontWeight.bold: FontWeight.normal
+                          ),
+                        ),
+                        Padding(
+                            padding: halfPaddingTop,
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(() => _controller.loadingPromiseState
+                                              .value.completed &&
+                                          _controller
+                                              .loadingState.value.completed
+                                      ? Text("${context.translate('person.promise_count_label')}: ${_mapPersonPromiseCount[person.userId]}")
+                                      : Container()),
+                                  // _dueDate(promise)
+                                ]))
+                      ],
                     ),
                   ),
-                ])
-              ],
-            )
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ));
   }
+
+  String _getDisplayName(BuildContext context){
+    if(_isYou){
+      return context.translate('person.you');
+    }
+    else {
+      late String displayName = '';
+      if(person.firstName.isNotEmpty){
+        displayName += person.firstName;
+      }
+      
+      if(person.lastName.isNotEmpty){
+        displayName += (displayName.isNotEmpty ? ' ' : '') +  person.lastName;
+      }
+
+      return person.nickname + (displayName.isNotEmpty ? '($displayName)': '');
+    }
+  }
+
+  bool get _isYou => currentUserId == person.userId;
+  Map<String, int>? _mapPersonPromiseCountCache = null;
+  Map<String, int> get _mapPersonPromiseCount {
+    loadPersonPromiseCountFunc() {
+      return _controller.items.value.map((person) {
+        late int count = 0;
+        if (person.userId == currentUserId) {
+          count = _controller.promises.value.where((d) => d.forYourself).length;
+        } else {
+          count = _controller.promises.value
+              .where((e) => e.to?.contains(person.userId) ?? false)
+              .length;
+        }
+        return {person.userId: count};
+      });
+    }
+
+    return _mapPersonPromiseCountCache ??= {
+      for (var item in loadPersonPromiseCountFunc()) item.keys.first: item.values.first
+    };
+  }
+  // Widget _dueDate(Promise promise){
+  //   if(promise.expectedTime != null){
+  //     return Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+  //       decoration: BoxDecoration(
+  //         color: Colors.transparent,
+  //         borderRadius: BorderRadius.circular(12.0),
+  //       ),
+  //       child: Text(
+  //         promise.expectedTime!.asString(true),
+  //         style: const TextStyle(
+  //           fontStyle: FontStyle.italic
+  //         ),
+  //       ),
+  //     );
+  //   }
+
+  //   return Container();
+  // }
 }

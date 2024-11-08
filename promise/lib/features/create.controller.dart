@@ -1,10 +1,6 @@
 import 'package:get/get.dart';
-import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/page.controller.dart';
-import 'package:promise/features/timeline/widget/timeline.dart';
 import 'package:promise/models/memory/memory.dart';
-import 'package:promise/models/promise/promise.dart';
-import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/log/log.dart';
 import 'package:promise/util/response.ext.dart';
 import 'package:promise/util/string_util.dart';
@@ -31,4 +27,3 @@ abstract class CreateController<T> extends GetxController {
 }
 
 class CreateMemoryController extends CreateController<Memory> {}
-class CreateTimelineController extends CreateController<TimelineItem> {}
