@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+// import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 
 class RemindersPage extends StatelessWidget {
   const RemindersPage({super.key});
@@ -22,6 +22,6 @@ class RemindersPage extends StatelessWidget {
 
 
   _createAlarm(int hours, int minutes){
-    FlutterAlarmClock.createAlarm(hour: hours, minutes: minutes, title: "Create from promise app"); 
+    // FlutterAlarmClock.createAlarm(hour: hours, minutes: minutes, title: "Create from promise app"); 
   }
 } 
