@@ -60,6 +60,7 @@ class _StateWrapTextAreaFormField extends State<WrapTextAreaFormField>{
           labelText: widget.labelText,
           hintText: widget.hintText,
           errorText: _errorText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           border: OutlineInputBorder(
             borderRadius: roundedItem,
           ),

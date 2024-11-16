@@ -26,7 +26,6 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   @override
   Future<T> modifyAsync(dynamic t) async {
     var box = await localDatabase.getBoxAsync();
-    t.userId = userId;
     box.put(t.id, t);
     await box.flush();
     return t;
@@ -35,8 +34,12 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   @override
   Future deleteAsync(String id) async {
     var box = await localDatabase.getBoxAsync();
-    box.delete(id);
-    await box.flush();
+    var model = box.values.firstWhereOrNull((d) => d.id == id);
+    if(model != null){
+      model.isDeleted = true;
+      box.put(id, model);
+      await box.flush();
+    }
   }
 
   Future<Iterable<T>> createManyAsync(Iterable<T> ts) async {
@@ -57,7 +60,7 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
   @override
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
     var box = await localDatabase.getBoxAsync();
-    query(T d) => d.userId == userId;
+    query(T d) => d.userId == userId && d.isDeleted == false;
     var count = box.values.where(query).length;
     if(count == 0){
       return PageResult<T>.set([], 0);
@@ -71,7 +74,7 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
 
   Future<PageResult<T>> fetchAsync1([int page = 1, int pageSize = PAGE_SIZE]) async {
     var box = await localDatabase.getBoxAsync();
-    query(T d) => true;
+    query(T d) => d.isDeleted == false;
     var count = box.values.where(query).length;
     if(count == 0){
       return PageResult<T>.set([], 0);
@@ -86,7 +89,8 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
 
   Future<T?> fetchOneAsync(bool Function(T) predicate) async {
     final box = await localDatabase.getBoxAsync();
-    return box.values.where(predicate).firstOrNull;
+    query(T d) => d.isDeleted == false;
+    return box.values.firstWhereOrNull((d) => query(d) && predicate(d));
   }
 
   Future doSyncToLocalAsync(List<T> data) async {

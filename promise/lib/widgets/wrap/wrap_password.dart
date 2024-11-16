@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:promise/util/layout_util.dart';
 
-const WidgetStateProperty<double?> _iconSize = WidgetStatePropertyAll(18);
+const WidgetStateProperty<double?> _iconSize = WidgetStatePropertyAll(15);
 
 @immutable
 class WrapPasswordFormField extends StatefulWidget {
@@ -61,10 +61,11 @@ class _WrapPasswordFormFieldState extends State<WrapPasswordFormField> {
                     return null;
                   },
                   decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
                       contentPadding: contentPadding,
                       hintText: _hintText,
                       labelText: _labelText,
-                      border: inputBorder(validState: validState),
+                      border: inputBorder(validState: validState, context: context),
                       suffix: ElevatedButton(
                           style: ButtonStyle(
                               iconSize: _iconSize,
@@ -82,14 +83,14 @@ class _WrapPasswordFormFieldState extends State<WrapPasswordFormField> {
   }
 }
 
-OutlineInputBorder inputBorder({bool validState = true}) {
+OutlineInputBorder inputBorder({required BuildContext context,  bool validState = true}) {
   //return type is OutlineInputBorder
   return OutlineInputBorder(
       //Outline border type for TextFeild
-      borderRadius: const BorderRadius.all(Radius.circular(20)),
+      borderRadius: roundedItem,
       borderSide: BorderSide(
         style: validState ? BorderStyle.none : BorderStyle.solid,
-        color: validState ? Colors.transparent : Colors.redAccent,
+        color: validState ? Colors.transparent : context.borderWidgetErrorColor,
         width: 3,
       ));
 }

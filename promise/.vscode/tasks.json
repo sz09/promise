@@ -4,9 +4,8 @@
 		{
             "label": "build_runner",
 			"type": "flutter",
-			"command": "flutter",
+			"command": "dart",
 			"args": [
-				"pub",
 				"run",
 				"build_runner",
 				"build"
@@ -15,7 +14,7 @@
 				"$dart-build_runner"
 			],
 			"group": "build",
-			"detail": ""
+			"detail": "",
 		}
 	]
 }

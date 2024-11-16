@@ -17,17 +17,30 @@ extension DateFormatter on DateTime {
   String dayMonthYear() {
     return DateFormat.yMMMMd(localeName).format(this);
   }
-
+  
+  String dayShortMonthYear() {
+    return DateFormat.yMMMd(localeName).format(this);
+  }
+  
   String dayMonthYearHourMinute() {
     return '${DateFormat.yMMMMd(localeName).format(this)}, ${DateFormat.Hm(localeName).format(this)}';
   }
 
-  String asString(bool isDateOnly) {
-    return isDateOnly ? dayMonthYear() : toString();
+  String asString({required bool isDateOnly, bool shortMonth = false}) {
+    return isDateOnly ? (shortMonth ? dayShortMonthYear() : dayMonthYear()): toString();
+  }
+
+  String yearMonthDay(){
+    return DateFormat('yyyy-MM-dd').format(this);
   }
 
   DateTime endOfDay(){
     final duration = Duration(hours: 24 - hour, minutes: 60 - minute, seconds: 60 - second, microseconds: -microsecond, milliseconds: -millisecond);
+    return add(duration);
+  }
+  
+  DateTime startOfDay(){
+    final duration = Duration(hours: -hour, minutes: -minute, seconds: -second, microseconds: -microsecond, milliseconds: -millisecond);
     return add(duration);
   }
 }
@@ -72,3 +85,13 @@ class DateTimeConst {
   static DateTime get min => DateTime.fromMicrosecondsSinceEpoch(0).subtract(const Duration(days: _numDays));
   static DateTime get max => DateTime.fromMicrosecondsSinceEpoch(0).add(const Duration(days: _numDays));
 }
+
+
+
+  DateTime? minWhereNotNull(DateTime? d1, DateTime? d2) {
+   if(d1 == null || d2 == null){
+    return d1 ?? d2;
+   }
+
+   return d1.compareTo(d2) > 0 ? d2 : d1;
+  }

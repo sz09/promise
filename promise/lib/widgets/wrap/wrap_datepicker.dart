@@ -4,10 +4,10 @@ import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-const WidgetStateProperty<double?> _iconSize = WidgetStatePropertyAll(18);
+const WidgetStateProperty<double?> _iconSize = WidgetStatePropertyAll(15);
 
 @immutable
-class WrapDateTimePicker extends StatefulWidget {
+class WrapDatePicker extends StatefulWidget {
   late String _hintText;
   late String labelText;
   late bool validState;
@@ -19,9 +19,8 @@ class WrapDateTimePicker extends StatefulWidget {
 
   final ValueChanged<DateTime>? onChanged;
 
-  WrapDateTimePicker(
-      {
-      required this.labelText,
+  WrapDatePicker(
+      {required this.labelText,
       required this.firstDate,
       required this.lastDate,
       required this.selectedDate,
@@ -36,11 +35,11 @@ class WrapDateTimePicker extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _StateWrapDateTimePicker();
+    return _StateWrapDatePicker();
   }
 }
 
-class _StateWrapDateTimePicker extends State<WrapDateTimePicker> {
+class _StateWrapDatePicker extends State<WrapDatePicker> {
   late DateTime? _selectedDate = null;
   final TextEditingController _controller = TextEditingController();
 
@@ -50,58 +49,70 @@ class _StateWrapDateTimePicker extends State<WrapDateTimePicker> {
         initialDate: _selectedDate,
         firstDate: widget.firstDate,
         lastDate: widget.lastDate,
-        keyboardType: TextInputType.datetime
-      );
-   _onSelectedDate(picked);
+        keyboardType: TextInputType.datetime);
+    _onSelectedDate(picked);
   }
 
   void _onSelectedDate(DateTime? picked) {
     if (picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _controller.text = _selectedDate?.asString(widget.isDateOnly) ?? "";
-        if(widget.onChanged != null && _selectedDate != null) widget.onChanged!(_selectedDate!);
+        _controller.text = _selectedDate?.asString(isDateOnly: widget.isDateOnly) ?? "";
       });
+      if (widget.onChanged != null && _selectedDate != null) {
+        widget.onChanged!(_selectedDate!);
+      }
     }
   }
 
-  @override 
+  @override
   void initState() {
     super.initState();
     initializeDateFormatting();
     _onSelectedDate(widget.selectedDate);
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: paddingTop,
-        child:  Row(
-          children: [
-            Expanded(
-              child: TextField(
-                readOnly: true,
-                controller: _controller,
-                onTap: () => _selectDate(context),
-                decoration: InputDecoration(
-                    labelText: widget.labelText,
-                    hintText: widget._hintText,
-                    border: OutlineInputBorder(
-                      borderRadius: roundedItem,
-                    ),
-                    suffix: widget.clearable ? ElevatedButton(
+        child: Row(children: [
+          Expanded(
+            child: TextFormField(
+              readOnly: true,
+              controller: _controller,
+              minLines: 1,
+              maxLines: 1,
+              onTap: () => _selectDate(context),
+              decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  labelText: widget.labelText,
+                  hintText: widget._hintText,
+                  border: OutlineInputBorder(
+                    borderRadius: roundedItem,
+                  ),
+                  isDense: true,
+                  suffix: SizedBox(
+                        height: _hasValue ? null: 40,
+                        child: _hasValue ?  
+                        IconButton(
                           style: ButtonStyle(
-                              iconSize: _iconSize,
-                              shadowColor: const WidgetStatePropertyAll(Colors.transparent),
-                              backgroundColor: WidgetStatePropertyAll(
-                                  context.containerLayoutColor)),
-                          child: const Icon(FontAwesomeIcons.x),
+                              iconSize: _iconSize
+                          ),
+                          icon: const Icon(
+                            FontAwesomeIcons.x
+                          ),
                           onPressed: () {
                             _onSelectedDate(null);
-                          }): null
-                ),
-              ),
-            )
-          ]
-        ));
+                          }): null,
+                      )
+                      ),
+            ),
+          )
+        ]));
+  }
+
+  get _hasValue {
+  return widget.clearable && _controller.text != "";
   }
 }

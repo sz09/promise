@@ -14,7 +14,7 @@ abstract class BaseService<T extends BaseAuditModel> {
   BaseService({required this.remoteRepository, required this.localRepository});
 
   Future<T> createAsync(T t) async {
-    final result = this.remoteRepository.createAsync(t)
+    final result = await this.remoteRepository.createAsync(t)
                .then((tRemote) => 
                  this.localRepository.createAsync(tRemote)
                      .then((tLocal) => tLocal)
@@ -25,7 +25,7 @@ abstract class BaseService<T extends BaseAuditModel> {
   }
 
   Future<T> modifyAsync(T t) async {
-    final result = this.remoteRepository.modifyAsync(t)
+    final result = await this.remoteRepository.modifyAsync(t)
                .then((tRemote) => 
                  this.localRepository.modifyAsync(tRemote)
                      .then((tLocal) => tLocal)

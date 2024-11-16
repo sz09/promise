@@ -26,6 +26,7 @@ class WrapTextFormField extends StatelessWidget {
         controller: _controller,
         decoration: InputDecoration(
           labelText: _labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: _hintText,
           border: OutlineInputBorder(
             borderRadius: roundedItem,

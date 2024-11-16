@@ -37,5 +37,6 @@ targets:
       reflectable:
         generate_for:
           - lib/main.dart
+          - lib/main.reflectable.dart
         options:
           formatted: true

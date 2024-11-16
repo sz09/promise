@@ -29,11 +29,16 @@ import 'main.reflectable.dart';
 final userManager = serviceLocator.get<UserManager>();
 const String applicationTag = "-application";
 final navigationHistoryObserver = NavigationRoutesObserver();
+Future main() async{
+  await runApplication();
+
+}
 
 Future runApplication() async {
+  initializeReflectable();
   await GetStorage.init();
   await registerDatabase();
-  initializeReflectable();
+  registerBackgroundNotification();
   
   await Future.wait(LocalizationService.langCodes
       .map((code) => LocalizationService.loadLanguage(languageCode: code)));
@@ -67,11 +72,14 @@ Future runApplication() async {
               widgetKey: 'timeline.title', child: const TimelinePage())),
       GetPage(
           name: promisesRoute,
-          page: () => ApplicationLayout(
+          page: () {
+            final child = PromiseListPage();
+            return ApplicationLayout(
               widgetKey: 'layout.promise_title', 
-              // createFuntion: PromiseListPage.openCreatePromise,
-              child: PromiseListPage(),
-            )),
+                createFuntion: child.openCreatePromise,
+              child: child ,
+            );
+          }),
       GetPage(
           name: memoriesRoute,
           page: () => ApplicationLayout(

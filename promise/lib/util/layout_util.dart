@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 extension ContainerLayout on BuildContext {
@@ -17,6 +19,18 @@ extension ContainerLayout on BuildContext {
 
   Color get borderColor {
     return Theme.of(this).textTheme.titleLarge!.color!;
+  }
+  
+  Color get borderWidgetColor {
+    return Theme.of(this).colorScheme.outline;
+  }
+  
+  Color get borderWidgetErrorColor {
+    return Theme.of(this).colorScheme.error;
+  }
+  
+  Color get selectedColor {
+    return Theme.of(this).colorScheme.primaryContainer;
   }
 
   Color get textColor 
@@ -38,37 +52,32 @@ extension ContainerLayout on BuildContext {
 }
 
 
-const EdgeInsets contentPadding = EdgeInsets.all(15);
+const EdgeInsets contentPadding = EdgeInsets.only(left: 10, right: 10);
 const EdgeInsets paddingTop = EdgeInsets.only(top: 10);
+const EdgeInsets quarterToPaddingTop = EdgeInsets.only(top: 7.5);
 const EdgeInsets halfPaddingTop = EdgeInsets.only(top: 5);
 const EdgeInsets quarterPaddingTop = EdgeInsets.only(top: 2.5);
-const EdgeInsets quarterToPaddingTop = EdgeInsets.only(top: 7.5);
+const EdgeInsets paddingLeft = EdgeInsets.only(left: 5);
+const EdgeInsets paddingHorizontal = EdgeInsets.symmetric(horizontal: 5);
 BorderRadius roundedItem = BorderRadius.circular(10.0);
+const titleFontStyle = TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    );
 
 showEditableDialog({required BuildContext context, required Widget Function() func} ){
    showModalBottomSheet(
-      isDismissible: false,
+      isScrollControlled: true, // make dialog can show with custom height
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      constraints: BoxConstraints.expand(height: MediaQuery.of(context).size.height * 0.9),
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height *
-              0.9, // 90% chiều cao màn hình
-          width: MediaQuery.of(context).size.width, // Chiều rộng toàn màn hình
-          padding: EdgeInsets.only(
-            top: 10,
-            left: 0, // Đảm bảo không có padding ở cạnh trái
-            right: 0, // Đảm bảo không có padding ở cạnh phải
-            bottom: MediaQuery.of(context).viewInsets.bottom + 15,
-          ),
+          padding: contentPadding,
           decoration: BoxDecoration(
             color: context.containerLayoutColor,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
-          child: SingleChildScrollView(
-            child: func(),
-          ),
+          child: func(),
         );
       },
     );

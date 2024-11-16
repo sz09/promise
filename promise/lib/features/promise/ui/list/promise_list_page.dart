@@ -4,6 +4,7 @@ import 'package:promise/features/promise/controller/controller.dart';
 import 'package:promise/features/promise/ui/promise_view.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/main.dart';
+import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/util/date_time_util.dart';
@@ -19,19 +20,36 @@ final ScrollController _scrollController = ScrollController();
 
 class PromiseListPage extends PullToRefreshStateView {
   void openCreatePromise(BuildContext context) {
-    showEditableDialog(context: context, func: () => PromiseDialog.create(reloadData: _loadData));
+    showEditableDialog(
+        context: context,
+        func: () => PromiseDialog.create(reloadData: _reloadData));
   }
-  PromiseListPage({super.key})
-      : super(){
-        super.loadDataFunc = _loadData;
-        super.buildWidgetFunc = (context) => Scaffold(
-            body: Obx(() => _getBodyForState(context))
-          );
-      }
 
-  void _loadData(){
+  PromiseListPage({super.key}) : super() {
+    super.loadDataFunc = _loadData;
+    super.buildWidgetFunc =
+        (context) => Scaffold(body: Obx(() => _getBodyForState(context)));
+    super.initialFunc = () {
+      _scrollController.addListener(_onScroll);
+    };
+  }
+
+  void _loadData() {
     _controller.loadData(serviceLocator.get<PromiseService>().fetchAsync);
     _controller.loadUserRefereces();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200 &&
+        !_controller.loadingState.value.isInprogress) {
+      _fetchMoreItems();
+    }
+  }
+
+  _fetchMoreItems() {}
+  void _reloadData() {
+    super.reloadData();
   }
 
   Widget _getBodyForState(BuildContext context) {
@@ -90,7 +108,10 @@ class PromiseListPage extends PullToRefreshStateView {
   }
 
   void _onEditPromise(BuildContext context, Promise promise) {
-    showEditableDialog(context: context, func: () => PromiseDialog.edit(promise: promise, reloadData: _loadData));
+    showEditableDialog(
+        context: context,
+        func: () => 
+            PromiseDialog.edit(promise: promise, reloadData: _reloadData));
   }
 }
 
@@ -109,7 +130,6 @@ class _PromiseListItem extends StatelessWidget {
       },
       child: Card(
         elevation: 4,
-        // color:  //context.containerLayoutColor
         shape: RoundedRectangleBorder(borderRadius: roundedItem),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -117,34 +137,34 @@ class _PromiseListItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // Adjust height based on content
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Obx(() => _controller
-                                    .loadingReferenceState.value.completed
-                                ? _userReference(context, promise)
-                                : Container()),
-                            _dueDate(promise)
-                          ]),
-                        Padding(
-                            padding: halfPaddingTop,
-                            child: Text(
-                              promise.content,
-                              style: const TextStyle(fontSize: 14),
-                            )),
-                        Padding(padding: halfPaddingTop, child: Container())
-                      ],
+              LayoutBuilder(builder: (context, constraints) {
+                double secondBoxWidth = 120; 
+                double firstWidth = constraints.maxWidth - secondBoxWidth;
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: firstWidth,
+                      child: Obx(() =>
+                              _controller.loadingReferenceState.value.completed
+                                  ? _userReference(context, promise)
+                                  : Container()),
                     ),
-                  ),
-                ],
-              ),
+                    Container(
+                        alignment: Alignment.topRight,
+                        width: secondBoxWidth,
+                        child: _dueDate(promise)),
+                  ],
+                  //     ),
+                  // ],
+                );
+              }),
+              Padding(
+                  padding: halfPaddingTop,
+                  child: Text(
+                    promise.content,
+                    style: const TextStyle(fontSize: 14),
+                  )),
+              Padding(padding: halfPaddingTop, child: Container())
             ],
           ),
         ),
@@ -153,32 +173,40 @@ class _PromiseListItem extends StatelessWidget {
   }
 
   Widget _userReference(BuildContext context, Promise promise) {
-    String text;
     if (promise.forYourself) {
-      text = context.translate('promise.self_promise');
+      return Wrap(children: [
+        _userReferenceColorWidget(context.translate('promise.self_promise'),
+            Colors.blueAccent.withOpacity(0.2))
+      ]);
     } else {
-      final listPeople = promise.to?.map((d) {
-        final item = _controller.userReferences.value
-            .firstWhereOrNull((s) => s.referenceUserId == d);
-        return item?.hint ?? context.translate('promise.no_reference_user');
-      }).join(", ");
-      text = "${context.translate('promise.with_list_label')} $listPeople";
+      if (promise.to?.isEmpty ?? true) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+          decoration: BoxDecoration(
+            color: Colors.blueAccent.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Text(
+            context.translate('promise.no_reference_user'),
+            style: const TextStyle(
+              color: Colors.blueAccent,
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        );
+      } else {
+        return Wrap(
+          children: [
+            for (var person in promise.to!)
+              _userWithHintReferenceColorWidget(
+                  person,
+                  _controller.userReferences.value,
+                  Colors.blueAccent.withOpacity(0.2)),
+          ],
+        );
+      }
     }
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-      decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.blueAccent,
-          fontSize: 14.0,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
   }
 
   Widget _dueDate(Promise promise) {
@@ -190,12 +218,42 @@ class _PromiseListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Text(
-          promise.expectedTime!.asString(true),
+          promise.expectedTime!.asString(isDateOnly: true, shortMonth: true),
           style: const TextStyle(fontStyle: FontStyle.italic),
         ),
       );
     }
 
     return Container();
+  }
+
+  Widget _userWithHintReferenceColorWidget(
+      String id, List<UserReference> userReferences, Color color) {
+    final item =
+        userReferences.firstWhereOrNull((s) => s.referenceUserId == id);
+    if (item != null) {
+      return _userReferenceColorWidget(item.hint, color);
+    }
+
+    return Container();
+  }
+
+  Widget _userReferenceColorWidget(String ref, Color color) {
+    return Padding(
+        padding: EdgeInsets.only(right: 5, bottom: 5),
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Text(
+              ref,
+              style: const TextStyle(
+                color: Colors.blueAccent,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            )));
   }
 }

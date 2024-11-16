@@ -12,35 +12,39 @@ part 'promise.g.dart';
 @hiveTypeReflector
 class Promise extends BaseAuditModel {
   @HiveField(5)
-  late String content;
+  final String content;
   @HiveField(6)
-  late DateTime? expectedTime;
+  final DateTime? expectedTime;
   
   @HiveField(7)
-  late List<String>? to;
+  final List<String>? to;
 
   @HiveField(8)
-  late bool forYourself;
+  final bool forYourself;
   
-  Promise({required String id, required String userId, required this.content, this.forYourself = false, this.to = null, this.expectedTime = null}) {
-    this.id = id;
-    this.userId = userId;
-  }
+  Promise({required this.content, this.expectedTime = null, this.to = null, this.forYourself = false}) {}
   
   factory Promise.create({required String content, required bool forYourself, List<String>? to = null, DateTime? expectedTime = null}) {
-    return Promise(id: '', userId: '', content: content, expectedTime: expectedTime, forYourself:  forYourself, to: to);
+    return Promise(content: content, expectedTime: expectedTime, forYourself:  forYourself, to: to) 
+    ..id = ''
+    ..createdAt = DateTime.now()
+    ..isDeleted = false
+    ..updatedAt = null;
   }
   
   factory Promise.modify({required String id, required String userId, required String content, required bool forYourself, List<String>? to = null, DateTime? expectedTime = null}) {
-    return Promise(id: id, userId: userId, content: content, expectedTime: expectedTime, forYourself:  forYourself, to: to);
+    return Promise(content: content, expectedTime: expectedTime, forYourself:  forYourself, to: to)
+          ..id = id
+          ..userId = userId
+          ..createdAt = DateTime.now()
+          ..isDeleted = false
+          ..updatedAt = null;
   }
 
   factory Promise.fromJson(dynamic input) {
     switch(input){
       case Map<String, dynamic> json:
         return Promise(
-          id: (json['id'] ?? '') as String,
-          userId: json.tryGet('userId') ?? '',
           content: (json['content'] ?? '') as String,
           to: json.tryGetCast<List<String>, List>(key: 'to', func: (list) {
               if(list.isNotEmpty) {
@@ -49,8 +53,11 @@ class Promise extends BaseAuditModel {
               return [];
           } ),
           expectedTime: json.tryGetCast<DateTime, String>(key: 'expectedTime',  func: (s) => DateTime.parse(s)),
-          forYourself: json.tryGet<bool>('forYourself') ?? false
-        );
+          forYourself: json.tryGet<bool>('forYourself') ?? false,
+        )..id = (json['id'] ?? '') as String
+         ..isDeleted = json.tryGet<bool>('isDeleted') ?? false
+         ..createdAt = json.tryGetCast<DateTime, String>(key: 'createdAt',  func: (s) => DateTime.parse(s)) ?? DateTime.now()
+         ..userId = json.tryGet('userId') ?? '';
       case Promise promise:
         return promise;
       default:
@@ -67,6 +74,7 @@ class Promise extends BaseAuditModel {
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'dueDate': instance.expectedTime?.toIso8601String(),
       'content': instance.content,
+      'isDeleted': instance.isDeleted,
       'to': instance.to,
       'forYourself': instance.forYourself
     };

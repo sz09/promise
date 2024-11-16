@@ -12,15 +12,20 @@ import 'package:promise/config/logger_config.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/settings/preferences_helper.dart';
 import 'package:promise/models/memory/memory.dart';
+import 'package:promise/models/objective/objective.dart';
 import 'package:promise/models/person/person.dart';
+import 'package:promise/models/work/work.dart';
 import 'package:promise/models/promise/promise.dart';
+import 'package:promise/models/reminders/reminder.dart';
 import 'package:promise/models/system-versions/system-version.model.dart';
 import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/user/user_manager.dart';
+import 'package:promise/util/log/log.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:workmanager/workmanager.dart';
 
 const String themeModeKey = "isDarkMode";
 const String languageCode = "languageCode";
@@ -65,6 +70,10 @@ registerDatabase() async {
   Hive.registerAdapter(PromiseAdapter());
   Hive.registerAdapter(PersonAdapter());
   Hive.registerAdapter(UserReferenceAdapter());
+  Hive.registerAdapter(ViewColorAdapter());
+  Hive.registerAdapter(ProgressionAdapter());
+  Hive.registerAdapter(ReminderAdapter());
+  Hive.registerAdapter(ObjectiveAdapter());
 }
 late WebSocketChannel _channel;
 Future<void> setupWebSocket(String userId) async {
@@ -88,4 +97,27 @@ Future<void> setupWebSocket(String userId) async {
 
 Future closeWebSocketConnection() async {
  await  _channel.sink.close();
+}
+
+
+registerBackgroundNotification(){
+  Workmanager().initialize(_callbackDispatcher, isInDebugMode: true);
+}
+void _callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+    // Công việc bạn muốn thực hiện
+    final now = DateTime.now();
+    final startDate = DateTime.parse(inputData?['startDate'] ?? '');
+    final endDate = DateTime.parse(inputData?['endDate'] ?? '');
+    final targetHour = inputData?['hour'] ?? 8; // Default: 8:00 AM
+    final targetMinute = inputData?['minute'] ?? 0;
+
+    if (now.isAfter(startDate) && now.isBefore(endDate) && (now.hour == targetHour && now.minute == targetMinute)) {
+      Log.d("Running task: $task");
+    } else {
+      Log.d("Task is outside the specified range.");
+    }
+
+    return Future.value(true);
+  });
 }

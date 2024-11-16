@@ -74,7 +74,7 @@ class _StateTimelineItemWidget extends State<TimelineItemWidget> {
                     ],
                   )),
               Text(
-                widget.item.time.asString(true),
+                widget.item.time.asString(isDateOnly: true),
                 style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

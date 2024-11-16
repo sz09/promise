@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/network.const.dart';
 import 'package:promise/main.dart';
+
 void main() async {
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
@@ -14,15 +15,19 @@ void main() async {
   
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  
-  final service =
-      AzureAppConfig(connectionString: azureAppConfigConnectionStringDev);
-  var configs =
-      (await service.findKeyValuesBy(key: "Mobile/*", label: Flavor.Dev.name));
-  var result = {
-    for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value
-  };
-  // result.addAll({"BaseUrlApi": "https://c516-116-111-185-94.ngrok-free.app"});
+  Map<String, String> result = {};
+  try{
+    final service = AzureAppConfig(connectionString: azureAppConfigConnectionStringDev);
+    var configs = (await service.findKeyValuesBy(key: "Mobile/*", label: Flavor.Dev.name));
+    result = {
+      for (var v in configs) v.key.replaceFirst('Mobile/', ''): v.value
+    };
+  }
+  catch(e){
+      result.addAll({"BaseUrlApi": "https://promisewebapi-gtcsakhza7f5hvd9.southeastasia-01.azurewebsites.net"});
+  }
+
+  // result.addAll({"BaseUrlApi": "https://a7c3-116-111-185-94.ngrok-free.app"});
   
   FlavorConfig.set(
     Flavor.Dev,
