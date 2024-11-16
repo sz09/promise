@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -45,10 +46,11 @@ class _StateWrapDatePicker extends State<WrapDatePicker> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
+        locale: LocalizationService.locale,
         context: context,
         initialDate: _selectedDate,
         firstDate: widget.firstDate,
-        lastDate: widget.lastDate,
+        lastDate: widget.lastDate, //TODO: make localization here for label
         keyboardType: TextInputType.datetime);
     _onSelectedDate(picked);
   }

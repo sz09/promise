@@ -14,7 +14,6 @@ const String voipTokenKey = 'voip-device-token';
 //todo decide when you need firebase in your project
 bool shouldConfigureFirebase() =>
     FlavorConfig.isInitialized() && 
-    true || //TODO: Dev for now
     (FlavorConfig.isStaging() || FlavorConfig.isProduction());
 
 Future<void> configureFirebase() async {

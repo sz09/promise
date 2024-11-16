@@ -1,5 +1,3 @@
-
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:promise/features/promise/ui/models/schedule_options.dart';
@@ -48,7 +46,7 @@ class Work extends BaseAuditModel {
           scheduleType: json.tryGetCast<ScheduleType, int>(key: "scheduleType", func: (i) => ScheduleType.values[i]) ?? ScheduleType.WeekDays,
           reminder: Reminder.fromJson(json['reminder']) 
         )
-          ..id = (json['id'] ?? '') as String
+        ..id = (json['id'] ?? '') as String
          ..isDeleted = json.tryGet<bool>('isDeleted') ?? false
          ..createdAt = json.tryGetCast<DateTime, String>(key: 'createdAt',  func: (s) => DateTime.parse(s)) ?? DateTime.now()
          ..userId = json.tryGet('userId') ?? '';

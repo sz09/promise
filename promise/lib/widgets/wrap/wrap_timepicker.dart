@@ -13,19 +13,21 @@ class WrapTimePicker extends StatefulWidget {
   late bool validState;
   late bool clearable;
   final bool isDateOnly;
+  final bool isRequired;
   final TimeOfDay? selectedTime;
 
-  final ValueChanged<TimeOfDay>? onChanged;
+  final ValueChanged<TimeOfDay?>? onChanged;
 
   WrapTimePicker(
       {required this.labelText,
       required this.selectedTime,
+      this.isRequired = false,
       this.clearable = false,
       this.onChanged = null,
       this.isDateOnly = true,
       super.key,
       String? hintText = null,
-      this.validState = true}) {
+       }) {
     _hintText = hintText ?? '';
   }
 
@@ -39,7 +41,7 @@ class _StateWrapTimePicker extends State<WrapTimePicker> {
   late TimeOfDay? _selectedTime = null;
   final TextEditingController _controller = TextEditingController();
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
         context: context,
         initialTime: _selectedTime ?? TimeOfDay(hour: 0, minute: 0),
@@ -53,12 +55,17 @@ class _StateWrapTimePicker extends State<WrapTimePicker> {
   void _onSelectedDate(TimeOfDay? picked) {
     if (picked != _selectedTime) {
       setState(() {
-        _selectedTime = picked!;
-        _controller.text = _selectedTime!.format(context);
+        _selectedTime = picked;
+        _controller.text = _selectedTime?.format(context) ?? '';
       });
-      if (widget.onChanged != null && _selectedTime != null) {
+      if (widget.onChanged != null) {
         widget.onChanged!(_selectedTime!);
       }
+    }
+
+    if(widget.isRequired && _selectedTime == null){
+      setState(() {
+      });
     }
   }
 
@@ -80,7 +87,10 @@ class _StateWrapTimePicker extends State<WrapTimePicker> {
               controller: _controller,
               minLines: 1,
               maxLines: 1,
-              onTap: () => _selectDate(context),
+              onTap: () => _selectTime(context),
+              validator: (value) {
+                return null;
+              },
               decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   labelText: widget.labelText,

@@ -246,13 +246,12 @@ class _WorkItemState extends State<_WorkItem> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Positioned.fill(
-                                child: IconButton(
+                             IconButton(
                                   onPressed: () {
                                     widget.removeItem();
                                   },
                                   icon: Icon(FontAwesomeIcons.x),
-                                  color: Colors.red)),
+                                  color: Colors.red),
                                   
                               IconButton(
                                   onPressed: () {

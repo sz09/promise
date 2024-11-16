@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:promise/application_layout_widget.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
@@ -54,9 +56,18 @@ Future runApplication() async {
       ),
       const OverlayView(),
     ]),
+    builder: (context, child) {
+      return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false), child: child!); 
+    },
+    localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate
+    ],
     navigatorObservers: [navigationHistoryObserver],
     initialBinding: _InitialBinding(),
     locale: LocalizationService.locale,
+    supportedLocales: LocalizationService.locales,
     fallbackLocale: LocalizationService.fallbackLocale,
     themeMode: ThemeMode.light,
     theme: themeLight(),
@@ -116,6 +127,7 @@ Future runApplication() async {
       GetPage(name: settingsRoute, page: () => const SettingsWidget()),
     ],
   );
+  initializeDateFormatting(LocalizationService.locale.toString());
   runApp(app);
 }
 
