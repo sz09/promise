@@ -40,7 +40,7 @@ Future runApplication() async {
   initializeReflectable();
   await GetStorage.init();
   await registerDatabase();
-  registerBackgroundNotification();
+  await registerBackgroundNotification();
   
   await Future.wait(LocalizationService.langCodes
       .map((code) => LocalizationService.loadLanguage(languageCode: code)));
@@ -127,6 +127,7 @@ Future runApplication() async {
       GetPage(name: settingsRoute, page: () => const SettingsWidget()),
     ],
   );
+
   initializeDateFormatting(LocalizationService.locale.toString());
   runApp(app);
 }

@@ -13,6 +13,7 @@ class Story extends BaseModel {
     required this.action,
     required this.from,
     required this.time,
+    required this.needAnAdvice
     }) {
     this.id = id;
   }
@@ -21,10 +22,12 @@ class Story extends BaseModel {
   final DateTime time;
   final PromiseAction action;
   final String from;
+  final bool needAnAdvice;
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
       id: json.tryGet<String>('id') ?? '',
+      needAnAdvice: json.tryGet<bool>("needAnAdvice") ?? false,
       from: json.tryGet<String>('from') ?? '',
       to:  json.tryGetCast<List<String>, List>(key: 'to', func: (list) {
           if(list.isNotEmpty) {

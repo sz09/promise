@@ -53,6 +53,7 @@ dependencies:
   flutter_chat_ui: ^1.6.15
   flutter_email_sender: ^6.0.3
   flutter_launcher_icons: ^0.14.1
+  flutter_local_notifications: ^18.0.1
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.4.1
@@ -60,6 +61,8 @@ dependencies:
   flutter_slidable: ^3.1.1
   flutter_speed_dial: ^7.0.0
   flutter_test_robots: ^0.0.24
+  flutter_time_picker_spinner: ^2.0.0
+  flutter_timezone: ^3.0.1
   font_awesome_flutter: ^10.7.0
   get: ^4.6.6
   get_it: ^8.0.2
@@ -89,6 +92,7 @@ dependencies:
   single_item_storage: ^2.0.1
   sticky_headers: ^0.3.0+2
   synchronized: ^3.1.0+1
+  timezone: ^0.10.0
   url_launcher: ^6.3.0
   uuid: ^4.5.1
   web_socket_channel: ^3.0.1

@@ -179,9 +179,9 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                                   color: Colors.green),
                               Badge(
                                 label: Text(
-                                    widget.item.progressions.length.toString()),
+                                    widget.item.works.length.toString()),
                                 isLabelVisible:
-                                    widget.item.progressions.isNotEmpty,
+                                    widget.item.works.isNotEmpty,
                                 child: IconButton(
                                     onPressed: () {
                                       _openProgression();
@@ -207,6 +207,6 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
   _openProgression() {
     showEditableDialog(
         context: context,
-        func: () => WorkView(works: widget.item.progressions, promiseId: widget.item.promiseId));
+        func: () => WorkView(works: widget.item.works, promiseId: widget.item.promiseId));
   }
 }

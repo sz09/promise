@@ -101,9 +101,9 @@ class _StateTimelineItemWidget extends State<TimelineItemWidget> {
                       IconButton(
                           onPressed: _onLove,
                           icon: const Icon(FontAwesomeIcons.heart)),
-                      IconButton(
+                    if(widget.item.needAnAdvice) IconButton(
                           onPressed: _onTryYourBest,
-                          icon: const Icon(Icons.handshake_outlined)),
+                          icon: const Icon(FontAwesomeIcons.commentDots)),
                     ],
                   ))
             ],

@@ -18,10 +18,10 @@ class Objective extends BaseAuditModel {
   @HiveField(6)
   late String content;
   @HiveField(7)
-  late List<Work> progressions = [];
+  late List<Work> works = [];
   
   Objective({required this.content, required this.promiseId}) {
-    progressions = List.empty();
+    works = List.empty();
   }
   
   @override

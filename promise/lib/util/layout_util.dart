@@ -43,6 +43,15 @@ extension ContainerLayout on BuildContext {
   double get fontLargeSize {
     return Theme.of(this).textTheme.bodyLarge!.fontSize!;
   }
+
+  double get titleMediumSize {
+    return Theme.of(this).textTheme.titleMedium!.fontSize!;
+  }
+
+  double get titleLargeSize {
+    return Theme.of(this).textTheme.titleLarge!.fontSize!;
+  }
+
   Color get iconColor {
     final theme = Theme.of(this).textTheme;
     return theme.titleLarge!.color!;

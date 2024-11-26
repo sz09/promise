@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
@@ -22,10 +23,11 @@ import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/user/user_manager.dart';
+import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/log/log.dart';
+import 'package:promise/util/notification_util.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:workmanager/workmanager.dart';
 
 const String themeModeKey = "isDarkMode";
 const String languageCode = "languageCode";
@@ -47,7 +49,6 @@ Future<void> preAppConfig() async {
     serviceLocator.get<UserManager>().init(),
     serviceLocator.get<PreferencesHelper>().init()
   ]);
-  
   var isDarkTheme = getStorage.read<bool>(themeModeKey) ?? false;
   Get.changeTheme(isDarkTheme ? ThemeData.dark() : ThemeData.light());
   var language = getStorage.read<String>(languageCode) ?? EN.languageCode;
@@ -100,22 +101,28 @@ Future closeWebSocketConnection() async {
 }
 
 
-registerBackgroundNotification(){
-  Workmanager().initialize(_callbackDispatcher, isInDebugMode: true);
+Future registerBackgroundNotification() async{
+  await registerNotification();
+  workManagerInstance.initialize(_callbackDispatcher, isInDebugMode: true);
 }
 void _callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    // Công việc bạn muốn thực hiện
-    final now = DateTime.now();
-    final startDate = DateTime.parse(inputData?['startDate'] ?? '');
-    final endDate = DateTime.parse(inputData?['endDate'] ?? '');
-    final targetHour = inputData?['hour'] ?? 8; // Default: 8:00 AM
-    final targetMinute = inputData?['minute'] ?? 0;
+  workManagerInstance.executeTask((task, inputData) async {
+      await showNotification();
+    if(inputData != null){
+      final now = DateTime.now();
+      final startDate = DateTime.parse(inputData['startDate'] ?? '');
+      final endDate = DateTime.parse(inputData['endDate'] ?? '');
+      final targetHour = inputData['hour'];
+      final targetMinute = inputData['minute'] ?? 0;
 
-    if (now.isAfter(startDate) && now.isBefore(endDate) && (now.hour == targetHour && now.minute == targetMinute)) {
-      Log.d("Running task: $task");
-    } else {
-      Log.d("Task is outside the specified range.");
+      // await showNotification();
+      // var condition = now.isAfter(startDate.startOfDay()) && now.isBefore(endDate.endOfDay()) && now.hour == targetHour && now.minute == targetMinute;
+      // if (condition) {
+      //   showNotification();
+      // } 
+      // else {
+      //   Log.d("Task is outside the specified range.");
+      // }
     }
 
     return Future.value(true);

@@ -133,6 +133,7 @@
   "language.english": "English",
   "time.hour": "Hour",
   "time.minute": "Minute",
+  "time.selecte_time_label": "Select time",
   "common.text.cannot_be_empty": "Text can not be empty",
   "common.value.cannot_be_empty": "Value can not be empty",
   "common.ok": "Ok",

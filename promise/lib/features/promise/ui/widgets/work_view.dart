@@ -7,6 +7,7 @@ import 'package:promise/models/reminders/reminder.dart';
 import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
+import 'package:promise/util/notification_util.dart';
 import 'package:promise/widgets/wrap/wrap_checkbox.dart';
 import 'package:promise/widgets/wrap/wrap_datepicker.dart';
 import 'package:promise/widgets/wrap/wrap_radio.dart';
@@ -157,13 +158,14 @@ class _WorkItemState extends State<_WorkItem> {
   late bool _isNotifyMe = false;
   _calculateCRONTime(){
     final String taskName = widget.promiseId; 
+    // showNotification();
     if(scheduleTypeSelected.value == ScheduleType.WorkingDays){
-      
-      Workmanager().registerPeriodicTask(
+      workManagerInstance.cancelByUniqueName(taskName);
+      workManagerInstance.registerPeriodicTask(
         taskName, 
         taskName,
         tag: "#1",
-        frequency: Duration(days: 1),
+        frequency: Duration(minutes: 1),
         inputData: {
           'startDate': _selectedFrom?.yearMonthDay(),
           'endDate': _selectedTo?.yearMonthDay(),
@@ -330,6 +332,7 @@ class _WorkItemState extends State<_WorkItem> {
                               child: Padding(
                                   padding: paddingLeft,
                                   child: WrapTimePicker(
+                                    minuteType: MinuteType.Per15Minutes,
                                       labelText:
                                           context.translate("work.notify_on_label"),
                                       hintText:

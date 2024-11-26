@@ -41,7 +41,7 @@ class TimelineView extends StateView<TimelineView> {
     if (_controller.loadingState.value.isInprogress) {
       return loadingWidget();
     } else if (!_controller.loadingState.value.isInprogress) {
-      final List<Story> timelineItems = _controller.items;
+      final List<Story> timelineItems = _controller.items.value;
       if (timelineItems.isEmpty) {
         return _emptyListWidget(context);
       } else {
