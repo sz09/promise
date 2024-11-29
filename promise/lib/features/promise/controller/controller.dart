@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/create.controller.dart';
 import 'package:promise/features/page.controller.dart';
+import 'package:promise/models/objective/objective.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
+import 'package:promise/services/objective/objective.service.dart';
 import 'package:promise/services/person/person.service.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/widgets/loading_overlay.dart';
@@ -37,7 +39,7 @@ class PromiseController extends PageController<Promise> {
   }
 }
 
-class PromiseDialogController extends CreateController<Promise> {
+class PromiseDialogController extends EntityStateController<Promise> {
   final loadingReferenceState = LoadingState().obs;
   final service = serviceLocator.get<PromiseService>();
   RxList<UserReference> userReferences = <UserReference>[].obs;
@@ -89,6 +91,39 @@ class PromiseDialogController extends CreateController<Promise> {
            .then((_) => completeFunc?.call())
            .catchError((e) => errorFunc?.call(e));
   }
+  
+  delete({required String id,
+        Function? completeFunc = null,
+        Function(dynamic error)? errorFunc = null
+        }) async{
+    await service.deleteAsync(id)
+           .then((_) => completeFunc?.call())
+           .catchError((e) => errorFunc?.call(e));
+  }
+}
+
+class ObjectiveController extends EntityStateController<Objective> {
+  final service = serviceLocator.get<ObjectiveService>();
+  Future create({ 
+                  required Objective objective,  
+                  Function? completeFunc = null,
+                  Function(dynamic error)? errorFunc = null
+                }) async{
+   await service.createAsync(Objective.create(content: objective.content, promiseId: objective.promiseId, works: objective.works))
+           .then((_) => completeFunc?.call())
+           .catchError((e) => errorFunc?.call(e));
+  }
+  
+  Future modify({ 
+                  required Objective objective,  
+                  Function? completeFunc = null,
+                  Function(dynamic error)? errorFunc = null
+                }) async{
+   await service.modifyAsync(Objective.modify(id: objective.id, content: objective.content, promiseId: objective.promiseId, works: objective.works))
+           .then((_) => completeFunc?.call())
+           .catchError((e) => errorFunc?.call(e));
+  }
+
   
   delete({required String id,
         Function? completeFunc = null,

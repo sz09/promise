@@ -24,6 +24,17 @@ class Objective extends BaseAuditModel {
     works = List.empty();
   }
   
+  factory Objective.create({required String content, required String promiseId, required List<Work> works}){
+    return Objective(content: content, promiseId: promiseId)
+    ..works = works;
+  }
+  factory Objective.modify({required String id, required String content, required String promiseId, required List<Work> works}){
+    return Objective(content: content, promiseId: promiseId)
+    ..id = id
+    ..works = works;
+  }
+
+
   @override
   BaseAuditModel Function(Map<String, dynamic> p1) fromJsonMethod() {
     return Objective.fromJson;

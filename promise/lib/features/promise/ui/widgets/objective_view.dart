@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:promise/features/promise/controller/controller.dart';
 import 'package:promise/features/promise/ui/widgets/work_view.dart';
+import 'package:promise/main.dart';
 import 'package:promise/models/objective/objective.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
@@ -8,6 +11,7 @@ import 'package:promise/widgets/wrap/wrap_textarea.dart';
 
 const double _boxHeight = 180;
 
+final _objectiveController = Get.find<ObjectiveController>(tag: applicationTag);
 class ObjectiveView extends StatefulWidget {
   final String promiseId;
   const ObjectiveView({super.key, required this.promiseId});
@@ -91,15 +95,6 @@ class _ObjectiveViewState extends State<ObjectiveView> {
                                   items.removeAt(i);
                                 });
                               },
-                              insertItem: () {
-                                setState(() {
-                                  items.insert(
-                                      i,
-                                      Objective(
-                                          content: i.toString(),
-                                          promiseId: widget.promiseId));
-                                });
-                              },
                             );
                           },
                         ))
@@ -111,9 +106,8 @@ class _ObjectiveViewState extends State<ObjectiveView> {
 class _ObjectiveItem extends StatefulWidget {
   final Objective item;
   final Function removeItem;
-  final Function insertItem;
   const _ObjectiveItem(
-      {required this.item, required this.removeItem, required this.insertItem});
+      {required this.item, required this.removeItem});
 
   @override
   State<StatefulWidget> createState() {
@@ -122,9 +116,11 @@ class _ObjectiveItem extends StatefulWidget {
 }
 
 class _ObjectiveItemState extends State<_ObjectiveItem> {
+  late bool _isNew = true;
   @override
   void initState() {
     _controller = TextEditingController(text: widget.item.content);
+    _isNew = widget.item.id == '';
     super.initState();
   }
 
@@ -133,7 +129,21 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
     _controller.dispose();
     super.dispose();
   }
+  Future _saveObjective() async {
+    if(_isNew){
+      await _objectiveController.create(objective: widget.item);
+      setState(() {
+        _isNew = false;
+      });
+    }
+    else {
+      await _objectiveController.modify(objective: widget.item);
+    }
+  }
 
+  Future _deleteObjective() async{
+    await _objectiveController.delete(id: widget.item.id);
+  }
   late TextEditingController _controller =
       TextEditingController(text: widget.item.content);
   @override
@@ -143,6 +153,7 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
           width: constraints.maxWidth,
           height: _boxHeight,
           child: Card(
+            surfaceTintColor: _isNew ? Colors.green : Colors.transparent,
             elevation: 4,
             shape: RoundedRectangleBorder(borderRadius: roundedItem),
             child: Column(
@@ -171,11 +182,11 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               IconButton(
-                                  onPressed: () {
-                                    widget.insertItem();
+                                  onPressed: () async {
+                                    await _saveObjective();
                                     setState(() {});
                                   },
-                                  icon: Icon(FontAwesomeIcons.plus),
+                                  icon: Icon(FontAwesomeIcons.floppyDisk),
                                   color: Colors.green),
                               Badge(
                                 label: Text(
@@ -189,7 +200,10 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                                     icon: Icon(FontAwesomeIcons.listCheck)),
                               ),
                               IconButton(
-                                  onPressed: () {
+                                  onPressed: () async{
+                                    if(!_isNew){
+                                      await _deleteObjective();
+                                    }
                                     widget.removeItem();
                                     setState(() {});
                                   },

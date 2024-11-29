@@ -1,3 +1,4 @@
+import 'package:promise/models/objective/objective.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/models/promise/promise.dart';
 import 'package:promise/di/service_locator.dart';
@@ -5,11 +6,14 @@ import 'package:promise/models/memory/memory.dart';
 import 'package:promise/pre_app_config.dart';
 import 'package:promise/repositories/memories/memory.local.repository.dart';
 import 'package:promise/repositories/memories/memory.remote.repository.dart';
+import 'package:promise/repositories/objective/objective.local.repository.dart';
+import 'package:promise/repositories/objective/objective.remote.repository.dart';
 import 'package:promise/repositories/people/people.local.repository.dart';
 import 'package:promise/repositories/people/people.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.remote.repository.dart';
 import 'package:promise/repositories/promises/promise.local.repository.dart';
 import 'package:promise/services/memory/memory.service.dart';
+import 'package:promise/services/objective/objective.service.dart';
 import 'package:promise/services/person/person.service.dart';
 import 'package:promise/services/promise/promise.service.dart';
 import 'package:promise/services/synchronization/sync.dart';
@@ -40,6 +44,10 @@ Future<void> setupUserScope(String userId) async {
   final PersonRemoteRepository personRemoteRepository = serviceLocator.get<PersonRemoteRepository>();
   final PersonService personService = PersonService(remoteRepository: personRemoteRepository, localRepository: personLocalRepository);
 
+  final ObjectiveLocalRepository objectiveLocalRepository = ObjectiveLocalRepository(userId: userId, localDatabase: localDatabaseWrapper.getLocalDatabase<Objective>());
+  final ObjectiveRemoteRepository objectiveRemoteRepository = serviceLocator.get<ObjectiveRemoteRepository>();
+  final ObjectiveService objectiveService = ObjectiveService(remoteRepository: objectiveRemoteRepository, localRepository: objectiveLocalRepository);
+
   final SynchronizationService synchronizationService = SynchronizationService(
     repositories: {
       // memoryRemoteRepository: memoryLocalRepository,
@@ -53,6 +61,8 @@ Future<void> setupUserScope(String userId) async {
     ..registerSingleton<PromiseService>(promiseService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton<PersonService>(personService,
+        dispose: (instance) => instance.teardown())
+    ..registerSingleton<ObjectiveService>(objectiveService,
         dispose: (instance) => instance.teardown())
     ..registerSingleton(synchronizationService);
 

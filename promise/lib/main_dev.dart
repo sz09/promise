@@ -27,7 +27,7 @@ void main() async {
       result.addAll({"BaseUrlApi": "https://promisewebapi-gtcsakhza7f5hvd9.southeastasia-01.azurewebsites.net"});
   }
 
-  // result.addAll({"BaseUrlApi": "https://a7c3-116-111-185-94.ngrok-free.app"});
+  result.addAll({"BaseUrlApi": "https://598f-116-111-185-94.ngrok-free.app"});
   
   FlavorConfig.set(
     Flavor.Dev,
