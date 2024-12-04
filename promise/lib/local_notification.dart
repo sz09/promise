@@ -3038,7 +3038,7 @@ class _HomePageState extends State<HomePage> {
                   AndroidFlutterLocalNotificationsPlugin>()!
               .getNotificationChannels();
 
-      return Container(
+      return SizedBox(
         width: double.maxFinite,
         child: ListView(
           children: <Widget>[

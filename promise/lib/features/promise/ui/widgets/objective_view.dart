@@ -29,6 +29,11 @@ class _ObjectiveViewState extends State<ObjectiveView> {
 
   @override
   void initState() {
+    _objectiveController.loadObjectivesByPromise(widget.promiseId).then((d) {
+      setState(() {
+        items = d;
+      });
+    });
     _scrollController = ScrollController();
     super.initState();
   }
@@ -41,8 +46,9 @@ class _ObjectiveViewState extends State<ObjectiveView> {
 
   // Function to add a new item
   void _addItem() {
+    final newItem = Objective.create(content: "", promiseId: widget.promiseId, works: []);
     setState(() {
-      items.add(Objective(content: "", promiseId: widget.promiseId));
+      items.add(newItem);
     });
     // _scrollController.jumpTo(MediaQuery.of(context).size.height);
   }
@@ -130,6 +136,7 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
     super.dispose();
   }
   Future _saveObjective() async {
+    widget.item.content = _controller.text;
     if(_isNew){
       await _objectiveController.create(objective: widget.item);
       setState(() {
@@ -151,7 +158,6 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
     return LayoutBuilder(builder: (context, constraints) {
       return SizedBox(
           width: constraints.maxWidth,
-          height: _boxHeight,
           child: Card(
             surfaceTintColor: _isNew ? Colors.green : Colors.transparent,
             elevation: 4,

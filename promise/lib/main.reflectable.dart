@@ -309,6 +309,17 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'': (bool b) => ({content, promiseId}) => b
                   ? prefix4.Objective(content: content, promiseId: promiseId)
                   : null,
+              r'create': (bool b) => ({content, promiseId, works}) => b
+                  ? prefix4.Objective.create(
+                      content: content, promiseId: promiseId, works: works)
+                  : null,
+              r'modify': (bool b) => ({id, content, promiseId, works}) => b
+                  ? prefix4.Objective.modify(
+                      content: content,
+                      id: id,
+                      promiseId: promiseId,
+                      works: works)
+                  : null,
               r'fromJson': (bool b) =>
                   (input) => b ? prefix4.Objective.fromJson(input) : null
             },
@@ -338,8 +349,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'promiseId=': 1,
               r'content': 0,
               r'content=': 1,
-              r'progressions': 0,
-              r'progressions=': 1
+              r'works': 0,
+              r'works=': 1
             }),
         r.NonGenericClassMirrorImpl(
             r'Work',
@@ -535,7 +546,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'to': (dynamic instance) => instance.to,
         r'forYourself': (dynamic instance) => instance.forYourself,
         r'promiseId': (dynamic instance) => instance.promiseId,
-        r'progressions': (dynamic instance) => instance.progressions,
+        r'works': (dynamic instance) => instance.works,
         r'from': (dynamic instance) => instance.from,
         r'reminder': (dynamic instance) => instance.reminder,
         r'scheduleType': (dynamic instance) => instance.scheduleType,
@@ -571,8 +582,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             instance.description = value,
         r'promiseId=': (dynamic instance, value) => instance.promiseId = value,
         r'content=': (dynamic instance, value) => instance.content = value,
-        r'progressions=': (dynamic instance, value) =>
-            instance.progressions = value,
+        r'works=': (dynamic instance, value) => instance.works = value,
         r'from=': (dynamic instance, value) => instance.from = value,
         r'to=': (dynamic instance, value) => instance.to = value,
         r'reminder=': (dynamic instance, value) => instance.reminder = value,
@@ -635,6 +645,16 @@ final _data = <r.Reflectable, r.ReflectorData>{
           0,
           0,
           const [#content, #promiseId]
+        ],
+        const [
+          0,
+          0,
+          const [#content, #promiseId, #works]
+        ],
+        const [
+          0,
+          0,
+          const [#id, #content, #promiseId, #works]
         ],
         const [
           0,

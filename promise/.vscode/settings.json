@@ -1,4 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "cmake.sourceDirectory": "/Users/macos/Mobile Apps/flutter-mobile/promise/promise/linux"
+    "cmake.sourceDirectory": "/Users/macos/Mobile Apps/flutter-mobile/promise/promise/linux",
+    "java.compile.nullAnalysis.mode": "automatic"
 }

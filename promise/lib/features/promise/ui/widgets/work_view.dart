@@ -13,7 +13,6 @@ import 'package:promise/widgets/wrap/wrap_datepicker.dart';
 import 'package:promise/widgets/wrap/wrap_radio.dart';
 import 'package:promise/widgets/wrap/wrap_textarea.dart';
 import 'package:promise/widgets/wrap/wrap_timepicker.dart';
-import 'package:workmanager/workmanager.dart';
 
 class WorkView extends StatefulWidget {
   final String promiseId;
@@ -114,9 +113,6 @@ class _WorkViewState extends State<WorkView> {
                                   items.removeAt(i);
                                 });
                               },
-                              saveItem: (Work work) {
-
-                              },
                               insertItem: () {
                                 setState(() {
                                   items.insert(i, _newWork());
@@ -134,10 +130,9 @@ class _WorkItem extends StatefulWidget {
   final Work item;
   final String promiseId;
   final Function removeItem;
-  final Function(Work) saveItem;
   final Function insertItem;
   const _WorkItem(
-      {required this.item, required this.removeItem, required this.insertItem, required this.saveItem, required this.promiseId});
+      {required this.item, required this.removeItem, required this.insertItem, required this.promiseId});
 
   @override
   State<StatefulWidget> createState() {
@@ -258,7 +253,6 @@ class _WorkItemState extends State<_WorkItem> {
                               IconButton(
                                   onPressed: () {
                                     _calculateCRONTime();
-                                    widget.saveItem(widget.item);
                                   },
                                   icon: Icon(FontAwesomeIcons.floppyDisk),
                                   color: Colors.green),

@@ -81,6 +81,7 @@ class _PromiseDialogState extends State<PromiseDialog> {
       }
     }
 
+    Get.lazyPut(() => ObjectiveController(), tag: applicationTag, fenix: true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.loadUserRefereces();
     });
@@ -89,6 +90,8 @@ class _PromiseDialogState extends State<PromiseDialog> {
   @override
   void dispose() {
     _contentController.dispose();
+
+    Get.delete<ObjectiveController>(tag: applicationTag);
     super.dispose();
   }
 

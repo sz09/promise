@@ -26,6 +26,7 @@ class Objective extends BaseAuditModel {
   
   factory Objective.create({required String content, required String promiseId, required List<Work> works}){
     return Objective(content: content, promiseId: promiseId)
+    ..id = ''
     ..works = works;
   }
   factory Objective.modify({required String id, required String content, required String promiseId, required List<Work> works}){

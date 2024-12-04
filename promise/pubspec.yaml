@@ -37,7 +37,7 @@ dependencies:
   built_value_generator: any
   collection: ^1.18.0
   confirm_dialog: ^1.0.4
-  connectivity_plus: ^6.0.5
+  connectivity_plus: ^6.1.0
   cron: ^0.6.1
   device_info_plus: ^11.1.1
   dio: ^5.7.0

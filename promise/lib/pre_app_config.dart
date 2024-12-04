@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
@@ -23,8 +22,6 @@ import 'package:promise/notifications/local/local_notification_manager.dart';
 import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/resources/localization/app_localization.dart';
 import 'package:promise/user/user_manager.dart';
-import 'package:promise/util/date_time_util.dart';
-import 'package:promise/util/log/log.dart';
 import 'package:promise/util/notification_util.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';

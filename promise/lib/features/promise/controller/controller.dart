@@ -104,6 +104,9 @@ class PromiseDialogController extends EntityStateController<Promise> {
 
 class ObjectiveController extends EntityStateController<Objective> {
   final service = serviceLocator.get<ObjectiveService>();
+  Future<List<Objective>> loadObjectivesByPromise(String promiseId){
+    return service.loadObjectivesByPromise(promiseId);
+  }
   Future create({ 
                   required Objective objective,  
                   Function? completeFunc = null,
