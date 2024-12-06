@@ -14,43 +14,43 @@ commonDialog({
 }) {
   return SingleChildScrollView(
       child: StickyHeader(
-        header: Padding(
+    header: Padding(
         padding: paddingTop,
         child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: context.containerLayoutColor,
-
-          ),
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              context.translate(dialogTitleKey),
-              style: titleFontStyle,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: context.containerLayoutColor,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (action != null) action,
-                if(onSave != null) 
-                  IconButton(
-                    icon: Icon(FontAwesomeIcons.solidFloppyDisk,
-                        color: Colors.green),
-                    onPressed: () {
-                      onSave();
-                  }),
+                Text(
+                  context.translate(dialogTitleKey),
+                  style: titleFontStyle,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (action != null) action,
+                    if (onSave != null)
+                      IconButton(
+                          icon: Icon(FontAwesomeIcons.solidFloppyDisk,
+                              color: Colors.green),
+                          onPressed: () {
+                            onSave();
+                          }),
+                  ],
+                )
               ],
-            )
-          ],
-        )
-        )),
-        content: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.zero,
+            ))),
+    content: SingleChildScrollView(
+      child: Padding(
+          padding: EdgeInsets.zero,
+          child: Form(
+            key: formKey,
             child: bodyWidgets(context),
-          ),
-        ),
+          )),
+    ),
   ));
 }

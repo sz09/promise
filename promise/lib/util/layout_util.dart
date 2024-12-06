@@ -27,6 +27,10 @@ extension ContainerLayout on BuildContext {
     return Theme.of(this).colorScheme.error;
   }
   
+  Color get textErrorColor {
+    return Theme.of(this).colorScheme.error;
+  }
+
   Color get selectedColor {
     return Theme.of(this).colorScheme.primaryContainer;
   }
@@ -36,6 +40,13 @@ extension ContainerLayout on BuildContext {
     return Theme.of(this).textTheme.titleLarge!.color!;
   }
 
+  double get titleFontSize {
+    return Theme.of(this).textTheme.titleSmall!.fontSize!;
+  }
+
+  FontWeight get titleFontWeight {
+    return Theme.of(this).textTheme.titleSmall!.fontWeight!;
+  }
   double get fontSize {
     return Theme.of(this).textTheme.bodyMedium!.fontSize!;
   }

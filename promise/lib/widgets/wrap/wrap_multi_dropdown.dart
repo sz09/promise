@@ -4,8 +4,8 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 
-class MultiDropdownController extends ValueNotifier<List<String>>{
-  MultiDropdownController(): super([]);
+class MultiDropdownController extends ValueNotifier<List<String>> {
+  MultiDropdownController() : super([]);
 }
 
 @immutable
@@ -22,18 +22,17 @@ class WrapMultiDropdownFormField<T> extends StatefulWidget {
   final bool required;
 
   WrapMultiDropdownFormField(
-      {
-      required this.items,
+      {required this.items,
       required this.labelText,
       required this.errorText,
       this.required = false,
       String? hintText = null,
-      this.searchHint, 
+      this.searchHint,
       this.searchable = false,
-      super.key, 
-      required this.getDisplayTextFn, 
-      required this.getValueFn, 
-      required this.buttonIcon, 
+      super.key,
+      required this.getDisplayTextFn,
+      required this.getValueFn,
+      required this.buttonIcon,
       required this.controller}) {}
 
   @override
@@ -50,64 +49,95 @@ class _StateWrapMultiDropdownFormField<T>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: paddingTop,
-      child: MultiSelectChipField<T?>(
-        headerColor: Colors.transparent,
-        icon: Icon(FontAwesomeIcons.cube),
-        items: widget.items.map((d) {
-          return  MultiSelectItem<T>(d, widget.getDisplayTextFn(d));
-        }).toList(),
-        title: Text(" ${widget.labelText}"),
-        key: _multiSelectKey,
-        initialValue: _selectedValues,
-        scroll: false,
-        chipColor: context.containerLayoutColor,
-        textStyle: TextStyle(
-          color: context.textColor
-        ),
-        selectedChipColor: context.selectedColor,
-        chipShape: RoundedRectangleBorder(borderRadius: roundedItem),
-        onTap: _onSave,
-        validator: _validate,
-        decoration: BoxDecoration(
-          borderRadius: roundedItem,
-          border: Border.all(
-            color: _validState ? context.borderWidgetColor: context.borderWidgetErrorColor,
-          ),
-        ),
-        autovalidateMode: AutovalidateMode.onUnfocus,
-        searchHint: widget.searchHint,
-        searchable: widget.searchable,
-        closeSearchIcon: widget.searchable ? Icon(FontAwesomeIcons.x): null
-    ));
+        padding: paddingTop,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: roundedItem,
+              ),
+              child: MultiSelectChipField<T?>(
+                  headerColor: Colors.transparent,
+                  showHeader: false,
+                  icon: Icon(FontAwesomeIcons.cube),
+                  items: widget.items.map((d) {
+                    return MultiSelectItem<T>(d, widget.getDisplayTextFn(d));
+                  }).toList(),
+                  key: _multiSelectKey,
+                  initialValue: _selectedValues,
+                  scroll: false,
+                  chipColor: context.containerLayoutColor,
+                  textStyle: TextStyle(color: context.textColor),
+                  selectedChipColor: context.selectedColor,
+                  chipShape: RoundedRectangleBorder(borderRadius: roundedItem),
+                  onTap: _onChange,
+                  validator: _validate,
+                  decoration: BoxDecoration(
+                    borderRadius: roundedItem,
+                    border: Border.all(
+                      color: _validState
+                          ? context.borderWidgetColor
+                          : context.borderWidgetErrorColor,
+                    ),
+                  ),
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  searchHint: widget.searchHint,
+                  searchable: widget.searchable,
+                  closeSearchIcon:
+                      widget.searchable ? Icon(FontAwesomeIcons.x) : null),
+            ),
+            Positioned(
+              left: 20,
+              top: -10,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                color: context
+                    .containerLayoutColor, // Màu nền cho widget để che border
+                child: Text(
+                  widget.labelText,
+                  style: TextStyle(
+                      fontSize: context.titleFontSize,
+                      fontWeight: context.titleFontWeight,
+                      color: _validState
+                          ? context.textColor
+                          : context.textErrorColor),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 
-  String? _validate(List<T?>? value){
-     if (widget.required) {
-        setState(() {
-          _validState = value != null && value.isNotEmpty;
-        });
+  String? _validate(List<T?>? value) {
+    if (widget.required) {
+      setState(() {
+        _validState = value != null && value.isNotEmpty;
+      });
 
-        if(!_validState){
-          return widget.errorText ?? context.translate('common.value.cannot_be_empty');
-        }
+      if (!_validState) {
+        return widget.errorText ??
+            context.translate('common.value.cannot_be_empty');
       }
-      return null; 
+    }
+    return null;
   }
 
-  dynamic _onSave(List<T?>? setter){
+  dynamic _onChange(List<T?>? setter) {
     _setValue(setter);
+    _validate(setter);
   }
-  _setValue(List<T?>? value){
+
+  _setValue(List<T?>? value) {
     setState(() {
-      if(value !=  null){
+      if (value != null) {
         _selectedValues = value;
-      }
-      else {
+      } else {
         _selectedValues = [];
       }
     });
-    widget.controller.value = _selectedValues.map((d) => widget.getValueFn(d as T)).toList();
+    widget.controller.value =
+        _selectedValues.map((d) => widget.getValueFn(d as T)).toList();
   }
 
   @override
