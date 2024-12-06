@@ -4,10 +4,10 @@ import 'package:promise/features/promise/const/const.dart';
 import 'package:promise/features/promise/ui/models/schedule_options.dart';
 import 'package:promise/models/work/work.dart';
 import 'package:promise/models/reminders/reminder.dart';
+import 'package:promise/util/background_tasks_util.dart';
 import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
-import 'package:promise/util/notification_util.dart';
 import 'package:promise/widgets/wrap/wrap_checkbox.dart';
 import 'package:promise/widgets/wrap/wrap_datepicker.dart';
 import 'package:promise/widgets/wrap/wrap_radio.dart';
@@ -16,8 +16,10 @@ import 'package:promise/widgets/wrap/wrap_timepicker.dart';
 
 class WorkView extends StatefulWidget {
   final String promiseId;
+  final String objectiveId;
   final List<Work> works;
-  const WorkView({super.key, required this.works, required this.promiseId});
+  final Function(List<Work> works) onModifyWorks;
+  const WorkView({super.key, required this.works, required this.promiseId, required this.onModifyWorks, required this.objectiveId});
 
   @override
   State<StatefulWidget> createState() {
@@ -52,16 +54,21 @@ class _WorkViewState extends State<WorkView> {
     setState(() {
       items.add(_newWork());
     });
+
+    widget.onModifyWorks(items);
   }
 
   _newWork() {
-    return Work(
-        content: "",
-        scheduleType: ScheduleType.WeekDays,
-        from: null,
-        to: null,
-        reminder: Reminder(
-            notiicationContent: "", notiicationDetails: "", expression: ""));
+    return Work.create(
+      content: "",
+      scheduleType: ScheduleType.WeekDays,
+      from: null,
+      to: null,
+      reminder: Reminder(
+          notiicationContent: "", 
+          notiicationDetails: "", 
+          expression: ""
+      )..id = '');
   }
 
   @override
@@ -107,15 +114,23 @@ class _WorkViewState extends State<WorkView> {
                           itemBuilder: (context, i) {
                             return _WorkItem(
                               promiseId: widget.promiseId,
+                              objectiveId: widget.objectiveId,
+                              index: i,
                               item: items[i],
+                              onModifyWork: (item){
+                                items[i] = item;
+                                widget.onModifyWorks(items);
+                              },
                               removeItem: () {
                                 setState(() {
                                   items.removeAt(i);
+                                  widget.onModifyWorks(items);
                                 });
                               },
                               insertItem: () {
                                 setState(() {
                                   items.insert(i, _newWork());
+                                  widget.onModifyWorks(items);
                                 });
                               },
                             );
@@ -128,11 +143,14 @@ class _WorkViewState extends State<WorkView> {
 
 class _WorkItem extends StatefulWidget {
   final Work item;
+  final int index;
   final String promiseId;
+  final String objectiveId;
   final Function removeItem;
   final Function insertItem;
+  final Function(Work work) onModifyWork;
   const _WorkItem(
-      {required this.item, required this.removeItem, required this.insertItem, required this.promiseId});
+      {required this.item, required this.removeItem, required this.insertItem, required this.promiseId, required this.onModifyWork, required this.objectiveId, required this.index});
 
   @override
   State<StatefulWidget> createState() {
@@ -151,15 +169,19 @@ class _WorkItemState extends State<_WorkItem> {
   late DateTime? _selectedFrom = null;
   late DateTime? _selectedTo = null;
   late bool _isNotifyMe = false;
+
+  _onChange(){ 
+    widget.onModifyWork.call(widget.item);
+  }
+
   _calculateCRONTime(){
-    final String taskName = widget.promiseId; 
+    final String taskName = "${widget.promiseId}-${widget.objectiveId}"; 
     // showNotification();
     if(scheduleTypeSelected.value == ScheduleType.WorkingDays){
-      workManagerInstance.cancelByUniqueName(taskName);
-      workManagerInstance.registerPeriodicTask(
-        taskName, 
-        taskName,
-        tag: "#1",
+      cancelByUniqueName(taskName: taskName);
+      registerPeriodicTask(
+       taskName: taskName,
+        tag: "#${widget.index}",
         frequency: Duration(minutes: 1),
         inputData: {
           'startDate': _selectedFrom?.yearMonthDay(),
@@ -205,9 +227,7 @@ class _WorkItemState extends State<_WorkItem> {
     _controller.dispose();
     super.dispose();
   }
-
-  late TextEditingController _controller =
-      TextEditingController(text: widget.item.content);
+  late TextEditingController _controller;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -235,6 +255,10 @@ class _WorkItemState extends State<_WorkItem> {
                               hintText: context.translate("work.content_hint"),
                               maxLines: 5,
                               minLines: 5,
+                              onChange: (text) {
+                                widget.item.content = text;
+                                _onChange();
+                              },
                               required: true),
                         )),
                     SizedBox(
@@ -243,19 +267,9 @@ class _WorkItemState extends State<_WorkItem> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                             IconButton(
-                                  onPressed: () {
-                                    widget.removeItem();
-                                  },
-                                  icon: Icon(FontAwesomeIcons.x),
-                                  color: Colors.red),
-                                  
-                              IconButton(
-                                  onPressed: () {
-                                    _calculateCRONTime();
-                                  },
-                                  icon: Icon(FontAwesomeIcons.floppyDisk),
-                                  color: Colors.green),
+                              removeButton(onRemove: () {
+                                widget.removeItem();
+                              })
                             ]))
                   ],
                 ),
@@ -271,13 +285,14 @@ class _WorkItemState extends State<_WorkItem> {
                                 hintText: context.translate("work.from_hint"),
                                 firstDate: _minFrom,
                                 lastDate: _maxFrom,
+                                selectedDate: _selectedFrom,
                                 onChanged: (value) {
                                   setState(() {
                                     widget.item.from = value;
                                     _selectedFrom = value;
+                                    _onChange();
                                   });
-                                },
-                                selectedDate: _selectedFrom))),
+                                }))),
                 Flexible(
                         flex: 1,
                         child: Padding(
@@ -287,13 +302,15 @@ class _WorkItemState extends State<_WorkItem> {
                                 hintText: context.translate("work.to_hint"),
                                 firstDate: _minTo,
                                 lastDate: _maxTo,
+                                selectedDate: _selectedTo,
                                 onChanged: (value) {
                                   setState(() {
                                     widget.item.to = value;
                                     _selectedTo = value;
+                                    _onChange();
                                   });
                                 },
-                                selectedDate: _selectedTo))),
+                               ))),
                   ],
                 ),
                 WrapRadio(
@@ -302,6 +319,7 @@ class _WorkItemState extends State<_WorkItem> {
                       setState(() {
                         scheduleTypeSelected = t;
                       });
+                      _onChange();
                     },
                     options: scheduleTypes,
                     getDisplayTextFn: (d) => d.text,
@@ -314,6 +332,7 @@ class _WorkItemState extends State<_WorkItem> {
                       setState(() {
                         _isNotifyMe = val;
                       });
+                      _onChange();
                     }),
                 if (_isNotifyMe)
                   Column(
@@ -335,6 +354,7 @@ class _WorkItemState extends State<_WorkItem> {
                                             setState(() {
                                               _notifyOn = value;
                                             });
+                                            _onChange();
                                           },
                                       selectedTime: _notifyOn))),
                           Flexible(

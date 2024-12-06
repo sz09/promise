@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 extension ContainerLayout on BuildContext {
   Color get containerLayoutColor {
@@ -78,6 +79,8 @@ const EdgeInsets quarterPaddingTop = EdgeInsets.only(top: 2.5);
 const EdgeInsets paddingLeft = EdgeInsets.only(left: 5);
 const EdgeInsets paddingHorizontal = EdgeInsets.symmetric(horizontal: 5);
 BorderRadius roundedItem = BorderRadius.circular(10.0);
+
+
 const titleFontStyle = TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -99,4 +102,15 @@ showEditableDialog({required BuildContext context, required Widget Function() fu
         );
       },
     );
+}
+
+
+removeButton({required Function onRemove}){
+  return IconButton(
+    onPressed: () {
+      onRemove();
+    },
+    color: Colors.red,
+    icon: Icon(FontAwesomeIcons.x),
+  );
 }

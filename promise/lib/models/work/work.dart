@@ -29,7 +29,10 @@ class Work extends BaseAuditModel {
   late ScheduleType scheduleType;
 
   Work({required this.content, required this.from, required this.to,  required this.scheduleType, required this.reminder});
-
+  factory Work.create({required String content, DateTime? from, DateTime? to,  required ScheduleType scheduleType, required Reminder reminder}){
+    return Work(content: content, from: from, to: to, scheduleType: scheduleType, reminder: reminder)
+    ..id = '';
+  }
   @override
   BaseAuditModel Function(Map<String, dynamic> p1) fromJsonMethod() {
     return Work.fromJson;
@@ -55,6 +58,21 @@ class Work extends BaseAuditModel {
       default:
         throw InvalidOperationException();
     }
+  }
 
+  Map<String, dynamic> toJson() => _$WorkToJson(this);
+
+  _$WorkToJson(Work instance) {
+    return  <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'content': instance.content,
+      'isDeleted': instance.isDeleted,
+      'from': instance.from?.toIso8601String(),
+      'to': instance.to?.toIso8601String(),
+      'scheduleType': instance.scheduleType.index,
+      'reminder': instance.reminder?.toJson(),
+    };
   }
 }

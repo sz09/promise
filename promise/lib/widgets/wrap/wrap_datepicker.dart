@@ -59,19 +59,22 @@ class _StateWrapDatePicker extends State<WrapDatePicker> {
     if (picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        _controller.text = _selectedDate?.asString(isDateOnly: widget.isDateOnly) ?? "";
+        _showText();
       });
       if (widget.onChanged != null && _selectedDate != null) {
         widget.onChanged!(_selectedDate!);
       }
     }
   }
-
+  _showText(){
+    _controller.text = _selectedDate?.asString(isDateOnly: widget.isDateOnly) ?? "";
+  }
   @override
   void initState() {
     super.initState();
+    _selectedDate = widget.selectedDate;
     initializeDateFormatting();
-    _onSelectedDate(widget.selectedDate);
+    _showText();
   }
 
   @override

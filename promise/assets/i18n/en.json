@@ -104,6 +104,7 @@
   "objective.objective_title": "Objectives",
   "objective.content_label": "Objective",
   "objective.content_hint": "Enter what you want to do",
+  "objective.content_hint_cannot_be_empty": "Content can not be empty",
   
   "work.work_title": "Works",
   "work.content_label": "Work",

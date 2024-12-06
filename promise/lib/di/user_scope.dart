@@ -24,7 +24,7 @@ import 'package:promise/util/log/log.dart';
 /// and destroyed on logout.
 const String userScopeName = 'userScope';
 
-late Future<void> _syncFuture;
+late Future<Map<String, String?>> _syncFuture;
 
 /// Use [setupUserScope] to setup components that need to be alive as
 /// long as there is a logged in user. Provide a dispose method when
@@ -70,8 +70,38 @@ Future<void> setupUserScope(String userId) async {
   
 
  _syncFuture = syncDataToLocalAsync();
- _syncFuture.whenComplete(() {
-  Log.d('Synced data to local');
+ _syncFuture.then((result) {
+  late List<String> syncedTables = [];
+  late Map<String, String> syncErrorTables = {};
+  for(final entry in result.entries){
+    if(entry.value == null){
+      syncedTables.add(entry.key);
+    }
+    else {
+      syncErrorTables[entry.key] = entry.value!;
+    }
+  }
+  final syncResult = StringBuffer('');
+  if(syncedTables.isNotEmpty){
+    syncResult.write("\nSynced table: ");
+    for(final item in syncedTables) {
+      syncResult.write("[$item] ");
+    }
+  }
+  if(syncErrorTables.isNotEmpty){
+    syncResult.writeln("\nSync fail table: ");
+    for(final item in syncErrorTables.entries) {
+      syncResult.writeln("[${item.key}]: ${item.value}");
+    }
+  }
+  if(syncResult.isNotEmpty){
+    Log.d(syncResult.toString());
+  }
+
+  syncResult.clear();
+ })
+ .catchError((x){
+  Log.d('Sync failed data to local');
  });
 }
 

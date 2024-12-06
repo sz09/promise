@@ -1,4 +1,3 @@
-
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:promise/models/base/base.model.dart';
@@ -50,7 +49,12 @@ class Objective extends BaseAuditModel {
           ..id = (json['id'] ?? '') as String
          ..isDeleted = json.tryGet<bool>('isDeleted') ?? false
          ..createdAt = json.tryGetCast<DateTime, String>(key: 'createdAt',  func: (s) => DateTime.parse(s)) ?? DateTime.now()
-         ..userId = json.tryGet('userId') ?? '';
+         ..userId = json.tryGet('userId') ?? ''
+         ..works = json.tryGetCast<List<Work>, List<dynamic>>(key: "works", func:(p0){
+          return List<Work>.from(p0.map((d) {
+            return Work.fromJson(d);
+          }));
+         }) ?? [];
       case Objective objective:
         return objective;
       default:
@@ -59,17 +63,15 @@ class Objective extends BaseAuditModel {
 
   }
 
-
-  
   Map<String, dynamic> toJson() => _$ObjectiveToJson(this);
 
   _$ObjectiveToJson(Objective instance) => <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
-      'promiseId': instance.promiseId.toString(),
+      'promiseId': instance.promiseId,
       'content': instance.content,
       'isDeleted': instance.isDeleted,
-
+      'works': instance.works
     };
 }

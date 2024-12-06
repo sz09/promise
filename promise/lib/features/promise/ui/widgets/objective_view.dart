@@ -9,8 +9,6 @@ import 'package:promise/util/layout_util.dart';
 import 'package:promise/util/localize.ext.dart';
 import 'package:promise/widgets/wrap/wrap_textarea.dart';
 
-const double _boxHeight = 180;
-
 final _objectiveController = Get.find<ObjectiveController>(tag: applicationTag);
 class ObjectiveView extends StatefulWidget {
   final String promiseId;
@@ -136,15 +134,16 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
     super.dispose();
   }
   Future _saveObjective() async {
-    widget.item.content = _controller.text;
-    if(_isNew){
-      await _objectiveController.create(objective: widget.item);
-      setState(() {
-        _isNew = false;
-      });
-    }
-    else {
-      await _objectiveController.modify(objective: widget.item);
+    if(_formKey.currentState!.validate()){
+      if(_isNew){
+        await _objectiveController.create(objective: widget.item);
+        setState(() {
+          _isNew = false;
+        });
+      }
+      else {
+        await _objectiveController.modify(objective: widget.item);
+      }
     }
   }
 
@@ -153,9 +152,12 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
   }
   late TextEditingController _controller =
       TextEditingController(text: widget.item.content);
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return Form(
+        key: _formKey,
+      child: LayoutBuilder(builder: (context, constraints) {
       return SizedBox(
           width: constraints.maxWidth,
           child: Card(
@@ -176,9 +178,14 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                                   context.translate("objective.content_label"),
                               hintText:
                                   context.translate("objective.content_hint"),
+                              errorText: context.translate("objective.content_hint_cannot_be_empty"),
                               maxLines: 5,
                               minLines: 5,
-                              required: true),
+                              required: true,
+                              onChange: (text) {
+                                widget.item.content = text;
+                              },
+                            ),
                         )),
                     SizedBox(
                         width: 50,
@@ -201,7 +208,7 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                                     widget.item.works.isNotEmpty,
                                 child: IconButton(
                                     onPressed: () {
-                                      _openProgression();
+                                      _openWork();
                                     },
                                     icon: Icon(FontAwesomeIcons.listCheck)),
                               ),
@@ -221,12 +228,20 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
               ],
             ),
           ));
-    });
+    }));
   }
 
-  _openProgression() {
+  _openWork() {
     showEditableDialog(
         context: context,
-        func: () => WorkView(works: widget.item.works, promiseId: widget.item.promiseId));
+        func: () => WorkView(
+          works: widget.item.works, 
+          objectiveId: widget.item.id,
+          promiseId: widget.item.promiseId, 
+          onModifyWorks: (works) {
+            setState(() {
+              widget.item.works = works;
+            }); 
+          }));
   }
 }

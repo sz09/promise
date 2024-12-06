@@ -53,5 +53,6 @@ class SyncDataItemResult {
   final String tableName;
   final bool isContinue;
   late bool isSynced = false;
+  late String? reason = null;
   SyncDataItemResult({required this.tableName, required this.isContinue});
 }

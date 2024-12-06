@@ -11,11 +11,12 @@ class SynchronizationService {
   final Lock _lock2 = Lock();
   SynchronizationService({required this.repositories});
 
-  Future doSyncToLocalAsync() async {
+  Future<Map<String, String?>> doSyncToLocalAsync() async {
     if(repositories.isEmpty){
-      return;
+      return {};
     }
 
+    late Map<String, String?> syncResult = {};
     var box = await LocalDatabase<SystemVersion>().getBoxAsync();
     var userId = repositories.entries.first.value.userId;
     bool isNeedSync = true;
@@ -33,23 +34,31 @@ class SynchronizationService {
       var syncTasks = repositories.entries.map((map) => Future.microtask(() async {
         var tableName = map.value.tableName;
         var storedVersion = systemVersion!.versions[tableName] ?? BigInt.zero;
-        final fetchData = await map.key.fetchFromVersionAsync(version: storedVersion);
-        if(fetchData.data.isEmpty && fetchData.version == BigInt.zero){
-          return SyncDataItemResult(
-            tableName: tableName,
-            isContinue: false
-          );
-        }
+        try {
+          final fetchData = await map.key.fetchFromVersionAsync(version: storedVersion);
+          if(fetchData.data.isEmpty && fetchData.version == BigInt.zero){
+            return SyncDataItemResult(
+              tableName: tableName,
+              isContinue: false
+            );
+          }
 
-        await map.value.doSyncToLocalAsync(fetchData.data);
-        fetchData.data.sort((d, e) => d.updatedAt!.isBefore(e.updatedAt!) ? 0: 1);
-        await updateSystemVersion(systemVersion: systemVersion!, key: map.value.tableName, version: fetchData.version);
-        var syncDataItemResult = SyncDataItemResult(
-          tableName: tableName,
-          isContinue: fetchData.version < fetchData.lastVersion
-        );
-        syncDataItemResult.isSynced = true;
-        return syncDataItemResult;
+          await map.value.doSyncToLocalAsync(fetchData.data);
+          fetchData.data.sort((d, e) => d.updatedAt!.isBefore(e.updatedAt!) ? 0: 1);
+          await updateSystemVersion(systemVersion: systemVersion!, key: map.value.tableName, version: fetchData.version);
+
+          var syncDataItemResult = SyncDataItemResult(
+            tableName: tableName,
+            isContinue: fetchData.version < fetchData.lastVersion
+          );
+          syncDataItemResult.isSynced = true;
+          return syncDataItemResult;
+        }
+        catch(ex) {
+          return SyncDataItemResult(tableName: tableName, isContinue: false) 
+          ..isSynced = false
+          ..reason = ex.toString();
+        }
       })).toList();
 
       var result = await Future.wait(
@@ -61,7 +70,12 @@ class SynchronizationService {
       }
 
       isNeedSync = result.any((d) => d.isContinue);
+      for(var item in result) {
+        syncResult[item.tableName] = item.reason;
+      }
     } while(isNeedSync);
+
+    return syncResult;
   }
 
 

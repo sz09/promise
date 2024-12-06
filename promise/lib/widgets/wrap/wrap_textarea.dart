@@ -9,6 +9,7 @@ class WrapTextAreaFormField extends StatefulWidget {
   final int maxLines;
   final int minLines;
   final bool required;
+  final Function(String text)? onChange;
   late String? errorText;
   late String hintText;
   late TextEditingController controller;
@@ -19,6 +20,7 @@ class WrapTextAreaFormField extends StatefulWidget {
       required this.maxLines,
       required this.minLines,
       required this.required,
+      this.onChange = null,
       this.errorText = null,
       super.key,
       this.hintText = ''
@@ -32,6 +34,7 @@ class WrapTextAreaFormField extends StatefulWidget {
 
 class _StateWrapTextAreaFormField extends State<WrapTextAreaFormField>{
   late bool _validState = true;
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,6 +48,7 @@ class _StateWrapTextAreaFormField extends State<WrapTextAreaFormField>{
           setState(() {
             _validState = value.isNotEmpty ;
           });
+          widget.onChange?.call(value);
         },
         validator: (value) {
           if(widget.required){

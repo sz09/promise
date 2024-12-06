@@ -46,4 +46,17 @@ class Reminder extends BaseAuditModel {
         throw InvalidOperationException();
     }
   }
+
+
+  Map<String, dynamic> toJson() => _$ReminderToJson(this);
+
+  _$ReminderToJson(Reminder instance) => <String, dynamic>{
+      'id': instance.id,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'isDeleted': instance.isDeleted,
+      'expression': instance.expression,
+      'notiicationContent': instance.notiicationContent,
+      'notiicationDetails': instance.notiicationDetails,
+    };
 }
