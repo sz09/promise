@@ -87,7 +87,6 @@ class _ObjectiveViewState extends State<ObjectiveView> {
                         padding: paddingTop,
                         width: constraints.maxWidth,
                         child: ListView.builder(
-                          
                           shrinkWrap: true,
                           controller: _scrollController,
                           itemCount: items.length,
@@ -136,9 +135,10 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
   Future _saveObjective() async {
     if(_formKey.currentState!.validate()){
       if(_isNew){
-        await _objectiveController.create(objective: widget.item);
+        final created = await _objectiveController.create(objective: widget.item);
         setState(() {
           _isNew = false;
+          widget.item.id = created.id;
         });
       }
       else {
@@ -218,7 +218,6 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                                       await _deleteObjective();
                                     }
                                     widget.removeItem();
-                                    setState(() {});
                                   },
                                   icon: Icon(FontAwesomeIcons.minus),
                                   color: Colors.red),

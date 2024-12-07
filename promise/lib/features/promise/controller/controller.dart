@@ -107,22 +107,22 @@ class ObjectiveController extends EntityStateController<Objective> {
   Future<List<Objective>> loadObjectivesByPromise(String promiseId){
     return service.loadObjectivesByPromise(promiseId);
   }
-  Future create({ 
+  Future<Objective> create({ 
                   required Objective objective,  
                   Function? completeFunc = null,
                   Function(dynamic error)? errorFunc = null
                 }) async{
-   await service.createAsync(Objective.create(content: objective.content, promiseId: objective.promiseId, works: objective.works))
+   return await service.createAsync(Objective.create(content: objective.content, promiseId: objective.promiseId, works: objective.works))
            .then((_) => completeFunc?.call())
            .catchError((e) => errorFunc?.call(e));
   }
   
-  Future modify({ 
+  Future<Objective> modify({ 
                   required Objective objective,  
                   Function? completeFunc = null,
                   Function(dynamic error)? errorFunc = null
                 }) async{
-   await service.modifyAsync(Objective.modify(id: objective.id, content: objective.content, promiseId: objective.promiseId, works: objective.works))
+  return await service.modifyAsync(Objective.modify(id: objective.id, content: objective.content, promiseId: objective.promiseId, works: objective.works))
            .then((_) => completeFunc?.call())
            .catchError((e) => errorFunc?.call(e));
   }

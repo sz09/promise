@@ -113,7 +113,7 @@
   "work.from_hint": "Enter from",
   "work.to_label": "To",
   "work.to_hint": "Enter to",
-  "work.week_days": "Week days",
+  "work.range": "Range",
   "work.working_days": "Working days",
   "work.selected_dates": "Selected dates",
   "work.schedule": "Schedule",

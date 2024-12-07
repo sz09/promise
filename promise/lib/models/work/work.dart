@@ -46,7 +46,7 @@ class Work extends BaseAuditModel {
           content:  (json['content'] ?? '') as String, 
           from: json.tryGetCast<DateTime, String>(key: 'from',  func: (s) => DateTime.parse(s)), 
           to: json.tryGetCast<DateTime, String>(key: 'to',  func: (s) => DateTime.parse(s)),
-          scheduleType: json.tryGetCast<ScheduleType, int>(key: "scheduleType", func: (i) => ScheduleType.values[i]) ?? ScheduleType.WeekDays,
+          scheduleType: json.tryGetCast<ScheduleType, int>(key: "scheduleType", func: (i) => ScheduleType.values[i]) ?? ScheduleType.Range,
           reminder: Reminder.fromJson(json['reminder']) 
         )
         ..id = (json['id'] ?? '') as String

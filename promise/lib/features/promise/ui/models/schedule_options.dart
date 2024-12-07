@@ -5,6 +5,6 @@ class ScheduleOption {
 }
 
 enum ScheduleType {
-  WeekDays,
+  Range,
   WorkingDays
 }

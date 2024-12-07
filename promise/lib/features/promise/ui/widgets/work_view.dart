@@ -61,14 +61,14 @@ class _WorkViewState extends State<WorkView> {
   _newWork() {
     return Work.create(
       content: "",
-      scheduleType: ScheduleType.WeekDays,
-      from: null,
+      scheduleType: ScheduleType.Range,
+      from: DateTime.now().startOfDay(),
       to: null,
       reminder: Reminder(
           notiicationContent: "", 
           notiicationDetails: "", 
           expression: ""
-      )..id = '');
+      ));
   }
 
   @override
@@ -200,8 +200,8 @@ class _WorkItemState extends State<_WorkItem> {
   void initState() {
     scheduleTypes.addAll([
       ScheduleOption(
-          text: context.translate("work.week_days"),
-          value: ScheduleType.WeekDays),
+          text: context.translate("work.range"),
+          value: ScheduleType.Range),
       ScheduleOption(
           text: context.translate("work.working_days"),
           value: ScheduleType.WorkingDays),
