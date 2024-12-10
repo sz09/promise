@@ -181,7 +181,7 @@ class _ObjectiveItemState extends State<_ObjectiveItem> {
                               errorText: context.translate("objective.content_hint_cannot_be_empty"),
                               maxLines: 5,
                               minLines: 5,
-                              required: true,
+                              required: true, 
                               onChange: (text) {
                                 widget.item.content = text;
                               },

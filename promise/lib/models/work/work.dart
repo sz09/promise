@@ -7,25 +7,25 @@ import 'package:promise/models/reminders/reminder.dart';
 import 'package:promise/util/invalid_operation_exception.dart';
 import 'package:promise/util/json_ext.dart';
 import 'package:promise/util/reflectable.hive.dart';
-part 'work.d.dart';
+part 'work.g.dart';
 
 @HiveType(typeId: WorkHiveType)
 @JsonSerializable()
 @hiveTypeReflector
-class Work extends BaseAuditModel {
-  @HiveField(5)
+class Work extends BaseModel {
+  @HiveField(2)
   late String content;
   
-  @HiveField(6)
+  @HiveField(3)
   late DateTime? from;
 
-  @HiveField(7)
+  @HiveField(4)
   late DateTime? to;
 
-  @HiveField(8)
+  @HiveField(5)
   late Reminder? reminder;
 
-  @HiveField(9)
+  @HiveField(6)
   late ScheduleType scheduleType;
 
   Work({required this.content, required this.from, required this.to,  required this.scheduleType, required this.reminder});
@@ -33,10 +33,6 @@ class Work extends BaseAuditModel {
     return Work(content: content, from: from, to: to, scheduleType: scheduleType, reminder: reminder)
     ..id = '';
   }
-  @override
-  BaseAuditModel Function(Map<String, dynamic> p1) fromJsonMethod() {
-    return Work.fromJson;
-  } 
 
 
   factory Work.fromJson(dynamic input){
@@ -50,9 +46,7 @@ class Work extends BaseAuditModel {
           reminder: Reminder.fromJson(json['reminder']) 
         )
         ..id = (json['id'] ?? '') as String
-         ..isDeleted = json.tryGet<bool>('isDeleted') ?? false
-         ..createdAt = json.tryGetCast<DateTime, String>(key: 'createdAt',  func: (s) => DateTime.parse(s)) ?? DateTime.now()
-         ..userId = json.tryGet('userId') ?? '';
+        ..userId = json.tryGet('userId') ?? '';
       case Work progression:
         return progression;
       default:
@@ -65,10 +59,7 @@ class Work extends BaseAuditModel {
   _$WorkToJson(Work instance) {
     return  <String, dynamic>{
       'id': instance.id,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
       'content': instance.content,
-      'isDeleted': instance.isDeleted,
       'from': instance.from?.toIso8601String(),
       'to': instance.to?.toIso8601String(),
       'scheduleType': instance.scheduleType.index,

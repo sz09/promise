@@ -17,22 +17,22 @@ class SynchronizationService {
     }
 
     late Map<String, String?> syncResult = {};
-    var box = await LocalDatabase<SystemVersion>().getBoxAsync();
+    var systemVerionBox = await LocalDatabase<SystemVersion>().getBoxAsync();
     var userId = repositories.entries.first.value.userId;
     bool isNeedSync = true;
     do {
       SystemVersion? systemVersion = null;
       await _lock.synchronized(() async {
-        if(!box.values.any((d) => d.userId == userId)){
-          await box.put(userId, SystemVersion(id: userId, userId: userId, versions: {}));
-          await box.flush();
+        if(!systemVerionBox.values.any((d) => d.userId == userId)){
+          await systemVerionBox.put(userId, SystemVersion(id: userId, userId: userId, versions: {}));
+          await systemVerionBox.flush();
         }
 
-        systemVersion = box.values.singleWhere((d) => d.userId == userId);
+        systemVersion = systemVerionBox.values.singleWhere((d) => d.userId == userId);
       });
 
       var syncTasks = repositories.entries.map((map) => Future.microtask(() async {
-        var tableName = map.value.tableName;
+        var tableName = map.value.localDatabase.boxName;
         var storedVersion = systemVersion!.versions[tableName] ?? BigInt.zero;
         try {
           final fetchData = await map.key.fetchFromVersionAsync(version: storedVersion);
@@ -42,10 +42,9 @@ class SynchronizationService {
               isContinue: false
             );
           }
-
           await map.value.doSyncToLocalAsync(fetchData.data);
           fetchData.data.sort((d, e) => d.updatedAt!.isBefore(e.updatedAt!) ? 0: 1);
-          await updateSystemVersion(systemVersion: systemVersion!, key: map.value.tableName, version: fetchData.version);
+          await updateSystemVersion(systemVersion: systemVersion!, key: map.value.localDatabase.boxName, version: fetchData.version);
 
           var syncDataItemResult = SyncDataItemResult(
             tableName: tableName,
@@ -65,8 +64,8 @@ class SynchronizationService {
         syncTasks
       );
       if(result.any((d) => d.isSynced)){
-        await box.put(systemVersion!.id, systemVersion!);
-        await box.flush();
+        await systemVerionBox.put(systemVersion!.id, systemVersion!);
+        await systemVerionBox.flush();
       }
 
       isNeedSync = result.any((d) => d.isContinue);

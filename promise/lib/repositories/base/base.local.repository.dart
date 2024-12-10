@@ -4,15 +4,11 @@ import 'package:promise/repositories/database/local.database.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/base/base.repository.dart';
 import 'package:promise/util/response.ext.dart';
-import 'package:promise/util/string_util.dart';
 
 abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseRepository {
   final String userId;
-  late String tableName;
   final LocalDatabase<T> localDatabase;
-  BaseLocalRepository({required this.userId, required this.localDatabase}) {
-    tableName = (T).toPlural();
-  }
+  BaseLocalRepository({required this.userId, required this.localDatabase}) {}
 
   @override
   Future<T> createAsync(dynamic t) async {
@@ -95,10 +91,9 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
 
   Future doSyncToLocalAsync(List<T> data) async {
     var box = await localDatabase.getBoxAsync();
-    for(var x in data) {
-      box.put(x.id, x);
-    }
-    await box.flush();
+    Map<String, T> map = { for (var item in data) item.id : item };
+    await box.putAll(map);
+    await box.close();
   }
   @override
   Future teardown() async {

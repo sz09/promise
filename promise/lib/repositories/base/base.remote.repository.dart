@@ -22,7 +22,7 @@ import 'package:promise/util/sync_result.dart';
 
   @override
   Future<T> modifyAsync(BaseAuditModel t) async {
-    var result = await this.client.put<dynamic>(path, t, factoryMethod: itemFactoryMethod);
+    var result = await this.client.putModify<dynamic>(path, t, factoryMethod: itemFactoryMethod);
     return result.data!;
   }
 

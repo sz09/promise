@@ -33,7 +33,6 @@ dependencies:
   async: any
   awesome_notifications: ^0.10.0
   azure_app_config: ^0.17.1
-  build_runner: any
   built_value_generator: any
   collection: ^1.18.0
   confirm_dialog: ^1.0.4
@@ -90,6 +89,7 @@ dependencies:
   single_item_secure_storage: ^2.0.2
   single_item_shared_prefs: ^2.0.1
   single_item_storage: ^2.0.1
+  source_gen: ^1.5.0
   sticky_headers: ^0.3.0+2
   synchronized: ^3.1.0+1
   timezone: ^0.10.0
@@ -103,9 +103,11 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
+  build_runner: ^2.4.13
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

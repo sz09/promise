@@ -32,7 +32,10 @@ abstract class BaseService<T extends BaseAuditModel> {
                  this.localRepository.modifyAsync(tRemote)
                      .then((tLocal) => tLocal)
                      .onError((error, _) => throw LocalDbConnectionException.create(T, exception: error))
-               ).onError((error, _) => throw RemoteDbConnectionException.create(T, exception: error));
+               ).onError((error, _) {
+
+                return throw RemoteDbConnectionException.create(T, exception: error);
+               });
 
     return result;
   }

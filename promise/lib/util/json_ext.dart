@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 T? _jsonTryGet<T, T1>(Map<String, dynamic> json, String key,
     {T Function(T1)? func}) {
   if (json.containsKey(key)) {
@@ -16,21 +18,13 @@ T? _jsonTryGet<T, T1>(Map<String, dynamic> json, String key,
   return null;
 }
 
-// T? _tryCast<T>(dynamic t) {
-//   final type = typeOf<T>();
-//   switch(t){
-//     case Map map:
-//     {
-      
-//     }
-//     break;
-
-//     case List list:
-//     {
-//       return list.cast<List<T>>();
-//     }
-//   }
-// }
+extension ConvertMap on Object {
+  toJson(){
+    final endcoded = jsonEncode(this);
+    final decoded = jsonDecode(endcoded);
+    return decoded;
+  }
+}
 
 
 extension JsonExtensions on Map<String, dynamic> {

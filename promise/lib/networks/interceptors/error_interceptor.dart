@@ -29,7 +29,12 @@ class ErrorInterceptor extends Interceptor {
         response: response,
       );
       handler.reject(error);
-    } else {
+    } 
+    else if(response.statusCode == 304 || response.statusCode == 404){
+      response.data = null;
+      handler.next(response);
+    } 
+    else {
       handler.next(response);
     }
   }

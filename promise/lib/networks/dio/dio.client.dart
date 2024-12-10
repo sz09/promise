@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:promise/util/json_ext.dart';
 import 'package:promise/util/response.ext.dart';
 import 'package:promise/util/sync_result.dart';
 
@@ -11,6 +12,17 @@ abstract class DioClient {
   }
   Future<Response<T>> post<T>(String path, Object? data, { T Function(Map<String, dynamic>)? factoryMethod = null}) async {
     var response = await _dio.post(path, data: data);
+    return _convert(response, factoryMethod: factoryMethod);
+  }
+
+
+  Future<Response<T>> putModify<T>(String path, Object? data, { T Function(Map<String, dynamic>)? factoryMethod = null}) async {
+    var response = await _dio.put<Map<String, dynamic>>(path, data: data);
+    if(response.statusCode == 304){
+      response.data = data?.toJson();
+      return _convert(response, factoryMethod: factoryMethod);
+    }
+    
     return _convert(response, factoryMethod: factoryMethod);
   }
 

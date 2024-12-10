@@ -10,6 +10,7 @@ import 'package:promise/config/firebase_config.dart';
 import 'package:promise/config/flavor_config.dart';
 import 'package:promise/config/logger_config.dart';
 import 'package:promise/di/service_locator.dart';
+import 'package:promise/features/promise/ui/models/schedule_options.dart';
 import 'package:promise/features/settings/preferences_helper.dart';
 import 'package:promise/models/memory/memory.dart';
 import 'package:promise/models/objective/objective.dart';
@@ -62,6 +63,7 @@ registerDatabase() async {
     (Memory).toPlural(),
     (Promise).toPlural(),
     (Person).toPlural(),
+    (Objective).toPlural(),
   });
   Hive.registerAdapter(SystemVersionAdapter());
   Hive.registerAdapter(MemoryAdapter());
@@ -69,9 +71,10 @@ registerDatabase() async {
   Hive.registerAdapter(PersonAdapter());
   Hive.registerAdapter(UserReferenceAdapter());
   Hive.registerAdapter(ViewColorAdapter());
-  Hive.registerAdapter(ProgressionAdapter());
+  Hive.registerAdapter(WorkAdapter());
   Hive.registerAdapter(ReminderAdapter());
   Hive.registerAdapter(ObjectiveAdapter());
+  Hive.registerAdapter(ScheduleTypeAdapter());
 }
 late WebSocketChannel _channel;
 Future<void> setupWebSocket(String userId) async {

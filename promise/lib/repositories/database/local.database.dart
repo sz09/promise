@@ -19,13 +19,23 @@ class LocalDatabaseWrapper {
   }
 }
 class LocalDatabase<T>{
-  LocalDatabase() {
-    // var itemMirror = hiveTypeReflector.reflectType(T) as ClassMirror;
-    // var hiveTypeAnnotation = itemMirror.metadata
-    //   .firstWhere((metadata) => metadata is HiveType) as HiveType;
-    // var typeId = hiveTypeAnnotation.typeId;
+  LocalDatabase() {}
+
+  // Use for change model types, clean and sync from begin
+  // Must have model version on both client and server
+  Future clearBoxOnDiskAsync() async{
+    await Hive.deleteBoxFromDisk(boxName);
   }
+
   Future<Box<T>> getBoxAsync() async {
-    return Hive.openBox<T>((T).toPlural());
+    if(!Hive.isBoxOpen(boxName)){
+      return await Hive.openBox<T>(boxName);
+    }
+
+    return Hive.box(boxName);
+  }
+
+  String get boxName {
+    return (T).toPlural();
   }
 }

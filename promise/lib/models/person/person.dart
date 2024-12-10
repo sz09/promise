@@ -74,6 +74,16 @@ class UserReference {
   late ViewColor color;
 
   String get value => referenceUserId;
+
+  Map<String, dynamic>  toJson() => _$UserReferenceToJson(this);
+
+  _$UserReferenceToJson(UserReference instance) {
+    return  <String, dynamic>{
+      'referenceUserId': instance.referenceUserId,
+      'hint': instance.hint,
+      'updatecolordAt': instance.color
+    };
+  }
 }
 
 @HiveType(typeId: ColorHiveType)
@@ -93,6 +103,15 @@ class ViewColor {
       g:  json.tryGet<int>("g") ?? 0,
       b:  json.tryGet<int>("b") ?? 0
     );
+  }
+  Map<String, dynamic> toJson() => _$ViewColorToJson(this);
+  _$ViewColorToJson(ViewColor instance){
+    return {
+      'a': instance.a,
+      'r': instance.r,
+      'g': instance.g,
+      'b': instance.b,
+    };
   }
   @HiveField(0)
   late int a;
