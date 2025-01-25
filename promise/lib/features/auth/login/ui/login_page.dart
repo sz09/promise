@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:promise/const/text.dart';
 import 'package:promise/di/service_locator.dart';
 import 'package:promise/features/auth/login/login.controller.dart';
+import 'package:promise/features/auth/login/ui/google_login_page.dart';
 import 'package:promise/features/auth/router/auth_router_delegate.dart';
 import 'package:promise/features/page.deletegate.dart';
 import 'package:promise/main.dart';
@@ -13,6 +16,10 @@ import 'package:promise/widgets/disable_button.dart';
 import 'package:promise/widgets/wrap/wrap_password.dart';
 import 'package:promise/widgets/wrap/wrap_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:oauth2/oauth2.dart' as oauth2;
+
 
 final _controller = Get.find<LoginController>(tag: applicationTag);
 
@@ -99,6 +106,14 @@ class LoginView extends StatelessWidget {
                     ),
                     child: const Text('Sign up'),
                   ),
+                  ElevatedButton(
+                    onPressed: () => _signInWithGoogle(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      //primary: Colors.grey[300],
+                    ),
+                    child: const Text('Google signin'),
+                  ),
                 ],
               ),
             )));
@@ -115,4 +130,57 @@ class LoginView extends StatelessWidget {
   onSelected(BuildContext context, String item) {
     LocalizationService.changeLocale(item);
   }
+
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    final authorizationEndpoint = Uri.parse("https://accounts.google.com/o/oauth2/auth");
+    final tokenEndpoint = Uri.parse("https://oauth2.googleapis.com/token");
+    final redirectUri = Uri.parse("com.promise:/oauth2redirect");
+
+    final grant = oauth2.AuthorizationCodeGrant(
+      "678731460115-nn4qrmid3ckpf3kkotqvk3hk5bovn6d3.apps.googleusercontent.com",
+      authorizationEndpoint,
+      tokenEndpoint,
+      secret: "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",
+    );
+
+    final authUrl = grant.getAuthorizationUrl(redirectUri);
+    print("Auth URL: $authUrl");
+    if (await canLaunchUrl(authUrl)) {
+      try {
+        var r = await launchUrl(authUrl);
+        var x = r;
+      }
+      catch(ex){
+        var r = ex;
+      }
+    } else {
+      throw "Could not launch $authUrl";
+    }
+    // Gửi mã code này lên server backend để đổi lấy access_token và refresh_token
+
+    // final code = await showDialog(
+    //   context: context,
+    //   builder: (context) => GoogleLoginPopup(),
+    // );
+
+    // if (code != null) {
+    //   print("Authorization Code: $code");
+    // Gửi mã này lên server để đổi access_token và refresh_token
+  }
+  // try {
+  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //     if (googleUser == null) {
+  //       print("Login cancelled");
+  //       return;
+  //     }
+
+  //     final GoogleSignInAuthentication googleAuth =
+  //         await googleUser.authentication;
+
+  //     print("Access Token: ${googleAuth.accessToken}");
+  //     print("ID Token: ${googleAuth.idToken}");
+  //   } catch (e) {
+  //     print("Error logging in with Google: $e");
+  //   }
+  // }
 }

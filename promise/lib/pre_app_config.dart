@@ -1,8 +1,10 @@
 // ignore_for_file: unused_catch_clause
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
@@ -26,6 +28,9 @@ import 'package:promise/user/user_manager.dart';
 import 'package:promise/util/notification_util.dart';
 import 'package:promise/util/string_util.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+
 
 const String themeModeKey = "isDarkMode";
 const String languageCode = "languageCode";

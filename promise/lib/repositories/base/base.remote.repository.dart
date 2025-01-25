@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:promise/const/const.dart';
+import 'package:promise/models/sync/sync.dart';
 import 'package:promise/networks/dio/dio.client.dart';
 import 'package:promise/models/base/base.model.dart';
 import 'package:promise/repositories/base/base.repository.dart';
@@ -55,14 +56,14 @@ import 'package:promise/util/sync_result.dart';
   Future<SyncResult<T>> fetchFromVersionAsync({required BigInt version, int pageSize = FECTH_VERSION_PAGE_SIZE }) async {
     final syncResult = SyncResult<T>.set([], BigInt.zero);
     SyncResult<T> factoryMethod(Response<dynamic> response){
-    if(response.data['data'] is List && (response.data['data'] as List).isEmpty){
-      return SyncResult.defaultValue();
+      if(response.data['data'] is List && (response.data['data'] as List).isEmpty){
+        return SyncResult.defaultValue();
+      }
+      syncResult.response = response.data;
+      syncResult.resolveItem = itemFactoryMethod;
+      syncResult.create();
+      return syncResult;
     }
-    syncResult.response = response.data;
-    syncResult.resolveItem = itemFactoryMethod;
-    syncResult.create();
-    return syncResult;
-  }
 
     var fetchData = await client.fetchSync<T>('$path/from-version', {
       'fromVersion': version,
@@ -70,6 +71,12 @@ import 'package:promise/util/sync_result.dart';
     },  factoryMethod);
 
     return fetchData.data!;
+  }
+
+  Future<BigInt> syncToServerAsync(List<SyncItem<T>> syncItems) async {
+    var result = await client.post<BigInt>('$path/sync', syncItems, 
+    factoryMethod: (response) => BigInt.parse(response['version'].toString()));
+    return result.data!;
   }
 
   @override

@@ -5,11 +5,10 @@ import 'package:promise/util/date_time_util.dart';
 import 'package:promise/util/json_ext.dart';
 import 'package:promise/util/reflectable.hive.dart';
 part 'memory.g.dart';
-
 @HiveType(typeId: MemoryHiveType)
 @hiveTypeReflector
 class Memory extends BaseAuditModel {
-  @HiveField(5)
+  @HiveField(BaseFieldNumber + 1)
   late String description;
   Memory({required String id, required this.description}) {
     this.id = id;

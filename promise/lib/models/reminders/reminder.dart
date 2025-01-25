@@ -12,13 +12,13 @@ part 'reminder.g.dart';
 @hiveTypeReflector
 class Reminder extends BaseAuditModel {
   
-  @HiveField(5)
+  @HiveField(BaseFieldNumber + 1)
   late String notiicationDetails;
   
-  @HiveField(6)
+  @HiveField(BaseFieldNumber + 2)
   late String notiicationContent;
   
-  @HiveField(7)
+  @HiveField(BaseFieldNumber + 3)
   late String expression;
 
   Reminder({required this.notiicationContent, required this.notiicationDetails, required this.expression});

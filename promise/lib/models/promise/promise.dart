@@ -11,15 +11,15 @@ part 'promise.g.dart';
 @JsonSerializable()
 @hiveTypeReflector
 class Promise extends BaseAuditModel {
-  @HiveField(5)
+  @HiveField(BaseFieldNumber + 1)
   final String content;
-  @HiveField(6)
+  @HiveField(BaseFieldNumber + 2)
   final DateTime? expectedTime;
   
-  @HiveField(7)
+  @HiveField(BaseFieldNumber + 3)
   final List<String>? to;
 
-  @HiveField(8)
+  @HiveField(BaseFieldNumber + 4)
   final bool forYourself;
   
   Promise({required this.content, this.expectedTime = null, this.to = null, this.forYourself = false}) {}

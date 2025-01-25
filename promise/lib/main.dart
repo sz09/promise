@@ -25,6 +25,7 @@ import 'package:promise/resources/theme/app_theme.dart';
 import 'package:promise/routers/router.config.dart';
 import 'package:promise/routing/app_router_delegate.dart';
 import 'package:promise/routing/navigation_observer.dart';
+import 'package:promise/services/background-services/background_service.dart';
 import 'package:promise/user/user_manager.dart';
 import 'main.reflectable.dart';
 
@@ -41,6 +42,7 @@ Future runApplication() async {
   await GetStorage.init();
   await registerDatabase();
   await registerBackgroundNotification();
+  await registerBackgroundServices();
   
   await Future.wait(LocalizationService.langCodes
       .map((code) => LocalizationService.loadLanguage(languageCode: code)));

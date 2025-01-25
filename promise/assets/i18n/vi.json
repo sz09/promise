@@ -2,7 +2,7 @@
   "application.title": "Promise app",
   "title": "This is the main page",
 
-  "menu.home": "Home",
+  "menu.home": "Nhà",
   "menu.settings": "Settings",
   "menu.memories": "Memories",
   "menu.promises": "Promises",
@@ -27,7 +27,7 @@
   "login.password_hint": "Please enter password",
   "login.label_login": "Login",
 
-  "chat.photo": "Photo",
+  "chat.photo": "Hình ảnh",
   "chat.file": "File",
 
   "buttons.cancel": "Cancel",

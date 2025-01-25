@@ -14,13 +14,15 @@ commonDialog({
 }) {
   return SingleChildScrollView(
       child: StickyHeader(
-    header: Padding(
-        padding: paddingTop,
-        child: Container(
+        overlapHeaders: false,
+        header: Container(
             decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: context.containerLayoutColor,
-            ),
+                shape: BoxShape.rectangle,
+                color: context.containerLayoutColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(2.0), // Bo góc trên bên trái
+                  topRight: Radius.circular(2.0), // Bo góc trên bên phải
+                )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -43,7 +45,7 @@ commonDialog({
                   ],
                 )
               ],
-            ))),
+            )),
     content: SingleChildScrollView(
       child: Padding(
           padding: EdgeInsets.zero,

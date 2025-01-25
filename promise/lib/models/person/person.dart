@@ -17,17 +17,17 @@ class Person extends BaseAuditModel {
     return Person.fromJson;
   }
 
-  @HiveField(5)
+  @HiveField(BaseFieldNumber + 1)
   late String? email;
-  @HiveField(6)
+  @HiveField(BaseFieldNumber + 2)
   late String firstName;
-  @HiveField(7)
+  @HiveField(BaseFieldNumber + 3)
   late String lastName;
-  @HiveField(8)
+  @HiveField(BaseFieldNumber + 4)
   late List<UserReference> references;
-  @HiveField(9)
+  @HiveField(BaseFieldNumber + 5)
   late String nickname;
-  @HiveField(10)
+  @HiveField(BaseFieldNumber + 6)
   late String color;
 
   Person({required String id, required  String userId, required this.email, required this.firstName, required this.lastName, required this.references, required this.color, required this.nickname}) {

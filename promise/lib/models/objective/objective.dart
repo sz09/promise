@@ -12,11 +12,11 @@ part 'objective.g.dart';
 @JsonSerializable()
 @hiveTypeReflector
 class Objective extends BaseAuditModel {
-  @HiveField(5)
+  @HiveField(BaseFieldNumber + 1)
   late String promiseId;
-  @HiveField(6)
+  @HiveField(BaseFieldNumber + 2)
   late String content;
-  @HiveField(7)
+  @HiveField(BaseFieldNumber + 3)
   late List<Work> works = [];
   
   Objective({required this.content, required this.promiseId}) {

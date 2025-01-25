@@ -53,6 +53,34 @@ abstract class BaseLocalRepository<T extends BaseAuditModel> extends BaseReposit
     await box.flush();
   }
 
+  Future<PageResult<T>> fetchDirtyPagingAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
+    var box = await localDatabase.getBoxAsync();
+    query(T d) => d.userId == userId && d.dirty == true;
+    var count = box.values.where(query).length;
+    if(count == 0){
+      return PageResult<T>.set([], 0);
+    }
+    var values = box.values
+                    .where(query)
+                    .sortedBy((d) => d.createdAt)
+                    .skip((page - 1) * pageSize)
+                    .take(pageSize)
+                    .toList();
+    return PageResult<T>.set(values, count);
+  }
+
+  Future markIsNotDirtyAsync(List<String> ids) async {
+    var box = await localDatabase.getBoxAsync();
+    for (var id in ids) {
+      var model = box.get(id);
+      if(model != null){
+        model.dirty = false;
+        box.put(id, model);
+      }
+    }
+    await box.flush();
+  }
+
   @override
   Future<PageResult<T>> fetchAsync([int page = 1, int pageSize = PAGE_SIZE]) async {
     var box = await localDatabase.getBoxAsync();

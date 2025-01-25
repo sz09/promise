@@ -2,15 +2,15 @@
 // https://github.com/dart-lang/reflectable.
 import 'dart:core';
 import 'package:promise/features/promise/ui/models/schedule_options.dart'
-    as prefix8;
+    as prefix5;
 import 'package:promise/models/memory/memory.dart' as prefix2;
 import 'package:promise/models/objective/objective.dart' as prefix4;
 import 'package:promise/models/person/person.dart' as prefix1;
 import 'package:promise/models/promise/promise.dart' as prefix3;
-import 'package:promise/models/reminders/reminder.dart' as prefix6;
+import 'package:promise/models/reminders/reminder.dart' as prefix7;
 import 'package:promise/models/system-versions/system-version.model.dart'
-    as prefix7;
-import 'package:promise/models/work/work.dart' as prefix5;
+    as prefix8;
+import 'package:promise/models/work/work.dart' as prefix6;
 import 'package:promise/util/reflectable.hive.dart' as prefix0;
 
 // ignore_for_file: camel_case_types
@@ -357,10 +357,42 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'works=': 1
             }),
         r.NonGenericClassMirrorImpl(
+            r'ScheduleType',
+            r'.ScheduleType',
+            138412039,
+            6,
+            const prefix0.HiveTypeReflector(),
+            const <int>[-1],
+            null,
+            null,
+            -1,
+            {
+              r'Range': () => prefix5.ScheduleType.Range,
+              r'WorkingDays': () => prefix5.ScheduleType.WorkingDays,
+              r'values': () => prefix5.ScheduleType.values
+            },
+            {},
+            {},
+            -1,
+            -1,
+            const <int>[-1],
+            null,
+            {
+              r'==': 1,
+              r'toString': 0,
+              r'noSuchMethod': 1,
+              r'hashCode': 0,
+              r'runtimeType': 0,
+              r'index': 0,
+              r'Range': 0,
+              r'WorkingDays': 0,
+              r'values': 0
+            }),
+        r.NonGenericClassMirrorImpl(
             r'Work',
             r'.Work',
             134217735,
-            6,
+            7,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -371,7 +403,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {
               r'': (bool b) => ({content, from, to, scheduleType, reminder}) =>
                   b
-                      ? prefix5.Work(
+                      ? prefix6.Work(
                           content: content,
                           from: from,
                           reminder: reminder,
@@ -380,7 +412,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
                       : null,
               r'create': (bool b) =>
                   ({content, from, to, scheduleType, reminder}) => b
-                      ? prefix5.Work.create(
+                      ? prefix6.Work.create(
                           from: from,
                           to: to,
                           content: content,
@@ -388,7 +420,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
                           scheduleType: scheduleType)
                       : null,
               r'fromJson': (bool b) =>
-                  (input) => b ? prefix5.Work.fromJson(input) : null
+                  (input) => b ? prefix6.Work.fromJson(input) : null
             },
             -1,
             -1,
@@ -420,7 +452,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             r'Reminder',
             r'.Reminder',
             134217735,
-            7,
+            8,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -431,13 +463,13 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {
               r'': (bool b) =>
                   ({notiicationContent, notiicationDetails, expression}) => b
-                      ? prefix6.Reminder(
+                      ? prefix7.Reminder(
                           expression: expression,
                           notiicationContent: notiicationContent,
                           notiicationDetails: notiicationDetails)
                       : null,
               r'fromJson': (bool b) =>
-                  (input) => b ? prefix6.Reminder.fromJson(input) : null
+                  (input) => b ? prefix7.Reminder.fromJson(input) : null
             },
             -1,
             -1,
@@ -472,7 +504,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             r'SystemVersion',
             r'.SystemVersion',
             134217735,
-            8,
+            9,
             const prefix0.HiveTypeReflector(),
             const <int>[-1],
             null,
@@ -482,11 +514,11 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {
               r'': (bool b) => ({id, userId, versions}) => b
-                  ? prefix7.SystemVersion(
+                  ? prefix8.SystemVersion(
                       id: id, userId: userId, versions: versions)
                   : null,
               r'fromJson': (bool b) =>
-                  (json) => b ? prefix7.SystemVersion.fromJson(json) : null
+                  (json) => b ? prefix8.SystemVersion.fromJson(json) : null
             },
             -1,
             -1,
@@ -506,38 +538,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'versions=': 1,
               r'modelVersions': 0,
               r'modelVersions=': 1
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'ScheduleType',
-            r'.ScheduleType',
-            138412039,
-            9,
-            const prefix0.HiveTypeReflector(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {
-              r'Range': () => prefix8.ScheduleType.Range,
-              r'WorkingDays': () => prefix8.ScheduleType.WorkingDays,
-              r'values': () => prefix8.ScheduleType.values
-            },
-            {},
-            {},
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'index': 0,
-              r'Range': 0,
-              r'WorkingDays': 0,
-              r'values': 0
             })
       ],
       null,
@@ -549,10 +549,10 @@ final _data = <r.Reflectable, r.ReflectorData>{
         prefix2.Memory,
         prefix3.Promise,
         prefix4.Objective,
-        prefix5.Work,
-        prefix6.Reminder,
-        prefix7.SystemVersion,
-        prefix8.ScheduleType
+        prefix5.ScheduleType,
+        prefix6.Work,
+        prefix7.Reminder,
+        prefix8.SystemVersion
       ],
       10,
       {
@@ -588,6 +588,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'forYourself': (dynamic instance) => instance.forYourself,
         r'promiseId': (dynamic instance) => instance.promiseId,
         r'works': (dynamic instance) => instance.works,
+        r'index': (dynamic instance) => instance.index,
         r'from': (dynamic instance) => instance.from,
         r'reminder': (dynamic instance) => instance.reminder,
         r'scheduleType': (dynamic instance) => instance.scheduleType,
@@ -597,8 +598,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
             instance.notiicationContent,
         r'expression': (dynamic instance) => instance.expression,
         r'versions': (dynamic instance) => instance.versions,
-        r'modelVersions': (dynamic instance) => instance.modelVersions,
-        r'index': (dynamic instance) => instance.index
+        r'modelVersions': (dynamic instance) => instance.modelVersions
       },
       {
         r'id=': (dynamic instance, value) => instance.id = value,

@@ -7,3 +7,10 @@ Future<Map<String, String?>> syncDataToLocalAsync(){
     return synchronizationService.doSyncToLocalAsync();
   });
 }
+
+Future syncDataToServerAsync(){
+  return Future.microtask(() {
+    var synchronizationService = serviceLocator.get<SynchronizationService>();
+    return synchronizationService.doSyncToServerAsync();
+  });
+}

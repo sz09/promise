@@ -1,7 +1,8 @@
-import 'package:get/get.dart';
+import 'package:collection/collection.dart';
 import 'package:promise/models/person/person.dart';
 import 'package:promise/services/base/base.service.dart';
 import 'package:promise/util/response.ext.dart';
+import 'package:promise/util/int_util.dart';
 
 class PersonService extends BaseService<Person> {
   PersonService({required super.remoteRepository, required super.localRepository});
@@ -16,7 +17,7 @@ class PersonService extends BaseService<Person> {
   }
   
   Future<PageResult<Person>> getUsersWithHint() async {
-    var data = await localRepository.fetchAsync1();
+    var data = await localRepository.fetchAsync(1, IntUtils.maxFinite);
     var userReferences = await getUserReferences();
     if(userReferences.isNotEmpty){
       for(var userReference in userReferences){
